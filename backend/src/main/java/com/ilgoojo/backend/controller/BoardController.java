@@ -39,5 +39,4 @@ public class BoardController {
     public ResponseEntity<?> deleteById(@PathVariable Integer id, @RequestBody Board board) {
         return new ResponseEntity<>(boardService.boardDelete(id), HttpStatus.OK);
     }
-
 }

@@ -46,4 +46,5 @@ public class BoardService {
         boardRepository.deleteById(id);
         return "ok";
     }
+
 }
