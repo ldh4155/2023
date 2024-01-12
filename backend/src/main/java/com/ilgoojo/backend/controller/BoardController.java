@@ -8,35 +8,35 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin()
+@CrossOrigin
 @RequiredArgsConstructor
 @RestController
 public class BoardController {
 
     private final BoardService boardService;
 
-    @PostMapping("/board")
+    @PostMapping("/board") // 글 쓰기
     public ResponseEntity<?> save(@RequestBody Board board) {
-        return new ResponseEntity<>(boardService.boardWrite(board), HttpStatus.OK);
+        return new ResponseEntity<>(boardService.boardWrite(board), HttpStatus.CREATED);
     }
-    @CrossOrigin()
-   @GetMapping("/board")
+
+   @GetMapping("/board") // 글 불러오기
     public ResponseEntity<?> findAll() {
        return new ResponseEntity<>(boardService.boardList(), HttpStatus.OK);
    }
 
-    @GetMapping("/board/{id}")
+    @GetMapping("/board/{id}") // 글 상세보기
     public ResponseEntity<?> findById(@PathVariable Integer id) {
         return new ResponseEntity<>(boardService.boardDetail(id), HttpStatus.OK);
     }
 
-    @PutMapping("/board/{id}")
+    @PutMapping("/board/{id}") // 글 수정하기
     public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Board board) {
         return new ResponseEntity<>(boardService.boardModify(id, board), HttpStatus.OK);
     }
 
-    @DeleteMapping("board/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable Integer id, @RequestBody Board board) {
+    @DeleteMapping("board/{id}") // 삭제하기
+    public ResponseEntity<?> deleteById(@PathVariable Integer id) {
         return new ResponseEntity<>(boardService.boardDelete(id), HttpStatus.OK);
     }
 }
