@@ -33,7 +33,7 @@ export default function BoardDetail(props) {
           alert("삭제 되었습니다.");
           navigate("/");
         } else {
-          alert("삭제 실패");
+          alert("삭제 실패했습니다");
         }
       })
       .catch((error) => {

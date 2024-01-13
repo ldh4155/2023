@@ -7,7 +7,7 @@ export default function BoardItem(props) {
     <div>
       <div>
         <h3>제목 : {title}</h3>
-        <Link to={"/board/" + id}>상세보기</Link>
+        <Link to={"/board/" + id}>상세 보기</Link>
       </div>
     </div>
   );

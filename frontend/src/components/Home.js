@@ -13,7 +13,7 @@ export default function Home() {
         setBoards(res.data);
       })
       .catch((error) => {
-        console.error("error", error);
+        console.error("error!", error);
       });
   }, []);
 
