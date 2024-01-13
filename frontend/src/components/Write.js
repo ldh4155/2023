@@ -22,7 +22,7 @@ export default function Write(props) {
       .post("http://localhost:8080/board", board)
       .then((res) => {
         if (res.status === 201) {
-          alert("게시글 작성이 완료 되었습니다.");
+          alert("게시글 작성이 완료되었습니다.");
           navigate("/");
         } else {
           alert("게시글 등록 실패.");

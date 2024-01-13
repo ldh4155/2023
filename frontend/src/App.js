@@ -16,7 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} /> // 글 목록, 글 쓰기
           <Route path="/write" element={<Write />} /> // 글 쓰는 페이지
-          <Route path="/board/:id" element={<BoardDetail />} /> // 글 상세보기
+          <Route path="/board/:id" element={<BoardDetail />} /> // 글 상세 보기
           <Route path="/update/:id" element={<Update />} /> // 글 수정하기
         </Routes>
       </BrowserRouter>

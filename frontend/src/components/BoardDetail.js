@@ -30,7 +30,7 @@ export default function BoardDetail(props) {
       .delete(`http://localhost:8080/board/${id}`)
       .then((res) => {
         if (res.data === "ok") {
-          alert("삭제되었습니다.");
+          alert("삭제 되었습니다.");
           navigate("/");
         } else {
           alert("삭제 실패");

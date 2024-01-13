@@ -34,7 +34,7 @@ export default function Update(props) {
       .put(`http://localhost:8080/board/${id}`, boardData)
       .then((res) => {
         if (res.status === 200) {
-          alert("게시글 수정이 완료 되었습니다.");
+          alert("게시글 수정이 완료되었습니다.");
           navigate(`/board/${id}`);
         } else {
           alert("게시글 수정 실패.");
