@@ -1,5 +1,4 @@
 const { createProxyMiddleware } = require.resolve("url/");
-
 module.exports = function (app) {
   app.use(
     "/api",
