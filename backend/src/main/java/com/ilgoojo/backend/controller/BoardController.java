@@ -54,8 +54,6 @@ public class BoardController {
 
     }
 
-
-
     @PutMapping("/board/{id}") // 글 수정하기
     public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Board board) {
         return new ResponseEntity<>(boardService.boardModify(id, board), HttpStatus.OK);

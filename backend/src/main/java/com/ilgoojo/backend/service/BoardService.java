@@ -51,7 +51,6 @@ public class BoardService {
         board.setView(board.getView()+1);
     }
 
-
     public List<Board> boardList() {
         return boardRepository.findAll();
     }
