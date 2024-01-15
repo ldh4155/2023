@@ -10,11 +10,11 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetchBoards(currentPage); // 페이지가 마운트될 때 첫 번째 페이지의 게시판 데이터를 불러옵니다.
+    fetchBoards(currentPage);
   }, []);
 
   useEffect(() => {
-    fetchBoards(currentPage); // currentPage가 변경될 때마다 새로운 페이지의 게시판 데이터를 불러옵니다.
+    fetchBoards(currentPage);
   }, [currentPage]);
 
   const fetchBoards = (page, term) => {
@@ -51,7 +51,7 @@ export default function Home() {
   }
 
   const handleSearch = () => {
-    fetchBoards(0, searchTerm); // 검색어를 이용해 첫 페이지부터 검색합니다.
+    fetchBoards(0, searchTerm);
   };
 
   return (
