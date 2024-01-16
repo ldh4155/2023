@@ -1,0 +1,14 @@
+CREATE TABLE `2023`.`member` (
+  `id` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  'nickname'VARCHAR(45) NOT NULL,
+  `phone_number` CHAR(11) NULL,
+  `address` VARCHAR(45) NULL,
+  `email` CHAR(30) NULL DEFAULT '없음',
+  `birth` DATE NULL,
+  `transactionCount` INT NULL DEFAULT 0,
+  `profileImage` LONGBLOB NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+  UNIQUE INDEX `phone_number_UNIQUE` (`phone_number` ASC) VISIBLE);
