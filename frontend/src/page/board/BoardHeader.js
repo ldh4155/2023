@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 
 export default function BoardHeader() {
   return (
-    <div>
-      <Link to="/">글 목록</Link>
+    <div className="left-padding">
+      <Link to="/board">글 목록</Link>
       <br />
-      <Link to="/write">글 쓰기</Link>
+      <Link to="/board/write">글 쓰기</Link>
       <hr />
     </div>
   );

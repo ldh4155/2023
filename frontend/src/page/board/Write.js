@@ -60,26 +60,29 @@ export default function Write(props) {
 
   return (
     <form onSubmit={SubmitBoard}>
-      <label>
-        제목 :
-        <input
-          type="text"
-          placeholder="Enter Title"
-          name="title"
-          onChange={ChangeValue}
-        />
-      </label>
-      <br />
-      <label>
-        내용 :
-        <textarea
-          placeholder="Enter Content"
-          name="content"
-          onChange={ChangeValue}
-        />
-      </label>
-      <br />
-      <button type="submit">완료</button>
+      <div className="left-padding">
+        <label>
+          제목 :
+          <input
+            type="text"
+            placeholder="Enter Title"
+            name="title"
+            onChange={ChangeValue}
+          />
+        </label>
+        <br />
+        <label>
+          내용 :
+          <textarea
+            placeholder="Enter Content"
+            name="content"
+            onChange={ChangeValue}
+          />
+        </label>
+        <br />
+        <button type="submit">완료</button>
+      </div>
+      
     </form>
   );
 }

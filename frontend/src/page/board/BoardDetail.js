@@ -42,7 +42,7 @@ export default function BoardDetail(props) {
   }
 
   function UpdateBoard(id) {
-    navigate("/Update/" + id);
+    navigate("/board/Update/" + id);
   }
 
   return (

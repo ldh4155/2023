@@ -1,27 +1,26 @@
-
-import logo from "./logo.svg";
-import "./App.css";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import Write from "./components/Write";
-import BoardDetail from "./components/BoardDetail";
-import Update from "./components/Update";
-import setProxy from "./setProxy";
-import BoardList from "./components/BoardList";
-import BoardHeader from "./components/BoardHeader";
+import { Container } from 'react-bootstrap';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Home from './page/Home';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import BoardList from "./page/board/BoardList";
 
 function App() {
   return (
-    <div>
+    <div className="App">
       <BrowserRouter>
-        <BoardHeader />
-        <Routes>
-          <Route path="/board" element={<BoardList />} /> // 글 목록, 글 쓰기
-          <Route path="/board/write" element={<Write />} /> // 글 쓰는 페이지
-          <Route path="/board/:id" element={<BoardDetail />} /> // 글 상세 보기
-          <Route path="/board/update/:id" element={<Update />} /> // 글 수정 하기
-        </Routes>
+      <Header>
+        <Container style={{minHeight:'75vh'}} />
+      </Header>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path="/board/*" element={<BoardList />} /> // 게시판 불러오기, 중첩 라우팅을 위한 와일드카드
+      </Routes>
       </BrowserRouter>
+      <Footer />
     </div>
+  
   );
 }
 
