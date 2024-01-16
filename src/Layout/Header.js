@@ -1,8 +1,11 @@
-//import react from 'react';
+import React, { useState } from 'react';
 import {Navbar, Nav, Container} from 'react-bootstrap'
 import { Form, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 const Header = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const handleLogin = () => setIsLoggedIn(true);
+  const handleLogout = () => setIsLoggedIn(false);
 return(
 <Navbar bg="light" expand="lg">
 <Container>
@@ -28,8 +31,17 @@ return(
       <div className="d-lg-none my-2" style={{ borderTop: '2px solid #dee2e6' }}></div>
 
       <Nav className="ml-auto d-flex flex-column flex-lg-row">
-        <Nav.Link>로그인</Nav.Link>
-        <Nav.Link>회원가입</Nav.Link>
+            {isLoggedIn ? (
+              <>
+                <Nav.Link onClick={handleLogout}>로그아웃</Nav.Link>
+                <Link to="/mypage" className="nav-link">마이페이지</Link>
+              </>
+            ) : (
+              <>
+                <Nav.Link onClick={handleLogin}>로그인</Nav.Link>
+                <Link to="/signup" className="nav-link">회원가입</Link>
+              </>
+            )}
       </Nav>
     </Navbar.Collapse>
   </Container>
