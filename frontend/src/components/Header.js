@@ -6,6 +6,7 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const handleLogin = () => setIsLoggedIn(true);
   const handleLogout = () => setIsLoggedIn(false);
+  const id = 1; // 사용자 고유식별번호 임시 기입
 return(
 <Navbar bg="light" expand="lg">
 <Container>
@@ -34,7 +35,7 @@ return(
             {isLoggedIn ? (
               <>
                 <Nav.Link onClick={handleLogout}>로그아웃</Nav.Link>
-                <Link to="/mypage" className="nav-link">마이페이지</Link>
+                <Link to={`/mypage/${id}`} className="nav-link">마이페이지</Link>
               </>
             ) : (
               <>
