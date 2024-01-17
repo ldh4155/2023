@@ -1,13 +1,15 @@
 package com.ilgoojo.backend.entity;
+import lombok.Data;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "user")
+@Data
 public class MyPageUser {
     @Id
-    private String id;
+    private Integer id;
     private String image;
     private String name;
     private String nickname;

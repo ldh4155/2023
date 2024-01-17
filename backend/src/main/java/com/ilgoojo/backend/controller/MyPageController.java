@@ -11,7 +11,8 @@ public class MyPageController {
     private MyPageUserRepository myPageUserRepository;
 
     @GetMapping("/mypageuser/{id}")
-    public MyPageUser getUser(@PathVariable String id) {
+    public MyPageUser getUser(@PathVariable Integer id) {
         return myPageUserRepository.findById(id).orElse(null);
     }
+
 }
