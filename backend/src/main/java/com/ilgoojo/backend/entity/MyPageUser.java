@@ -1,4 +1,5 @@
 package com.ilgoojo.backend.entity;
+
 import lombok.Data;
 
 import javax.persistence.*;
@@ -12,9 +13,7 @@ public class MyPageUser {
     private String image;
     private String name;
     private String nickname;
-    private String phone_number;
+    private String phoneNumber;
     private String address;
-    private String manner_temperature;
-
-    // getter, setter...
+    private String mannerTemperature;
 }

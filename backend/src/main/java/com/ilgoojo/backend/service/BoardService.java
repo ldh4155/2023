@@ -2,28 +2,22 @@ package com.ilgoojo.backend.service;
 
 import com.ilgoojo.backend.entity.Board;
 import com.ilgoojo.backend.repository.BoardRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.util.Supplier;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
-@RequiredArgsConstructor
+
 @Service
+@RequiredArgsConstructor
 public class BoardService {
-
-    @Autowired
-    private BoardRepository boardRepository;
-
-    @PersistenceContext
-    private EntityManager entityManager;
+    private final BoardRepository boardRepository;
+    private final EntityManager entityManager;
 
     @Transactional
     public Board boardWrite(Board board) {
@@ -47,8 +41,10 @@ public class BoardService {
 
     @Transactional
     public void increaseView(Integer id) {
-        Board board = boardRepository.findById(id).get();
-        board.setView(board.getView()+1);
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid board Id:" + id));
+        board.setView(board.getView() + 1);
+        entityManager.detach(board);
     }
 
     public List<Board> boardList() {
@@ -62,7 +58,7 @@ public class BoardService {
         boardEntity.setTitle(board.getTitle());
         boardEntity.setContent(board.getContent());
 
-        return null;
+        return boardEntity;
     }
 
     @Transactional
@@ -72,3 +68,4 @@ public class BoardService {
     }
 
 }
+
