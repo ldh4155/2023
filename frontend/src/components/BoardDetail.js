@@ -13,6 +13,10 @@ export default function BoardDetail(props) {
     view: "",
     createTime: "",
     modifiedTime: "",
+    user: {
+      userId: "",
+      nickName: "",
+    },
   });
   useEffect(() => {
     axios
@@ -48,7 +52,7 @@ export default function BoardDetail(props) {
   return (
     <div>
       <h1>
-        제목 : {boardData.title}{" "}
+        제목 : {boardData.title} 작성자 : {boardData.user.nickName}
         <button onClick={() => UpdateBoard(boardData.id)}>수정</button>{" "}
         <button onClick={() => DeleteBoard(boardData.id)}>삭제</button>
       </h1>
