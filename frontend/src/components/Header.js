@@ -35,7 +35,7 @@ return(
             {isLoggedIn ? (
               <>
                 <Nav.Link onClick={handleLogout}>로그아웃</Nav.Link>
-                <Link to={`/mypage/${id}`} className="nav-link">마이페이지</Link>
+                <Link to={`/mypage/${id||1}`} className="nav-link">마이페이지</Link>
               </>
             ) : (
               <>

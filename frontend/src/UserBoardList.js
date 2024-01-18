@@ -85,12 +85,12 @@ const UserBoardList = () => {
         <div key = {board.id}>
           <p>-------------------------------</p>
           <Link to={`/board/${board.id}`}>
-              <p>Title:{board.title}({board.id})</p>
+              <p>제목:{board.title}({board.id})</p>
           </Link>
-          <p>Content:{board.content}</p>
-          <p>View:{board.view}</p>
-          <p>create_time:{board.createTime}</p>
-          <p>modified_time:{board.modifiedTime}</p>
+          <p>내용:{board.content}</p>
+          <p>조회수:{board.view}</p>
+          <p>글 작성시각:{board.createTime}</p>
+          <p>글 수정시각:{board.modifiedTime}</p>
         </div>
       ))
       ) : (
