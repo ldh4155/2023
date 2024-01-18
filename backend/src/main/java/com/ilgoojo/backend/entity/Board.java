@@ -20,4 +20,5 @@ public class Board extends BaseTime{
     @ManyToOne
     @JoinColumn(name="userId")
     private User user;
+
 }
