@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 const UserBoardList = () => {
   const [user, setUser] = useState({});
   const [boards,setBoards] = useState([]);
+  const [editField, setEditField] = useState('');
+  const [editValue, setEditValue] = useState('');
   const { id } = useParams();
   useEffect(() => {
     const fetchUserAndBoards = async () => {
@@ -21,20 +23,70 @@ const UserBoardList = () => {
     fetchUserAndBoards();
   }, [id]);
 
+  const handleEdit = async () => {
+    try {
+      const response = await axios.put(`http://localhost:8080/mypageuser/${id}`, { [editField]: editValue }, {
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8'
+        }
+      });
+      setUser(response.data);
+      setEditValue('');
+      setEditField('');
+    } catch (error) {
+      console.error('Failed to edit user', error);
+    }
+  };
+  
+  const getBarColor = (temperature) => {
+    if (temperature >= 90) {
+      return 'red';
+    } else if (temperature >= 70) {
+      return 'orange';
+    } else if (temperature >= 50){
+      return 'yellow';
+    } else if (temperature >= 30){
+      return 'green';
+    } else {
+      return 'blue';
+    }
+  };
+
   return (
     <div>
-      <img src={user.image} alt={user.name} />
-      <h2>{user.nickname}</h2>
-      <p>이름 : {user.name}</p>
-      <p>연락처 : {user.phoneNumber}</p>
-      <p>주소 : {user.address}</p>
-      <p>매너 온도: {user.mannerTemperature}</p>
+      <img src={process.env.PUBLIC_URL + '/' + user.image} alt={user.name} />
+      <h2>{user.nickname} <button onClick={() => setEditField('nickname')}>수정</button></h2>
+      <p>이름 : {user.name} <button onClick={() => setEditField('name')}>수정</button></p>
+      <p>연락처 : {user.phoneNumber} <button onClick={() => setEditField('phoneNumber')}>수정</button></p>
+      <p>주소 : {user.address} <button onClick={() => setEditField('address')}>수정</button></p>
+      {editField && (
+        <div>
+          <input value={editValue} onChange={(e) => setEditValue(e.target.value)} />
+          <button onClick={handleEdit}>변경 적용</button>
+        </div>
+      )}
+      <div style={{ display: 'flex', marginRight: '10px' }}>
+        <p>매너 온도: {user.mannerTemperature}</p>
+        <div style={{ 
+          width: '300px', 
+          height: '20px', 
+          backgroundColor: '#eee'
+        }}>
+          <div style={{ 
+            width: `${user.mannerTemperature}%`, 
+            height: '100%', 
+            backgroundColor: getBarColor(user.mannerTemperature)
+        }} />
+        </div>
+      </div>
       <h2>최근 게시글</h2>
       {boards.length > 0 ? (
         boards.map(board => (
         <div key = {board.id}>
           <p>-------------------------------</p>
-          <p>Title:{board.title}({board.id})</p>
+          <Link to={`/board/${board.id}`}>
+              <p>Title:{board.title}({board.id})</p>
+          </Link>
           <p>Content:{board.content}</p>
           <p>View:{board.view}</p>
           <p>create_time:{board.createTime}</p>

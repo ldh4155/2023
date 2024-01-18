@@ -56,6 +56,7 @@ export default function BoardDetail(props) {
       <h3>내용 : {boardData.content}</h3>
       <h5>조회수 : {Number(boardData.view) / 2}</h5>
       <h5>작성시간 : {boardData.modifiedTime}</h5>
+      <p>-----------------------------------------</p>
     </div>
   );
 }
