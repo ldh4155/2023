@@ -15,15 +15,18 @@ export default function BoardDetail(props) {
     modifiedTime: "",
   });
   useEffect(() => {
-    axios
-      .get(`http://localhost:8080/board/${id}`)
+    axios.get(`http://localhost:8080/board/${id}`)
       .then((res) => {
         setBoardData(res.data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [id]);
+    axios.post(`http://localhost:8080/board/${id}/views`)
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [id,setBoardData]);
 
   function DeleteBoard(id) {
     axios
@@ -42,7 +45,7 @@ export default function BoardDetail(props) {
   }
 
   function UpdateBoard(id) {
-    navigate("/board/Update/" + id);
+    navigate("/Update/" + id);
   }
 
   return (
@@ -56,7 +59,6 @@ export default function BoardDetail(props) {
       <h3>내용 : {boardData.content}</h3>
       <h5>조회수 : {Number(boardData.view)}</h5>
       <h5>작성시간 : {boardData.modifiedTime}</h5>
-      <p>-----------------------------------------</p>
     </div>
   );
 }

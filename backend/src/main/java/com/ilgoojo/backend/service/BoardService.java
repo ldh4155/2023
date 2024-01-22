@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -39,14 +41,6 @@ public class BoardService {
         return boardRepository.findByKeyword(keyword, PageRequest.of(page, size));
     }
 
-    @Transactional
-    public void increaseView(Integer id) {
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid board Id:" + id));
-        board.setView(board.getView() + 1);
-        entityManager.detach(board);
-    }
-
     public List<Board> boardList() {
         return boardRepository.findAll();
     }
@@ -68,4 +62,3 @@ public class BoardService {
     }
 
 }
-

@@ -48,8 +48,6 @@ public class BoardController {
 
         entityManager.detach(board);
 
-        boardService.increaseView(id);
-
         return board;
 
     }
@@ -63,5 +61,12 @@ public class BoardController {
     public ResponseEntity<?> deleteById(@PathVariable Integer id) {
         return new ResponseEntity<>(boardService.boardDelete(id), HttpStatus.OK);
     }
-
+    @PostMapping("/board/{id}/views") // 조회 증가
+    @Transactional
+    public void increaseView(@PathVariable Integer id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid board Id:" + id));
+        board.setView(board.getView() + 1);
+        boardRepository.save(board);
+    }
 }
