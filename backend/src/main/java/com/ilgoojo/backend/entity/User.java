@@ -6,18 +6,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 
 @Entity
 @Data
-public class MyPageBoard{
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private String title;
-    private String content;
-    private String createTime;
-    private String modifiedTime;
-    private Integer view;
-    private Integer writerId;
+    private Integer userId;
+    private String image;
+    private String name;
+    private String nickname;
+    private String phoneNumber;
+    private String address;
+    private Float mannerTemperature;
 }

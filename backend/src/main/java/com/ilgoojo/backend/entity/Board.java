@@ -17,4 +17,8 @@ public class Board extends BaseTime{
     private String content;
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
+
+    @ManyToOne
+    @JoinColumn(name="userId")
+    private User writer;
 }
