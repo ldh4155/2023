@@ -15,7 +15,5 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 
     @Query("SELECT b FROM Board b WHERE b.title LIKE %:keyword% OR b.content LIKE %:keyword%")
     Page<Board> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
-
-    // 변경사항 적용
-    List<Board> findByWriter_UserId(Integer writerId);
+    List<Board> findByWriter_MemberId(Integer writerId);
 }

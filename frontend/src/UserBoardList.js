@@ -54,8 +54,8 @@ const UserBoardList = () => {
 
   return (
     <div>
-      <img src={process.env.PUBLIC_URL + '/' + user.image} alt={user.name} />
-      <h2>{user.nickname} <button onClick={() => setEditField('nickname')}>수정</button></h2>
+      <img src={process.env.PUBLIC_URL + '/' + user.profileImage} alt={user.name} />
+      <h2>{user.nickName} <button onClick={() => setEditField('nickName')}>수정</button></h2>
       <p>이름 : {user.name} <button onClick={() => setEditField('name')}>수정</button></p>
       <p>연락처 : {user.phoneNumber} <button onClick={() => setEditField('phoneNumber')}>수정</button></p>
       <p>주소 : {user.address} <button onClick={() => setEditField('address')}>수정</button></p>
@@ -66,16 +66,16 @@ const UserBoardList = () => {
         </div>
       )}
       <div style={{ display: 'flex', marginRight: '10px' }}>
-        <p>매너 온도: {user.mannerTemperature}</p>
+        <p>매너 온도: {user.numberOfTransactions}</p>
         <div style={{ 
           width: '300px', 
           height: '20px', 
           backgroundColor: '#eee'
         }}>
           <div style={{ 
-            width: `${user.mannerTemperature}%`, 
+            width: `${user.numberOfTransactions}%`, 
             height: '100%', 
-            backgroundColor: getBarColor(user.mannerTemperature)
+            backgroundColor: getBarColor(user.numberOfTransactions)
         }} />
         </div>
       </div>
