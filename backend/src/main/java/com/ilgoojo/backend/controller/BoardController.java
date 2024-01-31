@@ -46,8 +46,6 @@ public class BoardController {
     public Board findById(@PathVariable Integer id) {
         Board board = boardRepository.findById(id).get();
 
-        entityManager.detach(board);
-
         boardService.increaseView(id);
 
         return board;
@@ -63,5 +61,4 @@ public class BoardController {
     public ResponseEntity<?> deleteById(@PathVariable Integer id) {
         return new ResponseEntity<>(boardService.boardDelete(id), HttpStatus.OK);
     }
-
 }
