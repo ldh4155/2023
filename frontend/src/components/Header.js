@@ -3,7 +3,7 @@ import {Navbar, Nav, Container} from 'react-bootstrap'
 import { Form, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const handleLogin = () => setIsLoggedIn(true);
   const handleLogout = () => setIsLoggedIn(false);
 return(
