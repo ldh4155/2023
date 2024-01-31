@@ -45,31 +45,12 @@ export default function Update(props) {
         alert("게시글 수정 실패.");
       });
   }
-
+  //input 분리
   return (
-    <form onSubmit={SubmitBoard}>
-      <label>
-        제목 :
-        <input
-          type="text"
-          placeholder="Enter Title"
-          name="title"
-          value={boardData.title}
-          onChange={ChangeValue}
-        />
-      </label>
-      <br />
-      <label>
-        내용 :
-        <textarea
-          placeholder="Enter Content"
-          name="content"
-          value={boardData.content}
-          onChange={ChangeValue}
-        />
-      </label>
-      <br />
-      <button type="submit">완료</button>
-    </form>
+    <BoardInput
+      SubmitBoard={SubmitBoard}
+      boardData={boardData}
+      ChangeValue={ChangeValue}
+    />
   );
 }
