@@ -13,6 +13,7 @@ export default function BoardDetail(props) {
     view: "",
     createTime: "",
     modifiedTime: "",
+    //user -> member
     member: {
       nickName: "",
     },
