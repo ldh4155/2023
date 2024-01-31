@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Entity
 public class Member {
     @Id
-    private String id;
+    private String member_id;
     private String password;
     private String name;
     @Column(name = "nick_name")
