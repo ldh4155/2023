@@ -18,7 +18,7 @@ public class Board extends BaseTime{
     private int view;
 
     @ManyToOne
-    @JoinColumn(name="userId")
-    private User user;
+    @JoinColumn(name="member_id")
+    private Member member;
 
 }
