@@ -58,31 +58,12 @@ export default function Write(props) {
   //     });
   // }
 
+  //input 분리
   return (
-    <form onSubmit={SubmitBoard}>
-      <div className="left-padding">
-        <label>
-          제목 :
-          <input
-            type="text"
-            placeholder="Enter Title"
-            name="title"
-            onChange={ChangeValue}
-          />
-        </label>
-        <br />
-        <label>
-          내용 :
-          <textarea
-            placeholder="Enter Content"
-            name="content"
-            onChange={ChangeValue}
-          />
-        </label>
-        <br />
-        <button type="submit">완료</button>
-      </div>
-      
-    </form>
+    <BoardInput
+      SubmitBoard={SubmitBoard}
+      boardData={board}
+      ChangeValue={ChangeValue}
+    />
   );
 }
