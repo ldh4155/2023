@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import BoardInput from "../../components/BoardInput";
+import BoardInput from "./BoardInput";
 
 export default function Update(props) {
   const { id } = useParams();
@@ -46,7 +46,7 @@ export default function Update(props) {
         alert("게시글 수정 실패.");
       });
   }
-  //input 분리
+
   return (
     <BoardInput
       SubmitBoard={SubmitBoard}
