@@ -18,7 +18,7 @@ public class MyPageController {
     private final MemberRepository memberRepository;
 
     @GetMapping("/mypageboard/{id}")
-    public List<Board> getBoard(@PathVariable("id") Integer writerId) {
+    public List<Board> getBoard(@PathVariable("id") String writerId) {
         return boardRepository.findByWriter_MemberId(writerId);
     }
 

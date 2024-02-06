@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class Member {
     @Id
     @Column(name = "member_id")
-    private Integer memberId;
+    private String memberId;
     private String password;
     private String name;
     @Column(name = "nick_name")
@@ -24,7 +24,7 @@ public class Member {
     private String email;
     private LocalDate birth;
     @Column(name = "number_of_transactions")
-    private int numberOfTransactions;
+    private Integer numberOfTransactions;
     @Column(name = "profile_image")
     private String profileImage;
 
