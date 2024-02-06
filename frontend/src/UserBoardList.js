@@ -8,6 +8,7 @@ const UserBoardList = () => {
   const [editField, setEditField] = useState('');
   const [editValue, setEditValue] = useState('');
   const { id } = useParams();
+  const [showPassword, setShowPassword] = useState(false);
   useEffect(() => {
     const fetchUserAndBoards = async () => {
       try {
@@ -55,10 +56,30 @@ const UserBoardList = () => {
   return (
     <div>
       <img src={process.env.PUBLIC_URL + '/' + user.profileImage} alt={user.name} />
-      <h2>{user.nickName} <button onClick={() => setEditField('nickName')}>수정</button></h2>
-      <p>이름 : {user.name} <button onClick={() => setEditField('name')}>수정</button></p>
-      <p>연락처 : {user.phoneNumber} <button onClick={() => setEditField('phoneNumber')}>수정</button></p>
-      <p>주소 : {user.address} <button onClick={() => setEditField('address')}>수정</button></p>
+      <h2>{user.nickName}
+        <button onClick={() => setEditField('nickName')}>수정</button>
+      </h2>
+      <p>이름 : {user.name} 
+        <button onClick={() => setEditField('name')}>수정</button>
+      </p>
+      <p>연락처 : {user.phoneNumber} 
+        <button onClick={() => setEditField('phoneNumber')}>수정</button>
+      </p>
+      <p>주소 : {user.address} 
+        <button onClick={() => setEditField('address')}>수정</button>
+      </p>
+      <p>이메일 : {user.email} 
+        <button onClick={() => setEditField('email')}>수정</button>
+      </p>
+      <p>생년월일 : {user.birth} 
+        <button onClick={() => setEditField('birth')}>수정</button>
+      </p>
+      <p>
+        현재 비밀번호 : {showPassword ? user.password : '********'}
+        <button onClick={() => setShowPassword(!showPassword)}>
+          {showPassword ? '숨기기' : '확인'}</button>
+          <button onClick={() => setEditField('password')}>비밀번호 변경</button>
+      </p>
       {editField && (
         <div>
           <input value={editValue} onChange={(e) => setEditValue(e.target.value)} />

@@ -42,6 +42,15 @@ public class MyPageController {
             if (newUserInfo.getAddress() != null) {
                 user.setAddress(newUserInfo.getAddress());
             }
+            if (newUserInfo.getEmail() != null) {
+                user.setEmail(newUserInfo.getEmail());
+            }
+            if (newUserInfo.getBirth() != null) {
+                user.setBirth(newUserInfo.getBirth());
+            }
+            if (newUserInfo.getPassword() != null) {
+                user.setPassword(newUserInfo.getPassword());
+            }
             // 추가적으로 수정하려는 필드가 있다면 위와 같은 방식으로 체크하고 설정하세요.
             return memberRepository.save(user);
         }).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
