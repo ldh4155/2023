@@ -38,7 +38,18 @@ const UserBoardList = () => {
       console.error('Failed to edit user', error);
     }
   };
-  
+
+  const handleDeleteUser = async () => {
+    if (window.confirm('정말로 탈퇴하시겠습니까?')) {
+      try {
+        await axios.delete(`http://localhost:8080/mypageuser/${id}`);
+        window.location.href = '/';
+      } catch (error) {
+        console.error('Failed to delete user', error);
+      }
+    }
+  };
+
   const getBarColor = (temperature) => {
     if (temperature >= 90) {
       return 'red';
@@ -53,9 +64,36 @@ const UserBoardList = () => {
     }
   };
 
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    
+    if (file.size > 400 * 400) {
+      alert('파일 크기가 너무 큽니다.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await axios.post(`http://localhost:8080/mypageuser/${id}/upload`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      setUser({ ...user, profileImage: response.data });
+    } catch (error) {
+      console.error('Failed to upload image', error);
+    }
+  };
+
   return (
     <div>
-      <img src={process.env.PUBLIC_URL + '/' + user.profileImage} alt={user.name} />
+      <label htmlFor="imageUpload">
+        <img src={process.env.PUBLIC_URL + '/' + user.profileImage} alt={user.name} style={{ cursor: 'pointer' }} />
+      </label>
+      <input id="imageUpload" type="file" style={{ display: 'none' }} onChange={handleImageUpload} />
+
       <h2>{user.nickName}
         <button onClick={() => setEditField('nickName')}>수정</button>
       </h2>
@@ -100,6 +138,7 @@ const UserBoardList = () => {
         }} />
         </div>
       </div>
+      <button onClick={handleDeleteUser}>회원탈퇴</button>
       <h2>최근 게시글</h2>
       {boards.length > 0 ? (
         boards.map(board => (

@@ -32,13 +32,13 @@ public class MemberService {
             member.setPhoneNumber("000-0000-0000");
         }
         if (member.getAddress() == null) {
-            member.setAddress("000-0000-0000");
+            member.setAddress("korea");
         }
         if (member.getEmail() == null) {
             member.setEmail("default@email.com");
         }
         if (member.getBirth() == null) {
-            member.setBirth(LocalDate.ofEpochDay(1111-11-11));
+            member.setBirth(LocalDate.of(1111, 11, 11));
         }
         if (member.getNumberOfTransactions() == null) {
             member.setNumberOfTransactions(36);
@@ -47,5 +47,8 @@ public class MemberService {
             member.setProfileImage("logo192.png");
         }
         memberRepository.save(member);
+    }
+    public void deleteMember(String id) {
+        memberRepository.deleteById(id);
     }
 }
