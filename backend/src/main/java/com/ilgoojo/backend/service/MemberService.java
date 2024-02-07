@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 public class MemberService {
     private MemberRepository memberRepository;
 
-    @Autowired
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }

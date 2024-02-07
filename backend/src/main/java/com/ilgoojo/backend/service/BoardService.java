@@ -1,5 +1,6 @@
 package com.ilgoojo.backend.service;
 
+import com.ilgoojo.backend.dto.BoardDetailDto;
 import com.ilgoojo.backend.entity.Board;
 import com.ilgoojo.backend.repository.BoardRepository;
 import jakarta.persistence.EntityManager;
@@ -19,8 +20,8 @@ import java.util.List;
 @Service
 public class BoardService {
 
-    @Autowired
-    private BoardRepository boardRepository;
+    private final BoardRepository boardRepository;
+    private final CommentService commentService;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -34,6 +35,18 @@ public class BoardService {
     public Board boardDetail(Integer id) {
         return boardRepository.findById(id)
                 .orElseThrow(()->new IllegalArgumentException("id를 확인해주세요"));
+    }
+
+    @Transactional
+    public BoardDetailDto getBoardDetail(Integer id) {
+        Board board = boardDetail(id);
+        increaseView(id);
+        return BoardDetailDto.builder()
+                .id(board.getId())
+                .title(board.getTitle())
+                .view(board.getView())
+                .comments(commentService.showComments(id))
+                .build();
     }
 
     @Transactional(readOnly = true)

@@ -19,7 +19,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path="/board/*" element={<BoardList />} /> // 게시판 불러오기, 중첩 라우팅을 위한 와일드카드
         <Route path="/signin" eleement={<SignIn/>} />
-        <Route path="/signup" element={<SignUp/>} />
+        <Route path="/signup" element={<SignUp/>} /> //회원가입
       </Routes>
       </BrowserRouter>
       <Footer />

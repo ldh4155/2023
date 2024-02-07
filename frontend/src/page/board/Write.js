@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import BoardInput from "../../components/BoardInput";
 
 export default function Write(props) {
   const [board, setBoard] = useState({
