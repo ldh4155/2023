@@ -14,6 +14,7 @@ public class BoardDetailDto {
     private String title;
     private String content;
     private int view;
+    private String time;
     private List<CommentResponseDto> comments = new ArrayList<>();
 
 }

@@ -9,6 +9,7 @@ import com.ilgoojo.backend.entity.Member;
 import com.ilgoojo.backend.repository.BoardRepository;
 import com.ilgoojo.backend.repository.CommentRepository;
 import com.ilgoojo.backend.repository.MemberRepository;
+import com.ilgoojo.backend.util.DateUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -56,13 +57,12 @@ public class CommentService {
         List<Comment> comments = commentRepository.findByBoardId(id);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //Date -> String
         for(Comment comment : comments) {
             CommentResponseDto commentResponseDto = CommentResponseDto.builder()
                     .id(comment.getId())
                     .memberNickName(comment.getMember().getNickName())
                     .content(comment.getContent())
-                    .createTime(comment.getCreateTime().format(dateTimeFormatter))
+                    .createTime(DateUtil.FormatDate(comment.getCreateTime()))
                     .build();
 
             commentResponseDtoList.add(commentResponseDto);
@@ -75,12 +75,11 @@ public class CommentService {
         Comment comment = commentRepository.findByBoardIdAndId(id, commentRequestDto.getId());
 
         comment.update(commentRequestDto.getContent());
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return CommentResponseDto.builder()
                 .id(comment.getId())
                 .memberNickName(comment.getMember().getNickName())
                 .content(comment.getContent())
-                .createTime(comment.getCreateTime().format(dateTimeFormatter))
+                .createTime(DateUtil.FormatDate(comment.getCreateTime()))
                 .build();
     }
 

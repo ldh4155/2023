@@ -3,6 +3,7 @@ package com.ilgoojo.backend.service;
 import com.ilgoojo.backend.dto.BoardDetailDto;
 import com.ilgoojo.backend.entity.Board;
 import com.ilgoojo.backend.repository.BoardRepository;
+import com.ilgoojo.backend.util.DateUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,7 @@ public class BoardService {
                 .title(board.getTitle())
                 .view(board.getView())
                 .comments(commentService.showComments(id))
+                .time(DateUtil.FormatDate(board.getCreateTime()))
                 .build();
     }
 
