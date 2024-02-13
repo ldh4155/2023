@@ -40,4 +40,8 @@ public class Comment {
 
     @CreatedDate
     private LocalDateTime createTime;
+
+    public void update(String content) {
+        this.content = content;
+    }
 }

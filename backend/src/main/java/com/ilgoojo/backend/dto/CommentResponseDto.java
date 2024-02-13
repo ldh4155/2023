@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Builder
 public class CommentResponseDto {
+    private Long id;
     private String memberNickName;
     private String content;
     private String createTime;

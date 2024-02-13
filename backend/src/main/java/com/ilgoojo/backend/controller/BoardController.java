@@ -39,7 +39,6 @@ public class BoardController {
     }
 
     @GetMapping("/board/{id}") // 글 상세보기
-    @Transactional
     public ResponseEntity<BoardDetailDto> getBoardDetail(@PathVariable Integer id) {
         BoardDetailDto boardDetailDto = boardService.getBoardDetail(id);
         return new ResponseEntity<>(boardDetailDto, HttpStatus.OK);

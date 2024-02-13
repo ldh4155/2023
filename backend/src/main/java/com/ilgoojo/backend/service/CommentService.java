@@ -2,6 +2,7 @@ package com.ilgoojo.backend.service;
 
 import com.ilgoojo.backend.dto.CommentRequestDto;
 import com.ilgoojo.backend.dto.CommentResponseDto;
+import com.ilgoojo.backend.dto.CommentWriteDto;
 import com.ilgoojo.backend.entity.Board;
 import com.ilgoojo.backend.entity.Comment;
 import com.ilgoojo.backend.entity.Member;
@@ -31,12 +32,12 @@ public class CommentService {
         this.boardRepository = boardRepository;
     }
 
-    public CommentResponseDto writeComment(Integer id, CommentRequestDto commentRequestDto, String memberId) {
+    public CommentResponseDto writeComment(Integer id, CommentWriteDto commentWriteDto, String memberId) {
         Board board = boardRepository.findById(id).orElseThrow(() -> new NoSuchElementException("게시물이 없음"));
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new NoSuchElementException("사용자 없음"));
 
         Comment saveComment = Comment.builder()
-                .content(commentRequestDto.getContent())
+                .content(commentWriteDto.getContent())
                 .member(member)
                 .board(board)
                 .build();
@@ -55,9 +56,10 @@ public class CommentService {
         List<Comment> comments = commentRepository.findByBoardId(id);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //Date -> String
         for(Comment comment : comments) {
             CommentResponseDto commentResponseDto = CommentResponseDto.builder()
+                    .id(comment.getId())
                     .memberNickName(comment.getMember().getNickName())
                     .content(comment.getContent())
                     .createTime(comment.getCreateTime().format(dateTimeFormatter))
@@ -67,6 +69,28 @@ public class CommentService {
         }
 
         return commentResponseDtoList;
+    }
+
+    public CommentResponseDto updateComment(Integer id, CommentRequestDto commentRequestDto) {
+        Comment comment = commentRepository.findByBoardIdAndId(id, commentRequestDto.getId());
+
+        comment.update(commentRequestDto.getContent());
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return CommentResponseDto.builder()
+                .id(comment.getId())
+                .memberNickName(comment.getMember().getNickName())
+                .content(comment.getContent())
+                .createTime(comment.getCreateTime().format(dateTimeFormatter))
+                .build();
+    }
+
+    public boolean deleteComment(Long commentId) {
+        try {
+            commentRepository.deleteById(commentId);
+            return true;
+        } catch(Exception e) {
+            return false;
+        }
     }
 
 }
