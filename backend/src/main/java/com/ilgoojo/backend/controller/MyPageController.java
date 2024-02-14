@@ -77,4 +77,8 @@ public class MyPageController {
 
         return fileName;
     }
+    @GetMapping("/members")
+    public List<Member> getAllMembers() {
+        return memberRepository.findAll();
+    }
 }

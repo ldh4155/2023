@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 
-const UserBoardList = () => {
+const MyPage = () => {
   const [user, setUser] = useState({});
   const [boards,setBoards] = useState([]);
   const [editField, setEditField] = useState('');
   const [editValue, setEditValue] = useState('');
   const { id } = useParams();
   const [showPassword, setShowPassword] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   useEffect(() => {
     const fetchUserAndBoards = async () => {
       try {
@@ -100,7 +101,9 @@ const UserBoardList = () => {
       <p>이름 : {user.name} 
         <button onClick={() => setEditField('name')}>수정</button>
       </p>
-      <p>연락처 : {user.phoneNumber} 
+      {showDetail && (
+        <>
+        <p>연락처 : {user.phoneNumber} 
         <button onClick={() => setEditField('phoneNumber')}>수정</button>
       </p>
       <p>주소 : {user.address} 
@@ -118,11 +121,18 @@ const UserBoardList = () => {
           {showPassword ? '숨기기' : '확인'}</button>
           <button onClick={() => setEditField('password')}>비밀번호 변경</button>
       </p>
+        </>
+      )}
       {editField && (
         <div>
           <input value={editValue} onChange={(e) => setEditValue(e.target.value)} />
           <button onClick={handleEdit}>변경 적용</button>
         </div>
+      )}
+      {showDetail ? (
+        <button onClick={() => setShowDetail(false)}>숨기기</button>
+      ) : (
+        <button onClick={() => setShowDetail(true)}>내 개인정보 확인하기</button>
       )}
       <div style={{ display: 'flex', marginRight: '10px' }}>
         <p>매너 온도: {user.numberOfTransactions}</p>
@@ -160,4 +170,4 @@ const UserBoardList = () => {
   );
 }
 
-export default UserBoardList;
+export default MyPage;
