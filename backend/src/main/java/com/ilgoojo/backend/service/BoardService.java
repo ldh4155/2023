@@ -45,6 +45,7 @@ public class BoardService {
         return BoardDetailDto.builder()
                 .id(board.getId())
                 .title(board.getTitle())
+                .content(board.getContent())
                 .view(board.getView())
                 .comments(commentService.showComments(id))
                 .time(DateUtil.FormatDate(board.getCreateTime()))

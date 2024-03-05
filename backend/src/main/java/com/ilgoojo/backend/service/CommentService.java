@@ -75,6 +75,7 @@ public class CommentService {
         Comment comment = commentRepository.findByBoardIdAndId(id, commentRequestDto.getId());
 
         comment.update(commentRequestDto.getContent());
+        commentRepository.save(comment);
         return CommentResponseDto.builder()
                 .id(comment.getId())
                 .memberNickName(comment.getMember().getNickName())
