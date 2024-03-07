@@ -6,8 +6,9 @@ import BoardHeader from "./BoardHeader";
 import Write from "./Write";
 import BoardDetail from "./BoardDetail";
 import Update from "./Update";
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import "../../style/page.css"
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "../../style/page.css";
+import ShowImages from "../../components/ShowImage";
 
 export default function BoardList() {
   const [boards, setBoards] = useState([]);
@@ -62,7 +63,7 @@ export default function BoardList() {
 
   return (
     <div>
-      <BoardHeader/>
+      <BoardHeader />
       {/* 중첩 라우팅  /board 가 기본적으로 붙음*/}
       <Routes>
         <Route path="write" element={<Write />} /> // 글 쓰는 페이지
@@ -78,14 +79,13 @@ export default function BoardList() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-      
+
         <button onClick={handleSearch}>검색</button>
         <br />
         <button onClick={previousPage}>이전</button>
         {pageNumbers}
         <button onClick={nextPage}>다음</button>
       </div>
-      
     </div>
   );
 }

@@ -1,11 +1,13 @@
 import axios from "axios";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import BoardInput from "../../components/BoardInput";
 
 export default function Write(props) {
   const [board, setBoard] = useState({
     title: "",
     content: "",
+    file: null, // 게시글에 이미지 정보를 포함
   });
   const navigate = useNavigate();
 
@@ -14,72 +16,55 @@ export default function Write(props) {
       ...board,
       [event.target.name]: event.target.value,
     });
+    console.log(board);
+  }
+
+  function handleFileChange(event) {
+    setBoard({
+      ...board,
+      file: event.target.files[0],
+    });
+    console.log(board);
   }
 
   function SubmitBoard(event) {
     event.preventDefault();
-    axios
-      .post("http://localhost:8080/board", board)
-      .then((res) => {
-        if (res.status === 201) {
-          alert("게시글 작성이 완료 되었습니다.");
-          navigate("/");
-        } else {
-          alert("게시글 등록 실패.");
+
+    const formData = new FormData();
+    formData.append(
+      "board",
+      new Blob(
+        [
+          JSON.stringify({
+            title: board.title,
+            content: board.content,
+          }),
+        ],
+        {
+          type: "application/json",
         }
-      })
+      )
+    );
+    formData.append("file", board.file);
+
+    fetch("http://localhost:8080/board", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
       .catch((error) => {
-        console.error(error);
-        alert("게시글 등록 실패.");
+        console.error("Error:", error);
       });
   }
 
-  //   fetch("http://localhost:8080/board", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json; charset=utf-8",
-  //     },
-  //     body: JSON.stringify(board),
-  //   })
-  //     .then((res) => {
-  //       if (res.status === 201) {
-  //         return res.json();
-  //       } else {
-  //         return null;
-  //       }
-  //     })
-  //     .then((res) => {
-  //       if (res !== null) {
-  //         alert("게시글 작성이 완료 되었습니다.");
-  //         navigate("/");
-  //       } else {
-  //         alert("게시글 등록 실패.");
-  //       }
-  //     });
-  // }
-
+  //input 분리
   return (
-    <form onSubmit={SubmitBoard}>
-      <label>
-        제목 :
-        <input
-          type="text"
-          placeholder="Enter Title"
-          name="title"
-          onChange={ChangeValue}
-        />
-      </label>
-      <br />
-      <label>
-        내용 :
-        <textarea
-          placeholder="Enter Content"
-          name="content"
-          onChange={ChangeValue}
-        />
-      </label>
-      <br />
-      <button type="submit">완료</button>
-    </form>
+    <BoardInput
+      SubmitBoard={SubmitBoard}
+      boardData={board}
+      ChangeValue={ChangeValue}
+      handleFileChange={handleFileChange}
+    />
   );
 }
