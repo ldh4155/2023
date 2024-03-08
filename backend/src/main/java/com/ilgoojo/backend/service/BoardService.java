@@ -5,22 +5,16 @@ import com.ilgoojo.backend.dto.BoardWriteDto;
 import com.ilgoojo.backend.entity.Board;
 import com.ilgoojo.backend.repository.BoardRepository;
 import com.ilgoojo.backend.util.DateUtil;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.util.Supplier;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class BoardService {
 
     private final BoardRepository boardRepository;
@@ -41,7 +35,6 @@ public class BoardService {
     @Transactional
     public BoardDetailDto getBoardDetail(Integer id) {
         Board board = boardDetail(id);
-        increaseView(id);
         return BoardDetailDto.builder()
                 .id(board.getId())
                 .title(board.getTitle())
@@ -61,12 +54,6 @@ public class BoardService {
         return boardRepository.findByKeyword(keyword, PageRequest.of(page, size));
     }
 
-    @Transactional
-    public void increaseView(Integer id) {
-        Board board = boardRepository.findById(id).get();
-        board.setView(board.getView()+1);
-    }
-
     public List<Board> boardList() {
         return boardRepository.findAll();
     }
@@ -78,7 +65,7 @@ public class BoardService {
         boardEntity.setTitle(board.getTitle());
         boardEntity.setContent(board.getContent());
 
-        return null;
+        return boardEntity;
     }
 
     @Transactional

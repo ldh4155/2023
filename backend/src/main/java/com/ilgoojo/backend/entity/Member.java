@@ -30,5 +30,4 @@ public class Member {
 
     @Column(name = "profile_image")
     private String profileImage;
-
 }

@@ -10,8 +10,7 @@ export default function BoardDetail(props) {
   const [boardData, setBoardData] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8080/board/${id}`)
+    axios.get(`http://localhost:8080/board/${id}`)
       .then((res) => {
         setBoardData(res.data);
         console.log(boardData.content);
@@ -19,7 +18,11 @@ export default function BoardDetail(props) {
       .catch((error) => {
         console.log(error);
       });
-  }, [id]);
+    axios.post(`http://localhost:8080/board/${id}/views`)
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [id,setBoardData]);
 
   function DeleteBoard(id) {
     axios
@@ -38,7 +41,7 @@ export default function BoardDetail(props) {
   }
 
   function UpdateBoard(id) {
-    navigate("/board/Update/" + id);
+    navigate("/Update/" + id);
   }
 
   return (
