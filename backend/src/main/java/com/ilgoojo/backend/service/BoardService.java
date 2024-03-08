@@ -1,6 +1,7 @@
 package com.ilgoojo.backend.service;
 
 import com.ilgoojo.backend.dto.BoardDetailDto;
+import com.ilgoojo.backend.dto.BoardWriteDto;
 import com.ilgoojo.backend.entity.Board;
 import com.ilgoojo.backend.repository.BoardRepository;
 import com.ilgoojo.backend.util.DateUtil;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,11 +26,9 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final CommentService commentService;
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     @Transactional
-    public Board boardWrite(Board board) {
+    public Board boardWrite (BoardWriteDto boardWriteDto) {
+        Board board = new Board(boardWriteDto.getTitle(),boardWriteDto.getContent());
         return boardRepository.save(board);
     }
 

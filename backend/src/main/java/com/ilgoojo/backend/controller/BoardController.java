@@ -2,6 +2,7 @@ package com.ilgoojo.backend.controller;
 
 
 import com.ilgoojo.backend.dto.BoardDetailDto;
+import com.ilgoojo.backend.dto.BoardWriteDto;
 import com.ilgoojo.backend.entity.Board;
 import com.ilgoojo.backend.repository.BoardRepository;
 import com.ilgoojo.backend.service.BoardService;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin
 @RequiredArgsConstructor
@@ -26,8 +28,19 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping("/board") // 글 쓰기
-    public ResponseEntity<?> save(@RequestBody Board board) {
-        return new ResponseEntity<>(boardService.boardWrite(board), HttpStatus.CREATED);
+    public ResponseEntity<?> save(@RequestPart("image")MultipartFile imageFile,
+                                  @RequestPart("title")String title, @RequestPart("content")String content) {
+
+        BoardWriteDto boardWriteDto = BoardWriteDto.builder()
+                .title(title)
+                .content(content)
+                .build();
+
+        if(boardService.boardWrite(boardWriteDto) != null)
+            return new ResponseEntity<>(true, HttpStatus.CREATED);
+        else
+            return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
     @GetMapping("/board")

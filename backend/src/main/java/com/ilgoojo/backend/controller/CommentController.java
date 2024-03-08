@@ -23,6 +23,7 @@ public class CommentController {
     //댓글 쓰기
     @PostMapping("/board/{id}/comment")
     public CommentResponseDto writeComment(@PathVariable Integer id, @RequestBody CommentWriteDto commentWriteDto) {
+        System.out.println("content:" +commentWriteDto.getContent());
         return commentService.writeComment(id, commentWriteDto, "123"); //유저id 임시 할당. 나중에 jwt에서 가져옴
     }
 

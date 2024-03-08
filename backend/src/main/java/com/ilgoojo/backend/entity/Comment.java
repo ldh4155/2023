@@ -3,25 +3,24 @@ package com.ilgoojo.backend.entity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Comment {
     public Comment() {
     }
 
-    @Builder
-    public Comment(Long id, String content, Member member, Board board, LocalDateTime createTime) {
-        this.id = id;
+    public Comment(String content, Member member, Board board) {
         this.content = content;
         this.member = member;
         this.board = board;
-        this.createTime = createTime;
     }
 
     @Id

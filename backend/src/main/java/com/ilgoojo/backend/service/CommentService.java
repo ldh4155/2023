@@ -37,19 +37,15 @@ public class CommentService {
         Board board = boardRepository.findById(id).orElseThrow(() -> new NoSuchElementException("게시물이 없음"));
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new NoSuchElementException("사용자 없음"));
 
-        Comment saveComment = Comment.builder()
-                .content(commentWriteDto.getContent())
-                .member(member)
-                .board(board)
-                .build();
+        Comment comment = new Comment(commentWriteDto.getContent(), member, board);
 
-        commentRepository.save(saveComment);
+        Comment saveComment = commentRepository.save(comment);
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return CommentResponseDto.builder()
+                .id(saveComment.getId())
                 .memberNickName(member.getNickName())
                 .content(saveComment.getContent())
-                .createTime(saveComment.getCreateTime().format(dateTimeFormatter))
+                .createTime(DateUtil.FormatDate(saveComment.getCreateTime()))
                 .build();
     }
 

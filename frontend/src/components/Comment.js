@@ -22,6 +22,7 @@ const Comment = ({boardId, comments}) => {
             alert("삭제 성공")
 
             const newComments = commentList.filter(comment => comment.id !== id);
+           
             setCommentList(newComments);
         } catch {
             alert("삭제 실패")
@@ -29,10 +30,8 @@ const Comment = ({boardId, comments}) => {
     }
 
     const updateComment = async (editComment) => {
-        console.log(editComment.id);
         try {
             const response = await axios.put(`http://localhost:8080/board/${boardId}/comment`,editComment)
-            console.log(response.data.comment);
             setCommentList(commentList.map(comment =>
                 comment.id == response.data.id ? response.data : comment));
 
