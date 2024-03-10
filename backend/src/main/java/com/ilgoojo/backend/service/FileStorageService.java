@@ -12,7 +12,7 @@ import java.util.UUID;
 @Service
 public class FileStorageService {
 
-    private final Path fileStorageLocation = Paths.get("../frontend/public");
+    private final Path fileStorageLocation = Paths.get("./frontend/public");
 
 
     public String storeFile(MultipartFile file) {
