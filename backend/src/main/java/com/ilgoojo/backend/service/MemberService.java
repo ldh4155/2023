@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 @Transactional
 public class MemberService {
     private MemberRepository memberRepository;
+
 
     @Autowired
     public MemberService(MemberRepository memberRepository) {
@@ -50,5 +52,16 @@ public class MemberService {
     }
     public void deleteMember(String id) {
         memberRepository.deleteById(id);
+    }
+    public String login(String id, String password) {
+        Optional<Member> optionalMember = memberRepository.findById(id);
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+            if (member.getPassword().equals(password)) {
+                String token = member.getMemberId();
+                return token;
+            }
+        }
+        return null;
     }
 }

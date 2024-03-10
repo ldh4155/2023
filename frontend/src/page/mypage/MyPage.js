@@ -10,12 +10,13 @@ const MyPage = () => {
   const { id } = useParams();
   const [showPassword, setShowPassword] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
+  let token = localStorage.getItem('token');
   useEffect(() => {
     const fetchUserAndBoards = async () => {
       try {
-        const userResponse = await axios.get(`http://localhost:8080/mypageuser/${id}`);
+        const userResponse = await axios.get(`http://localhost:8080/mypageuser/${token}`);
         setUser(userResponse.data);
-        const boardsResponse = await axios.get(`http://localhost:8080/mypageboard/${id}`);
+        const boardsResponse = await axios.get(`http://localhost:8080/mypageboard/${token}`);
         setBoards(boardsResponse.data);
       } catch (error) {
         console.error('Failed to load user or boards', error);
@@ -23,11 +24,11 @@ const MyPage = () => {
     };
 
     fetchUserAndBoards();
-  }, [id]);
+  }, [token]);
 
   const handleEdit = async () => {
     try {
-      const response = await axios.put(`http://localhost:8080/mypageuser/${id}`, { [editField]: editValue }, {
+      const response = await axios.put(`http://localhost:8080/mypageuser/${token}`, { [editField]: editValue }, {
         headers: {
           'Content-Type': 'application/json;charset=UTF-8'
         }
@@ -43,7 +44,7 @@ const MyPage = () => {
   const handleDeleteUser = async () => {
     if (window.confirm('정말로 탈퇴하시겠습니까?')) {
       try {
-        await axios.delete(`http://localhost:8080/mypageuser/${id}`);
+        await axios.delete(`http://localhost:8080/mypageuser/${token}`);
         window.location.href = '/';
       } catch (error) {
         console.error('Failed to delete user', error);
@@ -77,7 +78,7 @@ const MyPage = () => {
     formData.append('file', file);
 
     try {
-      const response = await axios.post(`http://localhost:8080/mypageuser/${id}/upload`, formData, {
+      const response = await axios.post(`http://localhost:8080/mypageuser/${token}/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
