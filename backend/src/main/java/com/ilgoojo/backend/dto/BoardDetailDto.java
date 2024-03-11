@@ -16,5 +16,9 @@ public class BoardDetailDto {
     private int view;
     private String time;
     private List<CommentResponseDto> comments = new ArrayList<>();
+    private List<String> imageUrls;
 
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+    }
 }

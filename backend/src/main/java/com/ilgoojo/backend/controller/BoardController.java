@@ -6,6 +6,7 @@ import com.ilgoojo.backend.dto.BoardWriteDto;
 import com.ilgoojo.backend.entity.Board;
 import com.ilgoojo.backend.repository.BoardRepository;
 import com.ilgoojo.backend.service.BoardService;
+import com.ilgoojo.backend.service.FileStorageService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +20,22 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @CrossOrigin
-@RequiredArgsConstructor
 @RestController
 public class BoardController {
 
-    @Autowired
     private final BoardService boardService;
+    private final FileStorageService fileStorageService;
+
+    public BoardController(BoardService boardService, FileStorageService fileStorageService) {
+        this.boardService = boardService;
+        this.fileStorageService = fileStorageService;
+    }
 
     @PostMapping("/board") // 글 쓰기
-    public ResponseEntity<?> save(@RequestPart("image")MultipartFile imageFile,
+    public ResponseEntity<?> save(@RequestPart("images") List<MultipartFile> imageFiles,
                                   @RequestPart("title")String title, @RequestPart("content")String content) {
 
         BoardWriteDto boardWriteDto = BoardWriteDto.builder()
@@ -36,7 +43,7 @@ public class BoardController {
                 .content(content)
                 .build();
 
-        if(boardService.boardWrite(boardWriteDto) != null)
+        if(fileStorageService.storeBoardFile(imageFiles, boardService.boardWrite(boardWriteDto)) != null)
             return new ResponseEntity<>(true, HttpStatus.CREATED);
         else
             return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -54,6 +61,8 @@ public class BoardController {
     @GetMapping("/board/{id}") // 글 상세보기
     public ResponseEntity<BoardDetailDto> getBoardDetail(@PathVariable Integer id) {
         BoardDetailDto boardDetailDto = boardService.getBoardDetail(id);
+        boardDetailDto.setImageUrls(fileStorageService.getImageUrls(id));
+
         return new ResponseEntity<>(boardDetailDto, HttpStatus.OK);
     }
 

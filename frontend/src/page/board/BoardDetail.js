@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Comment from "../../components/Comment";
+import ImageList from "../../components/ImageList";
 
 export default function BoardDetail(props) {
   const propsParam = useParams();
@@ -55,6 +56,7 @@ export default function BoardDetail(props) {
             <button onClick={() => DeleteBoard(boardData.id)}>삭제</button>
           </h1>
           <hr />
+            <ImageList imageUrls={boardData.imageUrls}/>
             <h3>내용 : {boardData.content}</h3>
             <h5>조회수 : {boardData.view}</h5>
             <h5>작성시간 : {boardData.time}</h5>

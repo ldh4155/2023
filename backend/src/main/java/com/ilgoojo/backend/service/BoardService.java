@@ -5,7 +5,6 @@ import com.ilgoojo.backend.dto.BoardWriteDto;
 import com.ilgoojo.backend.entity.Board;
 import com.ilgoojo.backend.repository.BoardRepository;
 import com.ilgoojo.backend.util.DateUtil;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,11 +13,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class BoardService {
 
     private final BoardRepository boardRepository;
     private final CommentService commentService;
+
+    public BoardService(BoardRepository boardRepository, CommentService commentService) {
+        this.boardRepository = boardRepository;
+        this.commentService = commentService;
+    }
 
     @Transactional
     public Board boardWrite (BoardWriteDto boardWriteDto) {
