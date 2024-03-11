@@ -28,5 +28,4 @@ public class Member {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_image")
     private ProfileImage profileImage;
-
 }

@@ -26,8 +26,6 @@ import java.util.Optional;
 public class BoardController {
     @Autowired
     private final BoardService boardService;
-    @Autowired
-    private EntityManager entityManager;
 
     @PostMapping("/board") // 글 쓰기
     public ResponseEntity<?> save(@RequestBody Board board) {
