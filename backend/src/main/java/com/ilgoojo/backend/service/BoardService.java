@@ -1,7 +1,9 @@
 package com.ilgoojo.backend.service;
 
 import com.ilgoojo.backend.entity.Board;
+import com.ilgoojo.backend.entity.Member;
 import com.ilgoojo.backend.repository.BoardRepository;
+import com.ilgoojo.backend.repository.MemberRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,8 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -20,6 +24,7 @@ import java.util.List;
 public class BoardService {
     private final BoardRepository boardRepository;
     private final EntityManager entityManager;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public Board boardWrite(Board board) {
@@ -61,4 +66,24 @@ public class BoardService {
         return "ok";
     }
 
+    public List<Board> findByWriter_MemberId(String writerId) {
+        return boardRepository.findByWriter_MemberId(writerId);
+    }
+
+    public Board getBoardById(Integer id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid board Id:" + id));
+
+        // 엔티티를 detach하여 영속성 컨텍스트에서 분리합니다.
+        entityManager.detach(board);
+
+        return board;
+    }
+    @Transactional
+    public void increaseView(Integer id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid board Id:" + id));
+        board.setView(board.getView() + 1);
+        boardRepository.save(board);
+    }
 }

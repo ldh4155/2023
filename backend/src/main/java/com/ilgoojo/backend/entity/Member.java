@@ -25,7 +25,8 @@ public class Member {
     private LocalDate birth;
     @Column(name = "number_of_transactions")
     private Integer numberOfTransactions;
-    @Column(name = "profile_image")
-    private String profileImage;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_image")
+    private ProfileImage profileImage;
 
 }

@@ -7,7 +7,6 @@ const MyPage = () => {
   const [boards,setBoards] = useState([]);
   const [editField, setEditField] = useState('');
   const [editValue, setEditValue] = useState('');
-  const { id } = useParams();
   const [showPassword, setShowPassword] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   let token = localStorage.getItem('token');

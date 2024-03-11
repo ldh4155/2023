@@ -13,6 +13,7 @@ export default function BoardDetail(props) {
     view: "",
     createTime: "",
     modifiedTime: "",
+    memberId:"",
   });
   useEffect(() => {
     axios.get(`http://localhost:8080/board/${id}`)
@@ -59,6 +60,7 @@ export default function BoardDetail(props) {
       <h3>내용 : {boardData.content}</h3>
       <h5>조회수 : {Number(boardData.view)}</h5>
       <h5>작성시간 : {boardData.modifiedTime}</h5>
+      <h5>작성자 : {boardData.memberId}</h5>
     </div>
   );
 }

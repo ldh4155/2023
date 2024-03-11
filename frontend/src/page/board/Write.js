@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Write(props) {
+  let token = localStorage.getItem('token');
   const [board, setBoard] = useState({
     title: "",
     content: "",
