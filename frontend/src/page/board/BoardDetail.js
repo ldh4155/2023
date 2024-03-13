@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import ShowImage from "../../components/ShowImage";
+import ImageList from "../../components/ImageList";
 
 export default function BoardDetail(props) {
   const propsParam = useParams();
@@ -12,14 +12,12 @@ export default function BoardDetail(props) {
     title: "",
     content: "",
     view: "",
-    createTime: "",
-    modifiedTime: "",
-    //user -> member
-    member: {
-      nickName: "",
-      profileimage: "",
-    },
-    boardFile: null,
+    time: "",
+
+    nickName: "",
+    comments: [],
+
+    imageUrls: [],
   });
   useEffect(() => {
     axios
@@ -55,14 +53,15 @@ export default function BoardDetail(props) {
   return (
     <div>
       <h1>
-        제목 : {boardData.title} 작성자 : {boardData.member.nickName}
+        제목 : {boardData.title} 작성자 : {boardData.nickName}
         <button onClick={() => UpdateBoard(boardData.id)}>수정</button>{" "}
         <button onClick={() => DeleteBoard(boardData.id)}>삭제</button>
       </h1>
       <hr />
       <h3>내용 : {boardData.content}</h3>
+      <ImageList imageUrls={boardData.imageUrls} />
       <h5>조회수 : {Number(boardData.view) / 2}</h5>
-      <h5>작성시간 : {boardData.createTime}</h5>
+      <h5>작성시간 : {boardData.time}</h5>
     </div>
   );
 }

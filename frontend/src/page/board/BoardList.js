@@ -8,7 +8,6 @@ import BoardDetail from "./BoardDetail";
 import Update from "./Update";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../../style/page.css";
-import ShowImages from "../../components/ShowImage";
 
 export default function BoardList() {
   const [boards, setBoards] = useState([]);

@@ -7,8 +7,9 @@ export default function Write(props) {
   const [board, setBoard] = useState({
     title: "",
     content: "",
-    file: null, // 게시글에 이미지 정보를 포함
+    images: [], // 게시글에 이미지 정보를 포함
   });
+  const notFile = [];
   const navigate = useNavigate();
 
   function ChangeValue(event) {
@@ -22,7 +23,7 @@ export default function Write(props) {
   function handleFileChange(event) {
     setBoard({
       ...board,
-      file: event.target.files[0],
+      images: Array.from(event.target.files),
     });
     console.log(board);
   }
@@ -31,29 +32,23 @@ export default function Write(props) {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append(
-      "board",
-      new Blob(
-        [
-          JSON.stringify({
-            title: board.title,
-            content: board.content,
-          }),
-        ],
-        {
-          type: "application/json",
-        }
-      )
-    );
-    formData.append("file", board.file);
+    formData.append("title", board.title);
+    formData.append("content", board.content);
+
+    board.images.forEach((image) => formData.append("images", image));
 
     fetch("http://localhost:8080/board", {
       method: "POST",
       body: formData,
     })
       .then((response) => response.json())
-      .then((data) => console.log(data))
+      .then((data) => {
+        console.log(data);
+        alert("게시글 작성에 성공하였습니다.");
+        navigate("/board");
+      })
       .catch((error) => {
+        alert("게시글 작성에 실패하였습니다.");
         console.error("Error:", error);
       });
   }
