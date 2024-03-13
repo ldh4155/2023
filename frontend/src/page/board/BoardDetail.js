@@ -1,29 +1,25 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Comment from "../../components/Comment";
 import ImageList from "../../components/ImageList";
+import Comment from "../../components/Comment";
 
 export default function BoardDetail(props) {
   const propsParam = useParams();
   const id = propsParam.id;
   const navigate = useNavigate();
   const [boardData, setBoardData] = useState(null);
-
+  
   useEffect(() => {
-    axios.get(`http://localhost:8080/board/${id}`)
+    axios
+      .get(`http://localhost:8080/board/${id}`)
       .then((res) => {
         setBoardData(res.data);
-        console.log(boardData.content);
       })
       .catch((error) => {
         console.log(error);
       });
-    axios.post(`http://localhost:8080/board/${id}/views`)
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [id,setBoardData]);
+  }, [id]);
 
   function DeleteBoard(id) {
     axios
@@ -31,7 +27,7 @@ export default function BoardDetail(props) {
       .then((res) => {
         if (res.data === "ok") {
           alert("삭제 되었습니다.");
-          navigate("/");
+          navigate("/board");
         } else {
           alert("삭제 실패했습니다");
         }
@@ -42,7 +38,7 @@ export default function BoardDetail(props) {
   }
 
   function UpdateBoard(id) {
-    navigate("/Update/" + id);
+    navigate("/board/Update/" + id);
   }
 
   return (

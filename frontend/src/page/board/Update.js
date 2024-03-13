@@ -46,7 +46,7 @@ export default function Update(props) {
         alert("게시글 수정 실패.");
       });
   }
-  //input 분리
+
   return (
     <BoardInput
       SubmitBoard={SubmitBoard}

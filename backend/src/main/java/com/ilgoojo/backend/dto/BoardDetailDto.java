@@ -13,7 +13,8 @@ public class BoardDetailDto {
     private Integer id;
     private String title;
     private String content;
-    private int view;
+    private String nickName;
+    private Integer view;
     private String time;
     private List<CommentResponseDto> comments = new ArrayList<>();
     private List<String> imageUrls;

@@ -14,10 +14,12 @@ public class Board extends BaseTime{
     public Board() {
     }
 
-    public Board(String title, String content) {
+    public Board(String title, String content ,Member writer) {
         this.title = title;
         this.content = content;
         this.view = 0;
+        this.writer = writer;
+
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +33,3 @@ public class Board extends BaseTime{
     @JoinColumn(name="member_id")
     private Member writer;
 }
-

@@ -31,15 +31,17 @@ import java.util.Optional;
 public class BoardController {
 
     private final BoardService boardService;
+
     private final FileStorageService fileStorageService;
 
+    @Autowired
     public BoardController(BoardService boardService, FileStorageService fileStorageService) {
         this.boardService = boardService;
         this.fileStorageService = fileStorageService;
     }
 
     @PostMapping("/board") // 글 쓰기
-    public ResponseEntity<?> save(@RequestPart("images") List<MultipartFile> imageFiles,
+    public ResponseEntity<?> save(@RequestPart(value = "images", required = false) List<MultipartFile> imageFiles,
                                   @RequestPart("title")String title, @RequestPart("content")String content) {
 
         BoardWriteDto boardWriteDto = BoardWriteDto.builder()
@@ -47,11 +49,15 @@ public class BoardController {
                 .content(content)
                 .build();
 
-        if(fileStorageService.storeBoardFile(imageFiles, boardService.boardWrite(boardWriteDto)) != null)
-            return new ResponseEntity<>(true, HttpStatus.CREATED);
-        else
-            return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
-
+        if(imageFiles == null)
+            boardService.boardWrite(boardWriteDto,"123");
+        else {
+            if(fileStorageService.storeBoardFile(imageFiles,
+                    boardService.boardWrite(boardWriteDto,"123")) == null) {
+                return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        return new ResponseEntity<>(true, HttpStatus.CREATED);
     }
 
     @GetMapping("/board")

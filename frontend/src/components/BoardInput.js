@@ -1,6 +1,8 @@
-function InputForm({ onSubmit, boardData, onChange }) {
+import { useState } from "react";
+
+function InputForm({ onSubmit, boardData, onChange, handleFileChange }) {
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} encType="multipart/form-data">
       <label>
         제목 :
         <input
@@ -22,17 +24,25 @@ function InputForm({ onSubmit, boardData, onChange }) {
         />
       </label>
       <br />
+      <input type="file" name="images" onChange={handleFileChange} multiple />
+      <br />
       <button type="submit">완료</button>
     </form>
   );
 }
 
-export default function BoardInput({ SubmitBoard, boardData, ChangeValue }) {
+export default function BoardInput({
+  SubmitBoard,
+  boardData,
+  ChangeValue,
+  handleFileChange,
+}) {
   return (
     <InputForm
       onSubmit={SubmitBoard}
       boardData={boardData}
       onChange={ChangeValue}
+      handleFileChange={handleFileChange}
     />
   );
 }

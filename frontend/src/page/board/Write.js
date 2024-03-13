@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BoardInput from "../../components/BoardInput";
 
@@ -8,7 +8,9 @@ export default function Write(props) {
   const [board, setBoard] = useState({
     title: "",
     content: "",
+    images: [], // 게시글에 이미지 정보를 포함
   });
+  
   const navigate = useNavigate();
 
   function ChangeValue(event) {
@@ -16,49 +18,41 @@ export default function Write(props) {
       ...board,
       [event.target.name]: event.target.value,
     });
+    console.log(board);
+  }
+
+  function handleFileChange(event) {
+    setBoard({
+      ...board,
+      images: Array.from(event.target.files),
+    });
+    console.log(board);
   }
 
   function SubmitBoard(event) {
     event.preventDefault();
-    axios
-      .post("http://localhost:8080/board", board)
-      .then((res) => {
-        if (res.status === 201) {
-          alert("게시글 작성이 완료 되었습니다.");
-          navigate("/");
-        } else {
-          alert("게시글 등록 실패.");
-        }
+
+    const formData = new FormData();
+    formData.append("title", board.title);
+    formData.append("content", board.content);
+
+    board.images.forEach((image) => formData.append("images", image));
+
+    fetch("http://localhost:8080/board", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        alert("게시글 작성에 성공하였습니다.");
+        navigate("/board");
       })
       .catch((error) => {
-        console.error(error);
-        alert("게시글 등록 실패.");
+        alert("게시글 작성에 실패하였습니다.");
+        console.error("Error:", error);
       });
   }
-
-  //   fetch("http://localhost:8080/board", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json; charset=utf-8",
-  //     },
-  //     body: JSON.stringify(board),
-  //   })
-  //     .then((res) => {
-  //       if (res.status === 201) {
-  //         return res.json();
-  //       } else {
-  //         return null;
-  //       }
-  //     })
-  //     .then((res) => {
-  //       if (res !== null) {
-  //         alert("게시글 작성이 완료 되었습니다.");
-  //         navigate("/");
-  //       } else {
-  //         alert("게시글 등록 실패.");
-  //       }
-  //     });
-  // }
 
   //input 분리
   return (
@@ -66,6 +60,7 @@ export default function Write(props) {
       SubmitBoard={SubmitBoard}
       boardData={board}
       ChangeValue={ChangeValue}
+      handleFileChange={handleFileChange}
     />
   );
 }
