@@ -1,38 +1,62 @@
 package com.ilgoojo.backend.controller;
 
+
+import com.ilgoojo.backend.dto.BoardDetailDto;
+import com.ilgoojo.backend.dto.BoardWriteDto;
 import com.ilgoojo.backend.entity.Board;
 import com.ilgoojo.backend.repository.BoardRepository;
 import com.ilgoojo.backend.service.BoardService;
+import com.ilgoojo.backend.service.FileStorageService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-
-import java.io.IOException;
+import java.util.List;
 
 @CrossOrigin
-@RequiredArgsConstructor
 @RestController
 public class BoardController {
 
     @Autowired
     private final BoardService boardService;
     @Autowired
-    private final BoardRepository boardRepository;
+    private BoardRepository boardRepository;
+    @Autowired
+    private final FileStorageService fileStorageService;
 
+    @Autowired
+    public BoardController(BoardService boardService, FileStorageService fileStorageService) {
+        this.boardService = boardService;
+        this.fileStorageService = fileStorageService;
+    }
 
+    @PostMapping("/board") // 글 쓰기
+    public ResponseEntity<?> save(@RequestPart(value = "images", required = false) List<MultipartFile> imageFiles,
+                                  @RequestPart("title")String title, @RequestPart("content")String content) {
 
-    @PostMapping("/board")
-    public ResponseEntity<?> createBoard(@RequestBody Board board, MultipartFile file) throws Exception {
+        BoardWriteDto boardWriteDto = BoardWriteDto.builder()
+                .title(title)
+                .content(content)
+                .build();
 
-        return new ResponseEntity<>(boardService.boardWrite(board, file), HttpStatus.CREATED);
+        Board boardId = boardService.boardWrite(boardWriteDto);
+
+        if(imageFiles != null && !imageFiles.isEmpty()) {
+            if(fileStorageService.storeBoardFile(imageFiles, boardId) == null) {
+                return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        return new ResponseEntity<>(true, HttpStatus.CREATED);
     }
 
     @GetMapping("/board")
@@ -44,17 +68,18 @@ public class BoardController {
     }
 
     @GetMapping("/board/{id}") // 글 상세보기
-    @Transactional
-    public Board findById(@PathVariable Integer id) {
+    public ResponseEntity<BoardDetailDto> getBoardDetail(@PathVariable Integer id) {
         Board board = boardRepository.findById(id).get();
 
         boardService.increaseView(id);
+        BoardDetailDto boardDetailDto = boardService.getBoardDetail(id);
+        boardDetailDto.setImageUrls(fileStorageService.getImageUrls(id));
 
-        return board;
+        return new ResponseEntity<>(boardDetailDto, HttpStatus.OK);
     }
 
     @PutMapping("/board/{id}") // 글 수정하기
-    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Board board) throws Exception {
+    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Board board) {
         return new ResponseEntity<>(boardService.boardModify(id, board), HttpStatus.OK);
     }
 
@@ -62,7 +87,4 @@ public class BoardController {
     public ResponseEntity<?> deleteById(@PathVariable Integer id) {
         return new ResponseEntity<>(boardService.boardDelete(id), HttpStatus.OK);
     }
-
-
-
 }
