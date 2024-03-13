@@ -65,7 +65,7 @@ const MyPage = () => {
     }
   };
 
-  const handleImageUpload = async (event,token) => {
+  const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     
     if (file.size > 250 * 1024) {
@@ -79,6 +79,7 @@ const MyPage = () => {
     try {
       token = localStorage.getItem('token');
       const response = await axios.post(`http://localhost:8080/mypageuser/${token}/upload`, formData);
+      console.log(response.data);
       if (response.data != null) { // 응답 데이터 검증 수정
         setUser({ ...user, profileImage: response.data });
       } else {
