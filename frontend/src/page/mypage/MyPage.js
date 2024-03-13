@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 
 const MyPage = () => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({ profileImage: process.env.PUBLIC_URL + '/logo192.png' });
   const [boards,setBoards] = useState([]);
   const [editField, setEditField] = useState('');
   const [editValue, setEditValue] = useState('');
@@ -65,10 +65,10 @@ const MyPage = () => {
     }
   };
 
-  const handleImageUpload = async (event) => {
+  const handleImageUpload = async (event,token) => {
     const file = event.target.files[0];
     
-    if (file.size > 400 * 400) {
+    if (file.size > 250 * 1024) {
       alert('파일 크기가 너무 큽니다.');
       return;
     }
@@ -77,21 +77,22 @@ const MyPage = () => {
     formData.append('file', file);
 
     try {
-      const response = await axios.post(`http://localhost:8080/mypageuser/${token}/upload`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      setUser({ ...user, profileImage: response.data });
+      const response = await axios.post(`http://localhost:8080/mypageuser/${token}/upload`, formData); // Content-Type 제거
+      if (response.data && response.data.profileImage) { // 응답 데이터 검증 수정
+        setUser({ ...user, profileImage: response.data.profileImage });
+      } else {
+        alert('이미지 업로드에 실패했습니다.');
+      }
     } catch (error) {
       console.error('Failed to upload image', error);
+      alert('이미지 업로드 중 오류가 발생했습니다.');
     }
   };
 
   return (
     <div>
       <label htmlFor="imageUpload">
-        <img src={process.env.PUBLIC_URL + '/' + user.profileImage} alt={user.name} style={{ cursor: 'pointer' }} />
+        <img src={process.env.PUBLIC_URL + '/' + user.profileImage.profileImage} alt={user.id} style={{ cursor: 'pointer' }} />
       </label>
       <input id="imageUpload" type="file" style={{ display: 'none' }} onChange={handleImageUpload} />
 

@@ -12,7 +12,7 @@ const Header = ({isLoggedIn, setIsLoggedIn}) => {
       setIsLoggedIn(true);
     }
   }, []);
-  
+
   const handleLogin = () => {
     navigate('/login');
   }

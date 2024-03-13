@@ -8,6 +8,7 @@ import lombok.Data;
 public class ProfileImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "profile_image")
-    private String profileImage = "logo192.png";
+    @Column(name = "profile_image_id")
+    private Long id;
+    private String profileImage="logo192.png";
 }

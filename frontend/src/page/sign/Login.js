@@ -13,9 +13,14 @@ const Login = ({ isLoggedIn, setIsLoggedIn }) => {
     try {
       const response = await axios.post(`http://localhost:8080/login`, { id, password });
       localStorage.setItem('token', response.data);
-      alert("로그인 성공");
-      setIsLoggedIn(true);
-      navigate('/');
+      if(response.data==id){
+        alert("로그인 성공");
+        setIsLoggedIn(true);
+        navigate('/');
+      }
+      else{
+        alert("로그인 실패");
+      }
     } catch (error) {
       alert("로그인 실패");
     }
