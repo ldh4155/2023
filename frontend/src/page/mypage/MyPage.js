@@ -78,9 +78,9 @@ const MyPage = () => {
 
     try {
       token = localStorage.getItem('token');
-      const response = await axios.post(`http://localhost:8080/mypageuser/${token}/upload`, formData); // Content-Type 제거
-      if (response.data && response.data.profileImage) { // 응답 데이터 검증 수정
-        setUser({ ...user, profileImage: response.data.profileImage });
+      const response = await axios.post(`http://localhost:8080/mypageuser/${token}/upload`, formData);
+      if (response.data != null) { // 응답 데이터 검증 수정
+        setUser({ ...user, profileImage: response.data });
       } else {
         alert('이미지 업로드에 실패했습니다.');
       }
