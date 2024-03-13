@@ -77,6 +77,7 @@ const MyPage = () => {
     formData.append('file', file);
 
     try {
+      token = localStorage.getItem('token');
       const response = await axios.post(`http://localhost:8080/mypageuser/${token}/upload`, formData); // Content-Type 제거
       if (response.data && response.data.profileImage) { // 응답 데이터 검증 수정
         setUser({ ...user, profileImage: response.data.profileImage });
