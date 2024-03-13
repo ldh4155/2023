@@ -4,9 +4,7 @@ import { Form, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const handleLogin = () => setIsLoggedIn(true);
-  const handleLogout = () => setIsLoggedIn(false);
+  
 
   return (
       <Navbar bg="light" expand="lg">
@@ -28,15 +26,10 @@ const Header = () => {
             </Form>
             <div className="d-lg-none my-2" style={{ borderTop: '2px solid #dee2e6' }}></div>
             <Nav className="ml-auto d-flex flex-column flex-lg-row">
-              {isLoggedIn ? (
+              {  (
                   <>
-                    <Nav.Link onClick={handleLogout}>로그아웃</Nav.Link>
-                    <Link to="/mypage" className="nav-link">마이페이지</Link>
-                  </>
-              ) : (
-                  <>
-                    <Nav.Link onClick={handleLogin}>로그인</Nav.Link>
-                    <Link to="/login/signin" className="nav-link">회원가입</Link>
+                    <Link to="/login" className="nav-link">로그인</Link>
+                    <Link to="/signin" className="nav-link">회원가입</Link>
                   </>
               )}
             </Nav>

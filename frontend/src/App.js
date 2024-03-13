@@ -1,14 +1,22 @@
 import { Container } from 'react-bootstrap';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Home from './page/Home';
-import Login from './page/login/login';
-import Signin from './page/login/signin';
+import Header from './components/Header.js';
+import Footer from './components/Footer.js';
+import Home from './page/Home.js';
+import Login from './page/login/login.js';
+import Signin from './page/login/signin.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import BoardList from "./page/board/BoardList";
+import BoardList from "./page/board/BoardList.js";
+import axios from "axios";
+import {useEffect, useState} from "react";
+
 
 function App() {
+
+    const [hello, setHello] = useState('');
+
+
+
     return (
         <div className="App">
             <BrowserRouter>
@@ -16,8 +24,8 @@ function App() {
                 <Container style={{minHeight:'75vh'}}>
                     <Routes>
                         <Route path='/' element={<Home />} />
-                        <Route path='/login' element={<login />} />
-                        <Route path='/signin' element={<signin />} />
+                        <Route path='/login' element={<Login />} />
+                        <Route path='/signin' element={<Signin />} />
                         <Route path="/board/*" element={<BoardList />} />
                     </Routes>
                 </Container>

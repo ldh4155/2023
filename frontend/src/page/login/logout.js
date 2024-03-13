@@ -13,9 +13,9 @@ function Logout() {
 
   // 로그아웃 버튼 클릭 시 로그아웃 처리
   return (
-    <button onClick={handleLogout}>
-      Logout
-    </button>
+      <button onClick={handleLogout}>
+        Logout
+      </button>
   );
 }
 

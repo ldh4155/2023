@@ -1,6 +1,7 @@
 package com.ilgoojo.backend.controller;
 
 
+import com.ilgoojo.backend.dto.BoardDetailDto;
 import com.ilgoojo.backend.entity.Board;
 import com.ilgoojo.backend.repository.BoardRepository;
 import com.ilgoojo.backend.service.BoardService;
@@ -23,10 +24,6 @@ public class BoardController {
 
     @Autowired
     private final BoardService boardService;
-    @Autowired
-    private final BoardRepository boardRepository;
-    @Autowired
-    private EntityManager entityManager;
 
     @PostMapping("/board") // 글 쓰기
     public ResponseEntity<?> save(@RequestBody Board board) {
@@ -43,15 +40,9 @@ public class BoardController {
 
     @GetMapping("/board/{id}") // 글 상세보기
     @Transactional
-    public Board findById(@PathVariable Integer id) {
-        Board board = boardRepository.findById(id).get();
-
-        entityManager.detach(board);
-
-        boardService.increaseView(id);
-
-        return board;
-
+    public ResponseEntity<BoardDetailDto> getBoardDetail(@PathVariable Integer id) {
+        BoardDetailDto boardDetailDto = boardService.getBoardDetail(id);
+        return new ResponseEntity<>(boardDetailDto, HttpStatus.OK);
     }
 
     @PutMapping("/board/{id}") // 글 수정하기
