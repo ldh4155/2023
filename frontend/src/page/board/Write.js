@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import BoardInput from "../../components/BoardInput";
 
 export default function Write(props) {
+  let token = localStorage.getItem('token');
   const [board, setBoard] = useState({
     title: "",
     content: "",

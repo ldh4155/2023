@@ -9,14 +9,17 @@ import BoardList from "./page/board/BoardList";
 import Update from './page/board/Update';
 import SignIn from './page/sign/SignIn';
 import SignUp from './page/sign/SignUp';
+import Login from './page/sign/Login';
 import UserList from './page/mypage/UserList';
 import SomeonePage from './page/mypage/SomeonePage';
+import React, { useState } from 'react';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     <div className="App">
       <BrowserRouter>
-      <Header>
+      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}>
         <Container style={{minHeight:'75vh'}} />
       </Header>
       <Routes>
@@ -26,6 +29,7 @@ function App() {
         <Route path="/Update/:id" element={<Update/>} />
         <Route path="/signin" eleement={<SignIn/>} />
         <Route path="/signup" element={<SignUp/>} />
+        <Route path="/login" element={<Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
         <Route path='/users' element={<UserList/>}/>
         <Route path='/user/:id' element={<SomeonePage/>}/>
       </Routes>

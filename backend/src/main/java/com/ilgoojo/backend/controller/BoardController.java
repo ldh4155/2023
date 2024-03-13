@@ -4,7 +4,9 @@ package com.ilgoojo.backend.controller;
 import com.ilgoojo.backend.dto.BoardDetailDto;
 import com.ilgoojo.backend.dto.BoardWriteDto;
 import com.ilgoojo.backend.entity.Board;
+import com.ilgoojo.backend.entity.Member;
 import com.ilgoojo.backend.repository.BoardRepository;
+import com.ilgoojo.backend.repository.MemberRepository;
 import com.ilgoojo.backend.service.BoardService;
 import com.ilgoojo.backend.service.FileStorageService;
 import jakarta.persistence.EntityManager;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -64,6 +68,7 @@ public class BoardController {
         boardDetailDto.setImageUrls(fileStorageService.getImageUrls(id));
 
         return new ResponseEntity<>(boardDetailDto, HttpStatus.OK);
+
     }
 
     @PutMapping("/board/{id}") // 글 수정하기

@@ -3,8 +3,11 @@ package com.ilgoojo.backend.service;
 import com.ilgoojo.backend.dto.BoardDetailDto;
 import com.ilgoojo.backend.dto.BoardWriteDto;
 import com.ilgoojo.backend.entity.Board;
+import com.ilgoojo.backend.entity.Member;
 import com.ilgoojo.backend.repository.BoardRepository;
+
 import com.ilgoojo.backend.util.DateUtil;
+import com.ilgoojo.backend.repository.MemberRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -77,4 +80,21 @@ public class BoardService {
         return "ok";
     }
 
+    public List<Board> findByWriter_MemberId(String writerId) {
+        return boardRepository.findByWriter_Id(writerId);
+    }
+
+    public Board getBoardById(Integer id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid board Id:" + id));
+
+        return board;
+    }
+    @Transactional
+    public void increaseView(Integer id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid board Id:" + id));
+        board.setView(board.getView() + 1);
+        boardRepository.save(board);
+    }
 }
