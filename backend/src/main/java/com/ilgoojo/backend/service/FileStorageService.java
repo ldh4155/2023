@@ -5,7 +5,9 @@ import com.ilgoojo.backend.entity.BoardFile;
 import com.ilgoojo.backend.repository.BoardFileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -30,7 +32,7 @@ public class FileStorageService {
                               @Value("${image.base-url}") String baseUrl, //클라이언트가 이미지에 접근하기 위한 베이스 url
                               BoardFileRepository boardFileRepository) {
         this.fileStorageLocation = Paths.get(uploadDir).toAbsolutePath().normalize(); //상대경로면 -> 절대경로로 바꿈
-                                                                                      // . .. 을 해석해 명확한 경로 만들어줌
+        // . .. 을 해석해 명확한 경로 만들어줌
         this.baseUrl = baseUrl;
         this.boardFileRepository = boardFileRepository;
         try {
