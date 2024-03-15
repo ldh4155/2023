@@ -1,19 +1,15 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import ImageList from "../../components/ImageList";
+import Comment from "../../components/Comment";
 
 export default function BoardDetail(props) {
   const propsParam = useParams();
   const id = propsParam.id;
   const navigate = useNavigate();
-  const [boardData, setBoardData] = useState({
-    id: "",
-    title: "",
-    content: "",
-    view: "",
-    createTime: "",
-    modifiedTime: "",
-  });
+  const [boardData, setBoardData] = useState(null);
+  
   useEffect(() => {
     axios
       .get(`http://localhost:8080/board/${id}`)
@@ -31,7 +27,7 @@ export default function BoardDetail(props) {
       .then((res) => {
         if (res.data === "ok") {
           alert("삭제 되었습니다.");
-          navigate("/");
+          navigate("/board");
         } else {
           alert("삭제 실패했습니다");
         }
@@ -47,15 +43,25 @@ export default function BoardDetail(props) {
 
   return (
     <div>
-      <h1>
-        제목 : {boardData.title}{" "}
-        <button onClick={() => UpdateBoard(boardData.id)}>수정</button>{" "}
-        <button onClick={() => DeleteBoard(boardData.id)}>삭제</button>
-      </h1>
-      <hr />
-      <h3>내용 : {boardData.content}</h3>
-      <h5>조회수 : {Number(boardData.view) / 2}</h5>
-      <h5>작성시간 : {boardData.modifiedTime}</h5>
+      {boardData ? (
+      <>
+        <div>
+          <h1>
+            제목 : {boardData.title}{" "}
+            <button onClick={() => UpdateBoard(boardData.id)}>수정</button>{" "}
+            <button onClick={() => DeleteBoard(boardData.id)}>삭제</button>
+          </h1>
+          <hr />
+            <ImageList imageUrls={boardData.imageUrls}/>
+            <h3>내용 : {boardData.content}</h3>
+            <h5>조회수 : {boardData.view}</h5>
+            <h5>작성시간 : {boardData.time}</h5>
+          </div>
+            <Comment boardId={id} comments={boardData.comments}/>
+      </>
+        ) : (
+          <p>Loading...</p>
+        )}
     </div>
   );
 }
