@@ -11,5 +11,6 @@ public class ProfileImage {
     private Long id;
 
     @Column(name = "profile_image")
-    private String profileImage = "logo192.png";
+    private String profileImage;
+    private String url;
 }

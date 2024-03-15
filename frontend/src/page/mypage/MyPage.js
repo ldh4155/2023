@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 
 const MyPage = () => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState();
   const [boards,setBoards] = useState([]);
   const [editField, setEditField] = useState('');
   const [editValue, setEditValue] = useState('');
@@ -14,6 +14,7 @@ const MyPage = () => {
     const fetchUserAndBoards = async () => {
       try {
         const userResponse = await axios.get(`http://localhost:8080/mypageuser/${token}`);
+        console.log(userResponse.data)
         setUser(userResponse.data);
         const boardsResponse = await axios.get(`http://localhost:8080/mypageboard/${token}`);
         setBoards(boardsResponse.data);

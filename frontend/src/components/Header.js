@@ -14,7 +14,7 @@ const Header = ({isLoggedIn, setIsLoggedIn}) => {
   }, []);
   
   const handleLogin = () => {
-    navigate('/login');
+    navigate('/signin');
   }
 
   const handleLogout = () => {

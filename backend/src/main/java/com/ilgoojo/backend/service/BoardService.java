@@ -22,6 +22,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
     private final CommentService commentService;
+
     public BoardService(BoardRepository boardRepository, CommentService commentService,
                         MemberRepository memberRepository) {
         this.boardRepository = boardRepository;
@@ -30,10 +31,10 @@ public class BoardService {
     }
 
     @Transactional
-    public Board boardWrite (BoardWriteDto boardWriteDto, String memberId) {
+    public Board boardWrite(BoardWriteDto boardWriteDto, String memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(()-> new NoSuchElementException("가입되지 않은 회원"));
-        Board board = new Board(boardWriteDto.getTitle(),boardWriteDto.getContent(),member);
+                .orElseThrow(() -> new NoSuchElementException("가입되지 않은 회원"));
+        Board board = new Board(boardWriteDto.getTitle(), boardWriteDto.getContent(), member);
         return boardRepository.save(board);
 
     }
@@ -41,7 +42,7 @@ public class BoardService {
     @Transactional
     public BoardDetailDto getBoardDetail(Integer id) {
         Board board = boardRepository.findById(id)
-                .orElseThrow(()->new IllegalArgumentException("id를 확인해주세요"));
+                .orElseThrow(() -> new IllegalArgumentException("id를 확인해주세요"));
         board.setView(board.getView() + 1); //조회수 증가
         boardRepository.save(board);
 
@@ -72,7 +73,7 @@ public class BoardService {
     @Transactional
     public Board boardModify(Integer id, Board board) {
         Board boardEntity = boardRepository.findById(id)
-                .orElseThrow(()->new IllegalArgumentException("id를 확인해주세요")); //영속화 (Board오브젝트)
+                .orElseThrow(() -> new IllegalArgumentException("id를 확인해주세요")); //영속화 (Board오브젝트)
         boardEntity.setTitle(board.getTitle());
         boardEntity.setContent(board.getContent());
 
@@ -84,6 +85,7 @@ public class BoardService {
         boardRepository.deleteById(id);
         return "ok";
     }
+
     public List<Board> findByWriter_MemberId(String writerId) {
         return boardRepository.findByWriter_Id(writerId);
     }
@@ -94,5 +96,4 @@ public class BoardService {
 
         return board;
     }
-
 }
