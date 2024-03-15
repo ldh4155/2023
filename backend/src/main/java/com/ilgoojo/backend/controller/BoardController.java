@@ -42,18 +42,18 @@ public class BoardController {
 
     @PostMapping("/board") // 글 쓰기
     public ResponseEntity<?> save(@RequestPart(value = "images", required = false) List<MultipartFile> imageFiles,
-                                  @RequestPart("title")String title, @RequestPart("content")String content) {
+                                  @RequestPart("title") String title, @RequestPart("content") String content) {
 
         BoardWriteDto boardWriteDto = BoardWriteDto.builder()
                 .title(title)
                 .content(content)
                 .build();
 
-        if(imageFiles == null)
-            boardService.boardWrite(boardWriteDto,"123");
+        if (imageFiles == null)
+            boardService.boardWrite(boardWriteDto, "123");
         else {
-            if(fileStorageService.storeBoardFile(imageFiles,
-                    boardService.boardWrite(boardWriteDto,"123")) == null) {
+            if (fileStorageService.storeBoardFile(imageFiles,
+                    boardService.boardWrite(boardWriteDto, "123")) == null) {
                 return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }

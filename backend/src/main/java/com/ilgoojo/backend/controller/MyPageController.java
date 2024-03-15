@@ -1,5 +1,6 @@
 package com.ilgoojo.backend.controller;
 
+import com.ilgoojo.backend.dto.MemberDto;
 import com.ilgoojo.backend.entity.Board;
 import com.ilgoojo.backend.entity.Member;
 import com.ilgoojo.backend.repository.BoardRepository;
@@ -31,7 +32,7 @@ public class MyPageController {
     }
 
     @GetMapping("/mypageuser/{id}")
-    public Member getMyPageUser(@PathVariable String id) {
+    public MemberDto getMyPageUser(@PathVariable String id) {
         return memberService.getMemberById(id);
     }
 

@@ -4,12 +4,28 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @Entity
 public class Member {
+
+    public Member() {
+    }
+
+    public Member(String id, String password, String name, String nickName, String phoneNumber,
+                  String address, String email, String birth, ProfileImage profileImage) {
+        this.id = id;
+        this.password = password;
+        this.name = name;
+        this.nickName = nickName;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.email = email;
+        this.birth = birth;
+        this.numberOfTransactions = 0;
+        this.profileImage = profileImage;
+    }
+
     @Id
     private String id;
 
@@ -23,7 +39,7 @@ public class Member {
     private String phoneNumber;
     private String address;
     private String email;
-    private LocalDate birth;
+    private String birth;
 
     @Column(name = "number_of_transactions", columnDefinition = "integer default 0", nullable = false)
     private Integer numberOfTransactions;
