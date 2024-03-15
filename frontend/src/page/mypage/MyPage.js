@@ -92,7 +92,7 @@ const MyPage = () => {
   return (
     <div>
       <label htmlFor="imageUpload">
-        <img src={process.env.PUBLIC_URL + '/' + user.profileImage} alt={user.name} style={{ cursor: 'pointer' }} />
+        <img src={user.profileImage} alt={user.name} style={{ cursor: 'pointer' }} />
       </label>
       <input id="imageUpload" type="file" style={{ display: 'none' }} onChange={handleImageUpload} />
 
