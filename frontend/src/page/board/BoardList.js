@@ -6,6 +6,7 @@ import BoardHeader from "./BoardHeader";
 import Write from "./Write";
 import BoardDetail from "./BoardDetail";
 import Update from "./Update";
+import {api, setAuthToken} from "../../api/api"
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../../style/page.css";
 
@@ -17,16 +18,14 @@ export default function BoardList() {
 
   useEffect(() => {
     fetchBoards(currentPage);
-  }, []);
-
-  useEffect(() => {
-    fetchBoards(currentPage);
   }, [currentPage]);
 
   const fetchBoards = (page, term) => {
-    axios
+    setAuthToken();
+    console.log("토큰:",localStorage.getItem("Authorization"));    
+    api
       .get(
-        `http://localhost:8080/board?page=${page}&size=10&keyword=${term || ""}`
+        `board?page=${page}&size=10&keyword=${term || ""}`
       )
       .then((response) => {
         setBoards(response.data.content);

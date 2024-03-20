@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BoardInput from "../../components/BoardInput";
+import {api, setAuthToken} from "../../api/api"
 
 export default function Write(props) {
   let token = localStorage.getItem('token');
@@ -38,11 +39,8 @@ export default function Write(props) {
 
     board.images.forEach((image) => formData.append("images", image));
 
-    fetch("http://localhost:8080/board", {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
+    setAuthToken();
+    api.post(`board`,formData)
       .then((data) => {
         console.log(data);
         alert("게시글 작성에 성공하였습니다.");
