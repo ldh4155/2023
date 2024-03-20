@@ -11,10 +11,10 @@ const SignIn = ({ isLoggedIn, setIsLoggedIn }) => {
     e.preventDefault();
     console.log({id,password});
     try {
-      const response = await axios.post(`http://localhost:8080/signin`, { id, password });
-      localStorage.setItem('token', response.data);
+      const response = await axios.post(`http://localhost:8080/login`, { id, password });
       alert("로그인 성공");
       setIsLoggedIn(true);
+      localStorage.setItem("Authorization", response.headers["authorization"]);
       navigate('/');
     } catch (error) {
       console.error(error);

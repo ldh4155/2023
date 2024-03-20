@@ -18,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,17 +45,20 @@ public class BoardController {
     @PostMapping("/board") // 글 쓰기
     public ResponseEntity<?> save(@RequestPart(value = "images", required = false) List<MultipartFile> imageFiles,
                                   @RequestPart("title") String title, @RequestPart("content") String content) {
-
+        //SecurityContextHolder에서 토큰값 가져옴
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String writer = authentication.getName();
         BoardWriteDto boardWriteDto = BoardWriteDto.builder()
                 .title(title)
                 .content(content)
+                .writer(writer)
                 .build();
 
         if (imageFiles == null)
-            boardService.boardWrite(boardWriteDto, "123");
+            boardService.boardWrite(boardWriteDto);
         else {
             if (fileStorageService.storeBoardFile(imageFiles,
-                    boardService.boardWrite(boardWriteDto, "123")) == null) {
+                    boardService.boardWrite(boardWriteDto)) == null) {
                 return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }

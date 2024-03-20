@@ -9,6 +9,7 @@ import com.ilgoojo.backend.repository.MemberRepository;
 import com.ilgoojo.backend.repository.ProfileImageRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -21,10 +22,13 @@ import java.util.NoSuchElementException;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final ProfileImageRepository profileImageRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder; //비밀번호
 
-    public MemberService(MemberRepository memberRepository, ProfileImageRepository profileImageRepository) {
+    public MemberService(MemberRepository memberRepository, ProfileImageRepository profileImageRepository,
+                         BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.memberRepository = memberRepository;
         this.profileImageRepository = profileImageRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public boolean checkId(String id) {
@@ -35,9 +39,9 @@ public class MemberService {
         try {
             ProfileImage defaultImage = profileImageRepository.findById(1L)
                     .orElseThrow(()-> new NoSuchElementException("not found default image"));
-            Member member = new Member(signUpDto.getId(), signUpDto.getPassword(), signUpDto.getName(),
-                    signUpDto.getNickName(), signUpDto.getPhone(),signUpDto.getAddress(), signUpDto.getEmail(),
-                    signUpDto.getBirth(), defaultImage);
+            Member member = new Member(signUpDto.getId(), bCryptPasswordEncoder.encode(signUpDto.getPassword()),
+                    signUpDto.getName(), signUpDto.getNickName(), signUpDto.getPhone(),signUpDto.getAddress(),
+                    signUpDto.getEmail(), signUpDto.getBirth(), defaultImage);
             memberRepository.save(member);
         } catch(Exception e) {
             e.printStackTrace();
@@ -48,20 +52,19 @@ public class MemberService {
 
     }
 
-    public boolean signIn(SignInDto signInDto) {
-        Member findMember = memberRepository.findById(signInDto.getId())
-                .orElse(null);
-
-        if(findMember == null)
-            return false;
-        else {
-            if(!findMember.getPassword().equals(signInDto.getPassword()))
-                return false;
-            else
-                return true;
-        }
-
-    }
+//    public boolean signIn(SignInDto signInDto) {
+//        Member findMember = memberRepository.findById(signInDto.getId())
+//                .orElse(null);
+//
+//        if(findMember == null)
+//            return false;
+//        else {
+//            if(!findMember.getPassword().equals(signInDto.getPassword()))
+//                return false;
+//            else
+//                return true;
+//        }
+//    }
 
     public Member updateUser(String id, Member newUserInfo) {
         return memberRepository.findById(id).map(user -> {
