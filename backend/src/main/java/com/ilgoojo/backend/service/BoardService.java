@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -31,10 +33,11 @@ public class BoardService {
     }
 
     @Transactional
-    public Board boardWrite(BoardWriteDto boardWriteDto, String memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NoSuchElementException("가입되지 않은 회원"));
-        Board board = new Board(boardWriteDto.getTitle(), boardWriteDto.getContent(), member);
+    public Board boardWrite(BoardWriteDto boardWriteDto) {
+
+        Member member = memberRepository.findById(boardWriteDto.getWriter())
+                .orElseThrow(()-> new NoSuchElementException("사용자 아이디 오류"));
+        Board board = new Board(boardWriteDto.getTitle(), boardWriteDto.getContent(),member);
         return boardRepository.save(board);
 
     }
