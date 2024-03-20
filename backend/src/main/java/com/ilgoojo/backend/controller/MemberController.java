@@ -37,13 +37,13 @@ public class MemberController {
 
     }
 
-    @PostMapping("/signin") //로그인
-    public ResponseEntity<?> signIn(@RequestBody SignInDto signInDto) {
-        if(signInDto.getId() != null && signInDto.getPassword() != null)
-            return new ResponseEntity<>(memberService.signIn(signInDto), HttpStatus.ACCEPTED);
-        else
-            return  new ResponseEntity<>("아이디나 비밀번호 입력", HttpStatus.BAD_REQUEST);
-    }
+//    @PostMapping("/signin") //로그인
+//    public ResponseEntity<?> signIn(@RequestBody SignInDto signInDto) {
+//        if(signInDto.getId() != null && signInDto.getPassword() != null)
+//            return new ResponseEntity<>(memberService.signIn(signInDto), HttpStatus.ACCEPTED);
+//        else
+//            return  new ResponseEntity<>("아이디나 비밀번호 입력", HttpStatus.BAD_REQUEST);
+//    }
 
     @GetMapping("/memberStructure")
     public Map<String, String> getMemberStructure() {
