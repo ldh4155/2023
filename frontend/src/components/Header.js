@@ -5,9 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Header = ({isLoggedIn, setIsLoggedIn}) => {
   const navigate = useNavigate();
-  let token = localStorage.getItem('token');
+  const token = localStorage.getItem('Authorization');
   useEffect(() => {
-    token = localStorage.getItem('token');
     if(token!=null) {
       setIsLoggedIn(true);
     }
@@ -52,7 +51,7 @@ const Header = ({isLoggedIn, setIsLoggedIn}) => {
                 {isLoggedIn ? (
                   <>
                     <Nav.Link onClick={handleLogout}>로그아웃</Nav.Link>
-                    <Link to={`/mypage/${token||1}`} className="nav-link">마이페이지</Link>
+                    <Link to="/mypage" className="nav-link">마이페이지</Link>
                   </>
                 ) : (
                   <>

@@ -62,7 +62,6 @@ public class CommentService {
 
             commentResponseDtoList.add(commentResponseDto);
         }
-
         return commentResponseDtoList;
     }
 

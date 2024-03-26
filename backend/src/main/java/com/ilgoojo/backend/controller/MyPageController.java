@@ -5,11 +5,14 @@ import com.ilgoojo.backend.entity.Board;
 import com.ilgoojo.backend.entity.Member;
 import com.ilgoojo.backend.repository.BoardRepository;
 import com.ilgoojo.backend.repository.MemberRepository;
+import com.ilgoojo.backend.service.BoardService;
 import com.ilgoojo.backend.service.FileStorageService;
 import com.ilgoojo.backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,33 +24,37 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class MyPageController {
     private final MemberService memberService;
-    private final BoardRepository boardService;
+    private final BoardService boardService;
     private final FileStorageService fileStorageService;
 
-    @GetMapping("/mypageboard/{id}")
-    public List<Board> getBoard(@PathVariable("id") String writerId) {
-
-        return boardService.findByWriter_Id(writerId);
+    @GetMapping("/mypageboard")
+    public List<Board> getBoard() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return boardService.findBoardsByWriter(authentication.getName());
 
     }
 
-    @GetMapping("/mypageuser/{id}")
-    public MemberDto getMyPageUser(@PathVariable String id) {
-        return memberService.getMemberById(id);
+    @GetMapping("/mypageuser")
+    public MemberDto getMyPageUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return memberService.getMemberById(authentication.getName());
     }
 
-    @PutMapping("/mypageuser/{id}")
-    public Member updateUser(@PathVariable String id, @RequestBody Member newUserInfo) {
-        return memberService.updateUser(id, newUserInfo);
+    @PutMapping("/mypageuser")
+    public Member updateUser(@RequestBody Member newUserInfo) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return memberService.updateUser(authentication.getName(), newUserInfo);
     }
-    @DeleteMapping("/mypageuser/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable String id) {
-        memberService.deleteMember(id);
+    @DeleteMapping("/mypageuser")
+    public ResponseEntity<?> deleteUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        memberService.deleteMember(authentication.getName());
         return ResponseEntity.ok().build();
     }
-    @PostMapping("/mypageuser/{id}/upload")
-    public String handleImageUpload(@PathVariable String id, @RequestParam("file") MultipartFile file) {
-        return fileStorageService.storeFile(file, id);
+    @PostMapping("/mypageuser/upload")
+    public String handleImageUpload(@RequestParam("file") MultipartFile file) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return fileStorageService.storeFile(file, authentication.getName());
     }
     @GetMapping("/members")
     public List<Member> getAllMembers() {

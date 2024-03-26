@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import BoardItem from "./BoardItem";
 import { useState } from "react";
-import axios from "axios";
 import BoardHeader from "./BoardHeader";
 import Write from "./Write";
 import BoardDetail from "./BoardDetail";
