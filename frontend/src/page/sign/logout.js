@@ -6,7 +6,7 @@ function Logout() {
 
   function handleLogout() {
     // 로컬 스토리지에서 토큰을 제거
-    localStorage.removeItem('token');
+    localStorage.removeItem('Authorization');
     // 메인 페이지로 리디렉션
     history.push('/main');
   }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import {api, setAuthToken} from "../../api/api"
 import { useNavigate } from "react-router-dom";
 
 const SignIn = ({ isLoggedIn, setIsLoggedIn }) => {
@@ -11,7 +11,7 @@ const SignIn = ({ isLoggedIn, setIsLoggedIn }) => {
     e.preventDefault();
     console.log({id,password});
     try {
-      const response = await axios.post(`http://localhost:8080/login`, { id, password });
+      const response = await api.post(`signin`, { id, password });
       alert("로그인 성공");
       setIsLoggedIn(true);
       localStorage.setItem("Authorization", response.headers["authorization"]);
