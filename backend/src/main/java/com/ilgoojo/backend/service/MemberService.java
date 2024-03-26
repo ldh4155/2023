@@ -97,6 +97,7 @@ public class MemberService {
         Member findMember = memberRepository.findById(id)
                 .orElseThrow(()-> new NoSuchElementException("회원 찾기 실패"));
 
+        System.out.println("image url: " + findMember.getProfileImage().getUrl());
         return MemberDto.builder()
                 .id(findMember.getId())
                 .name(findMember.getName())

@@ -23,7 +23,7 @@ function App() {
       </Header>
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/mypage/:id' element={<MyPage/>}/>
+        <Route path='/mypage' element={<MyPage/>}/>
         <Route path="/board/*" element={<BoardList />} /> // 게시판 불러오기, 중첩 라우팅을 위한 와일드카드
         <Route path="/Update/:id" element={<Update/>} />
         <Route path="/signin" element={<SignIn isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />

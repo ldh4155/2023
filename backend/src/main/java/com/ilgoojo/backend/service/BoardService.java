@@ -89,7 +89,7 @@ public class BoardService {
         return "ok";
     }
 
-    public List<Board> findByWriter_MemberId(String writerId) {
+    public List<Board> findBoardsByWriter(String writerId) {
         return boardRepository.findByWriter_Id(writerId);
     }
 

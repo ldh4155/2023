@@ -1,6 +1,6 @@
-import axios from "axios";
 import React, { useState } from 'react';
 import CommentWrite from "./CommentWrite";
+import { api, setAuthToken } from "../api/api";
 
 const Comment = ({boardId, comments}) => {
 
@@ -18,7 +18,8 @@ const Comment = ({boardId, comments}) => {
 
     const deleteComment = async(id) => {
         try {
-            await axios.delete(`http://localhost:8080/board/${boardId}/comment/${id}`)
+            setAuthToken();
+            await api.delete(`board/${boardId}/comment/${id}`)
             alert("삭제 성공")
 
             const newComments = commentList.filter(comment => comment.id !== id);
@@ -31,9 +32,9 @@ const Comment = ({boardId, comments}) => {
 
     const updateComment = async (editComment) => {
         try {
-            const response = await axios.put(`http://localhost:8080/board/${boardId}/comment`,editComment)
+            const response = await api.put(`board/${boardId}/comment`,editComment)
             setCommentList(commentList.map(comment =>
-                comment.id == response.data.id ? response.data : comment));
+                comment.id === response.data.id ? response.data : comment));
 
             setEditingId(null);
             setEditComment({id : null, comment : null});
@@ -58,7 +59,7 @@ const Comment = ({boardId, comments}) => {
            <div>
               <p>댓글&nbsp;{commentList.length}</p>
               {commentList.slice(0,visible).map((comment) => 
-                editingId == comment.id ? (
+                editingId === comment.id ? (
                   <div>
                     <input type="text" defaultValue={comment.comment} 
                       onChange={(e) => setEditComment({id: editingId, content: e.target.value})}/>
