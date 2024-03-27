@@ -1,8 +1,8 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ImageList from "../../components/ImageList";
 import Comment from "../../components/Comment";
+import { api } from "../../api/api";
 
 export default function BoardDetail(props) {
   const propsParam = useParams();
@@ -11,8 +11,8 @@ export default function BoardDetail(props) {
   const [boardData, setBoardData] = useState(null);
   
   useEffect(() => {
-    axios
-      .get(`http://localhost:8080/board/${id}`)
+    api
+      .get(`board/${id}`)
       .then((res) => {
         setBoardData(res.data);
       })
@@ -22,8 +22,8 @@ export default function BoardDetail(props) {
   }, [id]);
 
   function DeleteBoard(id) {
-    axios
-      .delete(`http://localhost:8080/board/${id}`)
+    api
+      .delete(`board/${id}`)
       .then((res) => {
         if (res.data === "ok") {
           alert("삭제 되었습니다.");
