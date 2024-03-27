@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {  useEffect } from 'react';
 import {Navbar, Nav, Container} from 'react-bootstrap'
 import { Form, Button } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
@@ -17,11 +17,12 @@ const Header = ({isLoggedIn, setIsLoggedIn}) => {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    //토큰 제거
+    localStorage.removeItem('Authorization');
     setIsLoggedIn(false);
+    // 메인 페이지로 리디렉션
     navigate('/');
   }
-  const id = 1; // 사용자 고유식별번호 임시 기입 이후 회원가입 만들고 회원가입,로그인 시 전역변수로 지정해 값 가져오기
 
   return(
     <Navbar bg="light" expand="lg">
