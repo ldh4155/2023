@@ -31,7 +31,8 @@ public class SignInFilter extends UsernamePasswordAuthenticationFilter {
     }
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        SignInDto signInDto = new SignInDto();
+        System.out.println("signin filter");
+        SignInDto signInDto;
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -62,6 +63,7 @@ public class SignInFilter extends UsernamePasswordAuthenticationFilter {
 //        GrantedAuthority auth = iterator.next();
 
         String token = jwtUtil.createJwt(memberId, 600*600*10L);
+        System.out.println("jwt ok");
 
         response.addHeader("Authorization", "Bearer " + token);
     }
