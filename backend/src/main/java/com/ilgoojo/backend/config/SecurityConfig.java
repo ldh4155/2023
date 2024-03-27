@@ -71,7 +71,7 @@ public class SecurityConfig {
         http.httpBasic((auth) -> auth.disable());
         //어느 api는 인가 없이 들어올지
         http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/signin", "signup", "/").permitAll()
+                .requestMatchers("/login", "/signup", "/","/images/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
                 .anyRequest().authenticated());
 
