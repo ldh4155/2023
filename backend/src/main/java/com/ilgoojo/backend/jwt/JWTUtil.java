@@ -16,11 +16,16 @@ public class JWTUtil {
 
     private Key key;
 
-    public JWTUtil(@Value("${jwt-secret}")String secret) {
-
-        byte[] byteSecretKey = Decoders.BASE64.decode(secret);
-        key = Keys.hmacShaKeyFor(byteSecretKey);
+    public JWTUtil(@Value("${jwt-secret}") String secret) {
+        try {
+            byte[] byteSecretKey = Decoders.BASE64.decode(secret);
+            key = Keys.hmacShaKeyFor(byteSecretKey);
+        } catch (Exception e) {
+            // 로깅 라이브러리를 사용하여 로그 남기기
+            e.printStackTrace();
+        }
     }
+
 
     public String getMemberId(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build()

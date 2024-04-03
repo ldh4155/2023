@@ -16,6 +16,7 @@ public class BoardDetailDto {
     private String nickName;
     private Integer view;
     private String time;
+    @Builder.Default
     private List<CommentResponseDto> comments = new ArrayList<>();
     private List<String> imageUrls;
 

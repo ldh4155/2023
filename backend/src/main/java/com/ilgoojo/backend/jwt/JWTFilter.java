@@ -48,7 +48,7 @@ public class JWTFilter extends OncePerRequestFilter {
         System.out.println("JWT Filter memberId = " + memberId);
 
         Member member = new Member();
-        member.setId(memberId);
+        member.setMemberId(memberId);
         MemberDetails memberDetails = new MemberDetails(member);
 
         Authentication authToken =

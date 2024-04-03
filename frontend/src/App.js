@@ -12,6 +12,7 @@ import SignUp from './page/sign/SignUp';
 import Login from './page/sign/Login';
 import UserList from './page/mypage/UserList';
 import SomeonePage from './page/mypage/SomeonePage';
+import Auction from './page/auction/Auction';
 import React, { useState } from 'react';
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <Route path="/login" element={<Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
         <Route path='/users' element={<UserList/>}/>
         <Route path='/user/:id' element={<SomeonePage/>}/>
+        <Route path='/auction' element={<Auction/>}/>
       </Routes>
       </BrowserRouter>
       <Footer />
