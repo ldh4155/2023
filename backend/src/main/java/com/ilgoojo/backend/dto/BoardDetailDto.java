@@ -1,5 +1,6 @@
 package com.ilgoojo.backend.dto;
 
+import com.ilgoojo.backend.entity.BoardFile;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -18,6 +19,7 @@ public class BoardDetailDto {
     private String time;
     private List<CommentResponseDto> comments = new ArrayList<>();
     private List<String> imageUrls;
+    private BoardFile.FileType fileType;
 
     public void setImageUrls(List<String> imageUrls) {
         this.imageUrls = imageUrls;
