@@ -2,16 +2,17 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BoardInput from "../../components/BoardInput";
-import {api, setAuthToken} from "../../api/api"
+import { api, setAuthToken } from "../../api/api";
+import BoardList from "./BoardList";
 
 export default function Write(props) {
-  let token = localStorage.getItem('token');
+  let token = localStorage.getItem("token");
   const [board, setBoard] = useState({
     title: "",
     content: "",
-    images: [], // 게시글에 이미지 정보를 포함
+    files: [],
   });
-  
+
   const navigate = useNavigate();
 
   function ChangeValue(event) {
@@ -25,7 +26,7 @@ export default function Write(props) {
   function handleFileChange(event) {
     setBoard({
       ...board,
-      images: Array.from(event.target.files),
+      files: Array.from(event.target.files),
     });
     console.log(board);
   }
@@ -37,14 +38,17 @@ export default function Write(props) {
     formData.append("title", board.title);
     formData.append("content", board.content);
 
-    board.images.forEach((image) => formData.append("images", image));
+    board.files.forEach((file) => formData.append("files", file));
 
-    setAuthToken();
-    api.post(`board`,formData)
+    setAuthToken(token);
+    api
+      .post(`board`, formData)
       .then((data) => {
         console.log(data);
         alert("게시글 작성에 성공하였습니다.");
+        props.fetchBoards();
         navigate("/board");
+        // window.location.replace("/board");
       })
       .catch((error) => {
         alert("게시글 작성에 실패하였습니다.");
@@ -59,6 +63,7 @@ export default function Write(props) {
       boardData={board}
       ChangeValue={ChangeValue}
       handleFileChange={handleFileChange}
+      newBoard={props.newBoard}
     />
   );
 }
