@@ -5,7 +5,7 @@ import BoardHeader from "./BoardHeader";
 import Write from "./Write";
 import BoardDetail from "./BoardDetail";
 import Update from "./Update";
-import {api, setAuthToken} from "../../api/api"
+import { api, setAuthToken } from "../../api/api";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../../style/page.css";
 
@@ -21,11 +21,9 @@ export default function BoardList() {
 
   const fetchBoards = (page, term) => {
     setAuthToken();
-    console.log("토큰:",localStorage.getItem("Authorization"));    
+    console.log("토큰:", localStorage.getItem("Authorization"));
     api
-      .get(
-        `board?page=${page}&size=10&keyword=${term || ""}`
-      )
+      .get(`board?page=${page}&size=10&keyword=${term || ""}`)
       .then((response) => {
         setBoards(response.data.content);
         setCurrentPage(response.data.number);
@@ -58,12 +56,19 @@ export default function BoardList() {
     fetchBoards(0, searchTerm);
   };
 
+  const newBoard = (newBoard) => {
+    setBoards([...boards, newBoard]);
+  };
   return (
     <div>
       <BoardHeader />
       {/* 중첩 라우팅  /board 가 기본적으로 붙음*/}
       <Routes>
-        <Route path="write" element={<Write />} /> // 글 쓰는 페이지
+        <Route
+          path="write"
+          element={<Write fetchBoards={() => fetchBoards(currentPage)} />}
+        />{" "}
+        // 글 쓰는 페이지
         <Route path=":id" element={<BoardDetail />} /> // 글 상세 보기
         <Route path="update/:id" element={<Update />} /> // 글 수정 하기
       </Routes>

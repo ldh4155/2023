@@ -9,7 +9,7 @@ export default function BoardDetail(props) {
   const id = propsParam.id;
   const navigate = useNavigate();
   const [boardData, setBoardData] = useState(null);
-  
+
   useEffect(() => {
     api
       .get(`board/${id}`)
@@ -44,24 +44,25 @@ export default function BoardDetail(props) {
   return (
     <div>
       {boardData ? (
-      <>
-        <div>
-          <h1>
-            제목 : {boardData.title}{" "}
-            <button onClick={() => UpdateBoard(boardData.id)}>수정</button>{" "}
-            <button onClick={() => DeleteBoard(boardData.id)}>삭제</button>
-          </h1>
-          <hr />
-            <ImageList imageUrls={boardData.imageUrls}/>
+        <>
+          <div>
+            <h1>
+              제목 : {boardData.title}{" "}
+              <button onClick={() => UpdateBoard(boardData.id)}>수정</button>{" "}
+              <button onClick={() => DeleteBoard(boardData.id)}>삭제</button>
+            </h1>
+            <hr />
+
+            <ImageList imageUrls={boardData.imageUrls} />
             <h3>내용 : {boardData.content}</h3>
             <h5>조회수 : {boardData.view}</h5>
             <h5>작성시간 : {boardData.time}</h5>
           </div>
-            <Comment boardId={id} comments={boardData.comments}/>
-      </>
-        ) : (
-          <p>Loading...</p>
-        )}
+          <Comment boardId={id} comments={boardData.comments} />
+        </>
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 }
