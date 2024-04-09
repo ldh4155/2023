@@ -2,23 +2,24 @@ import React, {  useEffect } from 'react';
 import {Navbar, Nav, Container} from 'react-bootstrap'
 import { Form, Button } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
-
+import { api } from '../api/api';
 const Header = ({isLoggedIn, setIsLoggedIn}) => {
   const navigate = useNavigate();
-  const token = localStorage.getItem('Authorization');
+  const token = localStorage.getItem('access');
   useEffect(() => {
     if(token!=null) {
       setIsLoggedIn(true);
     }
   }, []);
-  
+
   const handleLogin = () => {
     navigate('/signin');
   }
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const response = await api.post(`signout`, {}, { withCredentials: true });
     //토큰 제거
-    localStorage.removeItem('Authorization');
+    localStorage.removeItem('access');
     setIsLoggedIn(false);
     // 메인 페이지로 리디렉션
     navigate('/');

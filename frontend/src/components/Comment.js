@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import CommentWrite from "./CommentWrite";
-import { api, setAuthToken } from "../api/api";
+import { api } from "../api/api";
 
 const Comment = ({boardId, comments}) => {
 
@@ -18,7 +18,6 @@ const Comment = ({boardId, comments}) => {
 
     const deleteComment = async(id) => {
         try {
-            setAuthToken();
             await api.delete(`board/${boardId}/comment/${id}`)
             alert("삭제 성공")
 

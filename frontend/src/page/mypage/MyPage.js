@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
-import { api, setAuthToken } from "../../api/api";
+import { api } from "../../api/api";
 
 const MyPage = () => {
   const [user, setUser] = useState(null);
@@ -13,7 +13,6 @@ const MyPage = () => {
 
   useEffect(() => {
     const fetchUserAndBoards = async () => {
-      setAuthToken();
       try {
         const userResponse = await api.get(`mypageuser`);
         console.log(userResponse.data.imageUrl)
@@ -29,7 +28,6 @@ const MyPage = () => {
   }, []);
 
   const handleEdit = async () => {
-    setAuthToken();
     try {     
       const response = await api.put(`mypageuser`, { [editField]: editValue }, {
         headers: {
@@ -47,7 +45,6 @@ const MyPage = () => {
   const handleDeleteUser = async () => {
     if (window.confirm('정말로 탈퇴하시겠습니까?')) {
       try {
-        setAuthToken();
         await api.delete(`mypageuser`);
         window.location.href = '/';
       } catch (error) {
@@ -82,7 +79,6 @@ const MyPage = () => {
     formData.append('file', file);
 
     try {
-      setAuthToken();
       const response = await api.post(`mypageuser/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
