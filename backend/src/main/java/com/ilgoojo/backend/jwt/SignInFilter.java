@@ -1,33 +1,37 @@
 package com.ilgoojo.backend.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ilgoojo.backend.dto.MemberDetails;
 import com.ilgoojo.backend.dto.SignInDto;
+import com.ilgoojo.backend.entity.RefreshToken;
+import com.ilgoojo.backend.repository.RefreshRepository;
+import com.ilgoojo.backend.util.JwtRelatedUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.Date;
 
 public class SignInFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
 
-    public SignInFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+    private RefreshRepository refreshRepository;
+
+    public SignInFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, RefreshRepository refreshRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.refreshRepository = refreshRepository;
     }
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -55,21 +59,36 @@ public class SignInFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
 
-        MemberDetails memberDetails = (MemberDetails)authentication.getPrincipal();
-        String memberId = memberDetails.getUsername();
+        //유저 정보
+        String username = authentication.getName();
 
-//        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-//        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
-//        GrantedAuthority auth = iterator.next();
+        //토큰 생성
+        String access = jwtUtil.createJwt("access",username,600000L);
+        String refresh = jwtUtil.createJwt("refresh",username,86400000L);
 
-        String token = jwtUtil.createJwt(memberId, 600*600*10L);
-        System.out.println("jwt ok");
+        //refresh 토큰 저장
+        addRefreshToken(username,refresh,86400000L);
 
-        response.addHeader("Authorization", "Bearer " + token);
+        //응답 설정
+        response.setHeader("access",access);
+        response.addCookie(JwtRelatedUtil.createCookie("refresh",refresh));
+        response.setStatus(HttpStatus.OK.value());
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
         response.setStatus(401);
     }
+
+    private void addRefreshToken(String username, String refresh, Long expiredMs) {
+        Date date = new Date(System.currentTimeMillis() + expiredMs);
+
+        RefreshToken refreshToken = new RefreshToken();
+        refreshToken.setUsername(username);
+        refreshToken.setRefresh(refresh);
+        refreshToken.setExpiration(date.toString());
+
+        refreshRepository.save(refreshToken);
+    }
+
 }

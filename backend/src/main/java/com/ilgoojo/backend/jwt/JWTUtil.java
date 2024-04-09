@@ -22,9 +22,14 @@ public class JWTUtil {
         key = Keys.hmacShaKeyFor(byteSecretKey);
     }
 
-    public String getMemberId(String token) {
+    public String getUsername(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build()
-                .parseClaimsJws(token).getBody().get("memberId", String.class);
+                .parseClaimsJws(token).getBody().get("username", String.class);
+    }
+
+    public String getCategory(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build()
+                .parseClaimsJws(token).getBody().get("category", String.class);
     }
 
     public Boolean isExpired(String token) {
@@ -32,9 +37,10 @@ public class JWTUtil {
                 .parseClaimsJws(token).getBody().getExpiration().before(new Date());
     }
 
-    public String createJwt(String username, Long expiredMs) {
+    public String createJwt(String category, String username, Long expiredMs) {
         Claims claims = Jwts.claims();
-        claims.put("memberId", username);
+        claims.put("category", category);
+        claims.put("username", username);
 
         return Jwts.builder()
                 .setClaims(claims)

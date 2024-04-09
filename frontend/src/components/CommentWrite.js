@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { api, setAuthToken } from "../api/api";
+import { api } from "../api/api";
 
 const CommentWrite = ({boardId, newComment}) => {
 
@@ -9,7 +9,6 @@ const CommentWrite = ({boardId, newComment}) => {
         event.preventDefault();
 
         try {
-            setAuthToken();
             //댓글 보내기
            const response =  await api.post(`board/${boardId}/comment`
             , {content: comment});
