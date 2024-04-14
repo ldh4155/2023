@@ -3,12 +3,15 @@ import { useParams, useNavigate } from "react-router-dom";
 import ImageList from "../../components/ImageList";
 import Comment from "../../components/Comment";
 import { api } from "../../api/api";
+import Modal from "../../components/Modal";
+import ModalBoard from "./ModalBoard";
 
 export default function BoardDetail(props) {
   const propsParam = useParams();
   const id = propsParam.id;
   const navigate = useNavigate();
   const [boardData, setBoardData] = useState(null);
+  const [modalBoard, setModalBoard] = useState({});
 
   useEffect(() => {
     api
@@ -50,11 +53,11 @@ export default function BoardDetail(props) {
               제목 : {boardData.title}{" "}
               <button onClick={() => UpdateBoard(boardData.id)}>수정</button>{" "}
               <button onClick={() => DeleteBoard(boardData.id)}>삭제</button>
+              <Modal boardData={boardData} />
             </h1>
             <hr />
-
-            <ImageList imageUrls={boardData.imageUrls} />
             <h3>내용 : {boardData.content}</h3>
+            <ImageList imageUrls={boardData.imageUrls} />
             <h5>조회수 : {boardData.view}</h5>
             <h5>작성시간 : {boardData.time}</h5>
           </div>
