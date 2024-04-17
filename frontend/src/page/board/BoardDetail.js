@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ImageList from "../../components/ImageList";
-import Comment from "../../components/Comment";
+import Comment from "../comment/Comment";
 import { api } from "../../api/api";
 
 export default function BoardDetail(props) {
