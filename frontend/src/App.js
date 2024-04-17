@@ -12,15 +12,19 @@ import SignUp from './page/sign/SignUp';
 import UserList from './page/mypage/UserList';
 import SomeonePage from './page/mypage/SomeonePage';
 import React, { useState } from 'react';
-
+import { useSelector } from 'react-redux';
+import MessageModal from './components/MessageModal';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const isOpen = useSelector((state) => state.modal.isModalOpen);
+
   return (
     <div className="App">
       <BrowserRouter>
       <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}>
         <Container style={{minHeight:'75vh'}} />
       </Header>
+      {isOpen && <MessageModal />}
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/mypage' element={<MyPage/>}/>
