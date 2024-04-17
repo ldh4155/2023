@@ -11,14 +11,14 @@ const SignIn = ({ isLoggedIn, setIsLoggedIn }) => {
     e.preventDefault();
     console.log({id,password});
     try {
-      const response = await api.post(`login`, { id, password });
+      const response = await api.post(`login`, { id, password },{ withCredentials: true });
       alert("로그인 성공");
       setIsLoggedIn(true);
-      localStorage.setItem("Authorization", response.headers["authorization"]);
-      console.log("성공:",localStorage.getItem("Authorization"))
+      localStorage.setItem("access", response.headers["access"]);
+      console.log("성공:",response.headers)
       navigate('/');
     } catch (error) {
-      console.log("실패:",localStorage.getItem("Authorization"))
+      console.log("실패:",localStorage.getItem("access"))
       console.error(error);
       alert("로그인 실패");
     }

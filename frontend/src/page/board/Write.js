@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BoardInput from "../../components/BoardInput";
-import {api, setAuthToken} from "../../api/api"
+import {api} from "../../api/api"
 
 export default function Write(props) {
   let token = localStorage.getItem('token');
@@ -39,7 +39,6 @@ export default function Write(props) {
 
     board.images.forEach((image) => formData.append("images", image));
 
-    setAuthToken();
     api.post(`board`,formData)
       .then((data) => {
         console.log(data);

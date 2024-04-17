@@ -5,7 +5,7 @@ import BoardHeader from "./BoardHeader";
 import Write from "./Write";
 import BoardDetail from "./BoardDetail";
 import Update from "./Update";
-import {api, setAuthToken} from "../../api/api"
+import {api} from "../../api/api"
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../../style/page.css";
 
@@ -20,7 +20,6 @@ export default function BoardList() {
   }, [currentPage]);
 
   const fetchBoards = (page, term) => {
-    setAuthToken();
     console.log("토큰:",localStorage.getItem("Authorization"));    
     api
       .get(
