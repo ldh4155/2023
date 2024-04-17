@@ -1,40 +1,63 @@
 package com.ilgoojo.backend.service;
 
+import com.ilgoojo.backend.dto.BoardDetailDto;
+import com.ilgoojo.backend.dto.BoardWriteDto;
 import com.ilgoojo.backend.entity.Board;
 import com.ilgoojo.backend.entity.Member;
 import com.ilgoojo.backend.repository.BoardRepository;
 import com.ilgoojo.backend.repository.MemberRepository;
-import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
+import com.ilgoojo.backend.util.DateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import java.util.List;
-import java.util.Optional;
-
+import java.util.NoSuchElementException;
 
 @Service
-@RequiredArgsConstructor
 public class BoardService {
-    private final BoardRepository boardRepository;
-    private final EntityManager entityManager;
-    private final MemberRepository memberRepository;
 
-    @Transactional
-    public Board boardWrite(Board board) {
-        return boardRepository.save(board);
+    private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
+    private final CommentService commentService;
+
+    public BoardService(BoardRepository boardRepository, CommentService commentService,
+                        MemberRepository memberRepository) {
+        this.boardRepository = boardRepository;
+        this.commentService = commentService;
+        this.memberRepository = memberRepository;
     }
 
-    @Transactional(readOnly = true)
-    public Board boardDetail(Integer id) {
-        return boardRepository.findById(id)
-                .orElseThrow(()->new IllegalArgumentException("id를 확인해주세요"));
+    @Transactional
+    public Board boardWrite(BoardWriteDto boardWriteDto) {
+
+        Member member = memberRepository.findById(boardWriteDto.getWriter())
+                .orElseThrow(()-> new NoSuchElementException("사용자 아이디 오류"));
+        Board board = new Board(boardWriteDto.getTitle(), boardWriteDto.getContent(),member);
+        return boardRepository.save(board);
+
+    }
+
+    @Transactional
+    public BoardDetailDto getBoardDetail(Integer id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("id를 확인해주세요"));
+        board.setView(board.getView() + 1); //조회수 증가
+        boardRepository.save(board);
+
+        return BoardDetailDto.builder()
+                .id(board.getId())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .nickName(board.getWriter().getNickName())
+                .view(board.getView())
+                .comments(commentService.showComments(id))
+                .time(DateUtil.FormatDate(board.getCreateTime()))
+                .build();
     }
 
     @Transactional(readOnly = true)
@@ -53,7 +76,7 @@ public class BoardService {
     @Transactional
     public Board boardModify(Integer id, Board board) {
         Board boardEntity = boardRepository.findById(id)
-                .orElseThrow(()->new IllegalArgumentException("id를 확인해주세요")); //영속화 (Board오브젝트)
+                .orElseThrow(() -> new IllegalArgumentException("id를 확인해주세요")); //영속화 (Board오브젝트)
         boardEntity.setTitle(board.getTitle());
         boardEntity.setContent(board.getContent());
 
@@ -66,7 +89,7 @@ public class BoardService {
         return "ok";
     }
 
-    public List<Board> findByWriter_MemberId(String writerId) {
+    public List<Board> findBoardsByWriter(String writerId) {
         return boardRepository.findByWriter_MemberId(writerId);
     }
 
@@ -74,16 +97,6 @@ public class BoardService {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid board Id:" + id));
 
-        // 엔티티를 detach하여 영속성 컨텍스트에서 분리합니다.
-        entityManager.detach(board);
-
         return board;
-    }
-    @Transactional
-    public void increaseView(Integer id) {
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid board Id:" + id));
-        board.setView(board.getView() + 1);
-        boardRepository.save(board);
     }
 }

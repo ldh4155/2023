@@ -9,9 +9,9 @@ import BoardList from "./page/board/BoardList";
 import Update from './page/board/Update';
 import SignIn from './page/sign/SignIn';
 import SignUp from './page/sign/SignUp';
-import Login from './page/sign/Login';
 import UserList from './page/mypage/UserList';
 import SomeonePage from './page/mypage/SomeonePage';
+import AuctionList from './page/auction/AuctionList';
 import Auction from './page/auction/Auction';
 import React, { useState } from 'react';
 
@@ -24,16 +24,16 @@ function App() {
         <Container style={{minHeight:'75vh'}} />
       </Header>
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/mypage/:id' element={<MyPage/>}/>
+      <Route path='/' element={<Home />} />
+        <Route path='/mypage' element={<MyPage/>}/>
         <Route path="/board/*" element={<BoardList />} /> // 게시판 불러오기, 중첩 라우팅을 위한 와일드카드
         <Route path="/Update/:id" element={<Update/>} />
-        <Route path="/signin" eleement={<SignIn/>} />
+        <Route path="/signin" element={<SignIn isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />
         <Route path="/signup" element={<SignUp/>} />
-        <Route path="/login" element={<Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
         <Route path='/users' element={<UserList/>}/>
         <Route path='/user/:id' element={<SomeonePage/>}/>
-        <Route path='/auction' element={<Auction/>}/>
+        <Route path='/auctions/' element={<AuctionList/>}/>
+        <Route path='/auction/:id' element={<Auction/>}/>
       </Routes>
       </BrowserRouter>
       <Footer />

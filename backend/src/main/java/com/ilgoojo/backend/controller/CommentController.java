@@ -5,6 +5,8 @@ import com.ilgoojo.backend.dto.CommentWriteDto;
 import com.ilgoojo.backend.service.CommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +25,9 @@ public class CommentController {
     //댓글 쓰기
     @PostMapping("/board/{id}/comment")
     public CommentResponseDto writeComment(@PathVariable Integer id, @RequestBody CommentWriteDto commentWriteDto) {
-        System.out.println("content:" +commentWriteDto.getContent());
-        return commentService.writeComment(id, commentWriteDto, "123"); //유저id 임시 할당. 나중에 jwt에서 가져옴
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        return commentService.writeComment(id, commentWriteDto, authentication.getName());
     }
 
     @PutMapping("/board/{id}/comment")

@@ -1,68 +1,69 @@
 package com.ilgoojo.backend.service;
 
+import com.ilgoojo.backend.dto.MemberDto;
+import com.ilgoojo.backend.dto.SignInDto;
+import com.ilgoojo.backend.dto.SignUpDto;
 import com.ilgoojo.backend.entity.Member;
+import com.ilgoojo.backend.entity.ProfileImage;
 import com.ilgoojo.backend.repository.MemberRepository;
+import com.ilgoojo.backend.repository.ProfileImageRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
+
 
 @Service
 @Transactional
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final ProfileImageRepository profileImageRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder; //비밀번호
 
-
-    @Autowired
-    public MemberService(MemberRepository memberRepository) {
+    public MemberService(MemberRepository memberRepository, ProfileImageRepository profileImageRepository,
+                         BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.memberRepository = memberRepository;
+        this.profileImageRepository = profileImageRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public boolean checkId(String id) {
         return memberRepository.existsById(id);
     }
-    public void signUp(Member member) {
-        if (member.getName() == null) {
-            member.setName("Name");
+
+    public boolean signUp(SignUpDto signUpDto) {
+        try {
+            ProfileImage defaultImage = profileImageRepository.findById(1L)
+                    .orElseThrow(()-> new NoSuchElementException("not found default image"));
+            Member member = new Member(signUpDto.getMemberId(), bCryptPasswordEncoder.encode(signUpDto.getPassword()),
+                    signUpDto.getName(), signUpDto.getNickName(), signUpDto.getPhone(),signUpDto.getAddress(),
+                    signUpDto.getEmail(), signUpDto.getBirth(), defaultImage);
+            memberRepository.save(member);
+        } catch(Exception e) {
+            e.printStackTrace();
+            return false;
         }
-        if (member.getNickName() == null) {
-            member.setNickName("NickName");
-        }
-        if (member.getPhoneNumber() == null) {
-            member.setPhoneNumber("000-0000-0000");
-        }
-        if (member.getAddress() == null) {
-            member.setAddress("korea");
-        }
-        if (member.getEmail() == null) {
-            member.setEmail("default@email.com");
-        }
-        if (member.getBirth() == null) {
-            member.setBirth(LocalDate.of(1111, 11, 11));
-        }
-        if (member.getNumberOfTransactions() == null) {
-            member.setNumberOfTransactions(36);
-        }
-        memberRepository.save(member);
+        return true;
+
+
     }
-    public void deleteMember(String id) {
-        memberRepository.deleteById(id);
-    }
-    public String login(String id, String password) {
-        Optional<Member> optionalMember = memberRepository.findById(id);
-        if (optionalMember.isPresent()) {
-            Member member = optionalMember.get();
-            if (member.getPassword().equals(password)) {
-                String token = member.getMemberId();
-                return token;
-            }
-            else return null;
+
+    public boolean signIn(SignInDto signInDto) {
+        Member findMember = memberRepository.findById(signInDto.getMemberId())
+                .orElse(null);
+
+        if(findMember == null)
+            return false;
+        else {
+            if(!findMember.getPassword().equals(signInDto.getPassword()))
+                return false;
+            else
+               return true;
         }
-        return null;
     }
+
     public Member updateUser(String id, Member newUserInfo) {
         return memberRepository.findById(id).map(user -> {
             if (newUserInfo.getNickName() != null) {
@@ -90,12 +91,31 @@ public class MemberService {
             return memberRepository.save(user);
         }).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
     }
-    public Member getMemberById(String id) {
-        return memberRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+    public MemberDto getMemberById(String id) {
+        Member findMember = memberRepository.findById(id)
+                .orElseThrow(()-> new NoSuchElementException("회원 찾기 실패"));
+
+        System.out.println("image url: " + findMember.getProfileImageId().getUrl());
+        return MemberDto.builder()
+                .id(findMember.getMemberId())
+                .name(findMember.getName())
+                .nickName(findMember.getNickName())
+                .imageUrl(findMember.getProfileImageId().getUrl())
+                .birth(findMember.getBirth())
+                .numberOfTransactions(findMember.getNumberOfTransactions())
+                .email(findMember.getEmail())
+                .address(findMember.getAddress())
+                .phone(findMember.getPhoneNumber())
+                .build();
     }
 
     public List<Member> getAllMembers() {
         return memberRepository.findAll();
     }
+
+    public void deleteMember(String id) {
+        memberRepository.deleteById(id);
+    }
 }
+
+

@@ -38,7 +38,7 @@ const SomeonePage = () => {
 
   return (
     <div>
-      <img src={process.env.PUBLIC_URL + '/' + user.profileImage.profileImage} alt={user.id} />
+      <img src={process.env.PUBLIC_URL + '/' + user.profileImage} alt={user.name} />
 
       <h2>{user.nickName}</h2>
       <p>이름 : {user.name}</p>

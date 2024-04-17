@@ -1,5 +1,6 @@
 package com.ilgoojo.backend.service;
 
+import com.ilgoojo.backend.dto.AuctionDto;
 import com.ilgoojo.backend.entity.Auction;
 import com.ilgoojo.backend.entity.Member;
 import com.ilgoojo.backend.repository.AuctionRepository;
@@ -7,6 +8,8 @@ import com.ilgoojo.backend.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AuctionService {
@@ -35,5 +38,17 @@ public class AuctionService {
 
         auctionRepository.save(auction); // 변경된 내용을 저장
         return auction;
+    }
+
+    public List<Auction> getAuctionList(){
+        return auctionRepository.findAll();
+    }
+
+    public Auction createAuction(Auction auction) {
+        Auction newAuction = new Auction();
+        newAuction.setTitle(auction.getTitle());
+        newAuction.setStartPrice(auction.getStartPrice());
+        // 필요한 경우 추가적인 설정을 합니다.
+        return auctionRepository.save(newAuction);
     }
 }

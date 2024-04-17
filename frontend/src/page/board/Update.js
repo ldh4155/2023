@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
+import BoardInput from "../../components/BoardInput";
+
 export default function Update(props) {
   const { id } = useParams();
   const [boardData, setBoardData] = useState({
@@ -47,29 +49,10 @@ export default function Update(props) {
   }
 
   return (
-    <form onSubmit={SubmitBoard}>
-      <label>
-        제목 :
-        <input
-          type="text"
-          placeholder="Enter Title"
-          name="title"
-          value={boardData.title}
-          onChange={ChangeValue}
-        />
-      </label>
-      <br />
-      <label>
-        내용 :
-        <textarea
-          placeholder="Enter Content"
-          name="content"
-          value={boardData.content}
-          onChange={ChangeValue}
-        />
-      </label>
-      <br />
-      <button type="submit">완료</button>
-    </form>
+    <BoardInput
+      SubmitBoard={SubmitBoard}
+      boardData={boardData}
+      ChangeValue={ChangeValue}
+    />
   );
 }

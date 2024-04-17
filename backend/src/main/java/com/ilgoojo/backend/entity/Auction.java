@@ -9,6 +9,10 @@ public class Auction{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long auctionId;
+    private String item;
+    private String title;
+    private String startPrice;
+    private String auctionImage;
     @OneToOne
     @JoinColumn(name = "member_id")
     private Member bidder;

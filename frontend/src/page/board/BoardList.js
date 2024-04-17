@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import BoardItem from "./BoardItem";
 import { useState } from "react";
-import axios from "axios";
 import BoardHeader from "./BoardHeader";
 import Write from "./Write";
 import BoardDetail from "./BoardDetail";
 import Update from "./Update";
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import "../../style/page.css"
+import {api, setAuthToken} from "../../api/api"
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "../../style/page.css";
 
 export default function BoardList() {
   const [boards, setBoards] = useState([]);
@@ -17,16 +17,14 @@ export default function BoardList() {
 
   useEffect(() => {
     fetchBoards(currentPage);
-  }, []);
-
-  useEffect(() => {
-    fetchBoards(currentPage);
   }, [currentPage]);
 
   const fetchBoards = (page, term) => {
-    axios
+    setAuthToken();
+    console.log("토큰:",localStorage.getItem("Authorization"));    
+    api
       .get(
-        `http://localhost:8080/board?page=${page}&size=10&keyword=${term || ""}`
+        `board?page=${page}&size=10&keyword=${term || ""}`
       )
       .then((response) => {
         setBoards(response.data.content);
@@ -62,7 +60,7 @@ export default function BoardList() {
 
   return (
     <div>
-      <BoardHeader/>
+      <BoardHeader />
       {/* 중첩 라우팅  /board 가 기본적으로 붙음*/}
       <Routes>
         <Route path="write" element={<Write />} /> // 글 쓰는 페이지
@@ -78,14 +76,13 @@ export default function BoardList() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-      
+
         <button onClick={handleSearch}>검색</button>
         <br />
         <button onClick={previousPage}>이전</button>
         {pageNumbers}
         <button onClick={nextPage}>다음</button>
       </div>
-      
     </div>
   );
 }

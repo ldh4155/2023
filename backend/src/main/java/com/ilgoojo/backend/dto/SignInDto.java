@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 public class SignInDto {
 
-    private String id;
+    private String memberId;
     private String password;
 }

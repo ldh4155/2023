@@ -9,6 +9,9 @@ public class ProfileImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "profile_image_id")
-    private Long id;
-    private String profileImage="logo192.png";
+    private Long prifileImageId;
+
+    @Column(name = "profile_image")
+    private String profileImage;
+    private String url;
 }

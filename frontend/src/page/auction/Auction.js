@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 
 function Auction() {
-  const [bid, setBid] = useState('');
+  const [bid, setBid] = useState(0);
   const [bidder, setBidder] = useState('');
   const [highestBid, setHighestBid] = useState({bidder: '', amount: 0});
   const [auctionId, setAuctionId] = useState('');
@@ -25,7 +25,7 @@ function Auction() {
   const submitBid = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:8080/auction/${auctionId}`, { bidder, amount: bid });
+      await axios.post(`http://localhost:8080/auction/${auctionId}/bid`, { bidder, amount: bid });
       fetchHighestBid();  // 최고 입찰 정보를 업데이트합니다.
       setBid('');
       setBidder('');

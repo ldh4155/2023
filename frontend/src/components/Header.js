@@ -1,25 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, {  useEffect } from 'react';
 import {Navbar, Nav, Container} from 'react-bootstrap'
 import { Form, Button } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
 
 const Header = ({isLoggedIn, setIsLoggedIn}) => {
   const navigate = useNavigate();
-  let token = localStorage.getItem('token');
+  const token = localStorage.getItem('Authorization');
   useEffect(() => {
-    token = localStorage.getItem('token');
     if(token!=null) {
       setIsLoggedIn(true);
     }
   }, []);
-
+  
   const handleLogin = () => {
-    navigate('/login');
+    navigate('/signin');
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    //토큰 제거
+    localStorage.removeItem('Authorization');
     setIsLoggedIn(false);
+    // 메인 페이지로 리디렉션
     navigate('/');
   }
 
@@ -36,6 +37,7 @@ const Header = ({isLoggedIn, setIsLoggedIn}) => {
               <Nav className="me-auto d-flex flex-column flex-lg-row">
                 <Link to="/page1" className="nav-link nav-link-margin">중고거래</Link>
                 <Link to="/board" className="nav-link nav-link-margin">게시판</Link>
+                <Link to="/auctions" className="nav-link nav-link-margin">경매</Link>
               </Nav>
             </Navbar.Collapse>
 
@@ -51,7 +53,7 @@ const Header = ({isLoggedIn, setIsLoggedIn}) => {
                 {isLoggedIn ? (
                   <>
                     <Nav.Link onClick={handleLogout}>로그아웃</Nav.Link>
-                    <Link to={`/mypage/${token||1}`} className="nav-link">마이페이지</Link>
+                    <Link to="/mypage" className="nav-link">마이페이지</Link>
                   </>
                 ) : (
                   <>
