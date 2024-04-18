@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Integer> {
 
-    @Query("SELECT b FROM Board b WHERE b.title LIKE %:keyword% OR b.content LIKE %:keyword%")
+    @Query("SELECT b FROM Board b WHERE b.title LIKE %:keyword% OR b.content LIKE %:keyword% ORDER BY createTime DESC")
     Page<Board> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
     List<Board> findByWriter_Id(String writerId);
