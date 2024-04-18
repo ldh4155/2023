@@ -43,9 +43,10 @@ public class BoardController {
     }
 
     @PostMapping("/board") // 글 쓰기
-    public ResponseEntity<?> save(@RequestPart(value = "images", required = false) List<MultipartFile> imageFiles,
-                                  @RequestPart("title") String title, @RequestPart("content") String content) {
-        //SecurityContextHolder에서 토큰값 가져옴
+    public ResponseEntity<?> save(@RequestPart(value = "files", required = false) List<MultipartFile> files,
+                                  @RequestPart("title") String title,
+                                  @RequestPart("content") String content) {
+        // SecurityContextHolder에서 토큰값 가져옴
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String writer = authentication.getName();
         BoardWriteDto boardWriteDto = BoardWriteDto.builder()
@@ -54,14 +55,21 @@ public class BoardController {
                 .writer(writer)
                 .build();
 
-        if (imageFiles == null)
-            boardService.boardWrite(boardWriteDto);
-        else {
-            if (fileStorageService.storeBoardFile(imageFiles,
-                    boardService.boardWrite(boardWriteDto)) == null) {
-                return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+        Board board = boardService.boardWrite(boardWriteDto);
+
+        boolean fileSaveError = false;
+
+        if (files != null && !files.isEmpty()) {
+            // 이미지와 비디오 파일을 함께 저장
+            if (fileStorageService.storeBoardFile(files, board).isEmpty()) {
+                fileSaveError = true;
             }
         }
+
+        if (fileSaveError) {
+            return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         return new ResponseEntity<>(true, HttpStatus.CREATED);
     }
 

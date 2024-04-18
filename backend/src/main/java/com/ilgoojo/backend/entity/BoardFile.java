@@ -10,22 +10,30 @@ import lombok.Setter;
 @Table(name = "board_file")
 public class BoardFile{
 
-    public BoardFile() {
+
+    public enum FileType {
+        @Enumerated
+        IMAGE, VIDEO
     }
 
     public BoardFile(String originalFileName, String storedFileName,
-                     String filePath, String imageUrl, Board board) {
+                     String filePath, String imageUrl, Board board, FileType fileType) {
+
         this.originalFileName = originalFileName;
         this.storedFileName = storedFileName;
         this.filePath = filePath;
         this.imageUrl = imageUrl;
         this.board = board;
+        this.fileType = fileType;
+
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private FileType fileType;
     @Column
     private String originalFileName;
     @Column
