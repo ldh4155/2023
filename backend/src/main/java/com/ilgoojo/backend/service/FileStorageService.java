@@ -77,30 +77,49 @@ public class FileStorageService {
             throw new FileStorageException("Could not store file " + file.getOriginalFilename(), ex);
         }
     }
+
+    public BoardFile.FileType determineFileType(String fileName) {
+        if (fileName.endsWith(".jpg") || fileName.endsWith(".png") || fileName.endsWith(".gif")) {
+            return BoardFile.FileType.IMAGE;
+        } else if (fileName.endsWith(".mp4") || fileName.endsWith(".avi") || fileName.endsWith(".mov")) {
+            return BoardFile.FileType.VIDEO;
+        }
+        throw new IllegalArgumentException("Unsupported file type.");
+    }
+
+    @Transactional
     public List<String> storeBoardFile(List<MultipartFile> files, Board board) {
         List<String> fileNames = new ArrayList<>();
 
-        for(MultipartFile file : files) {
-            if(!file.isEmpty()) {
+        for (MultipartFile file : files) {
+            if (!file.isEmpty()) {
                 try {
-                    String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename(); //파일 이름 중복 방지
-                    String imageUrl = baseUrl + fileName; //db에 저장할 이미지 접근 url
+                    String originalFileName = file.getOriginalFilename();
+                    String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+                    String fileName = UUID.randomUUID().toString() + fileExtension; // 파일 이름 중복 방지
+                    String imageUrl = baseUrl + fileName; // db에 저장할 이미지 접근 url
 
-                    File uploadFile = new File(fileStorageLocation + "\\" +  fileName);
+                    File uploadFile = new File(fileStorageLocation + File.separator + fileName);
                     file.transferTo(uploadFile.toPath());
 
-                    BoardFile boardFile = new BoardFile(file.getOriginalFilename(), fileName,
-                            uploadFile.getAbsolutePath(), imageUrl, board);
+                    BoardFile.FileType fileType = determineFileType(file.getOriginalFilename());
+                    BoardFile boardFile = new BoardFile(originalFileName, fileName,
+                            uploadFile.getAbsolutePath(), imageUrl, board, fileType);
                     boardFileRepository.save(boardFile);
                     fileNames.add(fileName);
 
                 } catch (IOException e) {
                     e.printStackTrace();
+                    // 여기서 적절한 예외 처리 또는 사용자 피드백 로직을 구현할 수 있습니다.
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                    // 지원하지 않는 파일 타입에 대한 처리
                 }
             }
         }
         return fileNames;
     }
+
 
     public List<String> getImageUrls(Integer boardId) {
         return boardFileRepository.findImageUrlsByBoardId(boardId);
