@@ -120,6 +120,22 @@ public class FileStorageService {
         return fileNames;
     }
 
+    public String deleteImage(Integer boardId) {
+        List<String> storedFileName = boardFileRepository.findStoredFileNameByBoardId(boardId);
+
+        for(String fileName : storedFileName) {
+            try {
+                Path file = Paths.get(fileStorageLocation + File.separator + fileName);
+                Files.deleteIfExists(file);
+
+                return "삭제 성공";
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "실패";
+    }
+
 
     public List<String> getImageUrls(Integer boardId) {
         return boardFileRepository.findImageUrlsByBoardId(boardId);
