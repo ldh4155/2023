@@ -3,8 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import ImageList from "../../components/ImageList";
 import Comment from "../comment/Comment";
 import { api } from "../../api/api";
+import {decodeJwt} from "../../api/decodeJwt";
 import Modal from "../../components/Modal";
 import ModalBoard from "./ModalBoard";
+import BoardList from "./BoardList";
 
 export default function BoardDetail(props) {
   const propsParam = useParams();
@@ -12,12 +14,14 @@ export default function BoardDetail(props) {
   const navigate = useNavigate();
   const [boardData, setBoardData] = useState(null);
   const [modalBoard, setModalBoard] = useState({});
+  const myId = decodeJwt();
 
   useEffect(() => {
     api
       .get(`board/${id}`)
       .then((res) => {
         setBoardData(res.data);
+        console.log(res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -30,6 +34,7 @@ export default function BoardDetail(props) {
       .then((res) => {
         if (res.data === "ok") {
           alert("삭제 되었습니다.");
+          props.fetchBoards(); //새로고침 없이 삭제 확인
           navigate("/board");
         } else {
           alert("삭제 실패했습니다");
@@ -51,8 +56,12 @@ export default function BoardDetail(props) {
           <div>
             <h1>
               제목 : {boardData.title}{" "}
-              <button onClick={() => UpdateBoard(boardData.id)}>수정</button>{" "}
-              <button onClick={() => DeleteBoard(boardData.id)}>삭제</button>
+              {boardData.memberId === myId && ( //자기 게시물이면 보이게
+                <>
+                  <button onClick={() => UpdateBoard(boardData.id)}>수정</button>{" "}
+                  <button onClick={() => DeleteBoard(boardData.id)}>삭제</button>      
+                </>
+              )}
               <Modal boardData={boardData} />
             </h1>
             <hr />

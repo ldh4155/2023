@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import CommentWrite from "./CommentWrite";
 import { api } from "../../api/api";
+import {decodeJwt} from "../../api/decodeJwt";
 
 const Comment = ({boardId, comments}) => {
 
@@ -11,6 +12,7 @@ const Comment = ({boardId, comments}) => {
         id: null,
         content: null
     });
+    const myId = decodeJwt();
     
     const showMore = () => {
         setVisible((prevValue) => prevValue + 10);
@@ -68,8 +70,13 @@ const Comment = ({boardId, comments}) => {
                 <div key={comment.id}>
                   <span>{comment.memberNickName}</span>&nbsp;&nbsp;&nbsp;
                   <span>{comment.createTime}</span>&nbsp;
-                  <button onClick={() => handleEditClick(comment.id)}>수정</button>&nbsp;
-                  <button onClick={() => deleteComment(comment.id)}>삭제</button>
+                  {comment.memberId === myId && (
+                    <>
+                      <button onClick={() => handleEditClick(comment.id)}>수정</button>&nbsp;
+                      <button onClick={() => deleteComment(comment.id)}>삭제</button>
+                    </>
+                  )}
+                  
                   <p>{comment.content}</p>
                 </div>
             ))}

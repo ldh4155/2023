@@ -3,6 +3,7 @@ package com.ilgoojo.backend.service;
 import com.ilgoojo.backend.dto.BoardDetailDto;
 import com.ilgoojo.backend.dto.BoardWriteDto;
 import com.ilgoojo.backend.entity.Board;
+import com.ilgoojo.backend.entity.BoardFile;
 import com.ilgoojo.backend.entity.Member;
 import com.ilgoojo.backend.repository.BoardRepository;
 import com.ilgoojo.backend.repository.MemberRepository;
@@ -11,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -25,6 +24,7 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final CommentService commentService;
     private final FileStorageService fileStorageService;
+
 
     public BoardService(BoardRepository boardRepository, CommentService commentService,
                         MemberRepository memberRepository, FileStorageService fileStorageService) {
@@ -55,6 +55,7 @@ public class BoardService {
                 .id(board.getId())
                 .title(board.getTitle())
                 .content(board.getContent())
+                .memberId(board.getWriter().getId())
                 .nickName(board.getWriter().getNickName())
                 .view(board.getView())
                 .comments(commentService.showComments(id))

@@ -67,11 +67,19 @@ export default function BoardList() {
           element={<Write fetchBoards={() => fetchBoards(currentPage)} />}
         />{" "}
         // 글 쓰는 페이지
-        <Route path=":id" element={<BoardDetail />} /> // 글 상세 보기
+        <Route
+          path=":id"
+          element={<BoardDetail fetchBoards={() => fetchBoards(currentPage)} />} //글 삭제 후 새로고침 없이 확인
+        />{" "}
+        // 글 상세 보기
         <Route path="update/:id" element={<Update />} /> // 글 수정 하기
       </Routes>
       {boards.map((board) => (
-        <BoardItem key={board.id} board={board} />
+        <BoardItem
+          key={board.id}
+          board={board}
+          fetchBoards={() => fetchBoards(currentPage)}
+        />
       ))}
       <div className="left-padding">
         <input
