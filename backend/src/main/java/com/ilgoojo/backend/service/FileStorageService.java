@@ -8,7 +8,6 @@ import com.ilgoojo.backend.repository.BoardFileRepository;
 import com.ilgoojo.backend.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -120,6 +119,27 @@ public class FileStorageService {
         return fileNames;
     }
 
+    public String deleteImage(Integer boardId) {
+        List<String> storedFileName = boardFileRepository.findStoredFileNameByBoardId(boardId);
+
+        for(String fileName : storedFileName) {
+            try {
+                Path file = Paths.get(fileStorageLocation + File.separator + fileName);
+                Files.deleteIfExists(file);
+
+                return "삭제 성공";
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "실패";
+
+    }
+
+
+    public List<String> getOriginFileNames(Integer boardId){
+        return boardFileRepository.findOriginalFileNameByBoardId(boardId);
+    }
 
     public List<String> getImageUrls(Integer boardId) {
         return boardFileRepository.findImageUrlsByBoardId(boardId);
