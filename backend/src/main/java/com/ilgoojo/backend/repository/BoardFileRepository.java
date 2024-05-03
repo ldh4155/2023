@@ -14,4 +14,10 @@ public interface BoardFileRepository extends JpaRepository<BoardFile, Long> {
 
     @Query("SELECT bf.storedFileName FROM BoardFile bf WHERE bf.board.id = :boardId")
     List<String> findStoredFileNameByBoardId(@Param("boardId")Integer BoardId);
+
+    @Query("SELECT bf.originalFileName FROM BoardFile bf WHERE bf.board.id = :boardId")
+    List<String> findOriginalFileNameByBoardId(@Param("boardId")Integer BoardId);
+
+    BoardFile findByStoredFileName(String storedFileName);
+
 }
