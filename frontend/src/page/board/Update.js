@@ -12,7 +12,6 @@ export default function Update(props) {
     title: "",
     content: "",
     files: [],
-    originalFileNames: [],
   });
   const navigate = useNavigate();
 
@@ -24,10 +23,7 @@ export default function Update(props) {
           title: res.data.title,
           content: res.data.content,
           files: res.data.imageUrls,
-          originalFileNames: res.data.originalFileName,
         });
-
-        console.log(boardData);
       })
       .catch((error) => {
         console.log(error);
@@ -39,6 +35,7 @@ export default function Update(props) {
       ...boardData,
       [event.target.name]: event.target.value,
     });
+    console.log(boardData);
   }
 
   function SubmitBoard(event) {
@@ -47,14 +44,15 @@ export default function Update(props) {
     const formData = new FormData();
     formData.append("title", boardData.title);
     formData.append("content", boardData.content);
-    if (boardData.files) {
-      boardData.files.forEach((file) => formData.append("files", file));
-    }
+    boardData.files.forEach((file) => formData.append("files", file));
     api
       .put(`board/${id}`, formData)
       .then((res) => {
         if (res.status === 200) {
+          console.log("여기");
+          console.log(boardData);
           alert("게시글 수정이 완료 되었습니다.");
+
           navigate(`/board/${id}`);
         } else {
           console.log("여기");
@@ -67,41 +65,11 @@ export default function Update(props) {
       });
   }
   function handleFileChange(event) {
-    setBoardData({
-      ...boardData,
-      files: Array.from(event.target.files),
-    });
-  }
-
-  // 기존 파일 정보를 보여주는 컴포넌트
-  const ExistingFiles = ({ files, onRemove }) => (
-    <ul>
-      {files &&
-        files.map((file, index) => (
-          <li key={index}>
-            {boardData.originalFileNames[index]}{" "}
-            <button onClick={() => onRemove(index)}>삭제</button>
-          </li>
-        ))}
-    </ul>
-  );
-
-  function handleFileChange(event) {
     // 새로 추가된 파일들을 현재 state에 추가
     const newFiles = Array.from(event.target.files);
     setBoardData({
       ...boardData,
       files: [...boardData.files, ...newFiles],
-    });
-    console.log(boardData);
-  }
-
-  function handleRemoveFile(index) {
-    // 특정 인덱스의 파일을 삭제
-    const updatedFiles = boardData.files.filter((_, i) => i !== index);
-    setBoardData({
-      ...boardData,
-      files: updatedFiles,
     });
     console.log(boardData);
   }
@@ -114,7 +82,6 @@ export default function Update(props) {
         ChangeValue={ChangeValue}
         handleFileChange={handleFileChange}
       />
-      <ExistingFiles files={boardData.files} onRemove={handleRemoveFile} />
     </div>
   );
 }

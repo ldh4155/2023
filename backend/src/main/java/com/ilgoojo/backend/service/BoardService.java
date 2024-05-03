@@ -8,6 +8,7 @@ import com.ilgoojo.backend.entity.Member;
 import com.ilgoojo.backend.repository.BoardRepository;
 import com.ilgoojo.backend.repository.MemberRepository;
 import com.ilgoojo.backend.util.DateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final CommentService commentService;
     private final FileStorageService fileStorageService;
+
 
     public BoardService(BoardRepository boardRepository, CommentService commentService,
                         MemberRepository memberRepository, FileStorageService fileStorageService) {

@@ -91,41 +91,42 @@ public class BoardController {
 
     }
 
-    @PutMapping("/board/{id}") // 글 수정하기, 파일 포함
-    public ResponseEntity<?> updateWithFiles(@PathVariable Integer id,
-                                             @RequestPart("title") String title,
-                                             @RequestPart("content") String content,
-                                             @RequestPart(value = "files", required = false) List<MultipartFile> files) {
+    @PutMapping("/board/{id}")
+    @Transactional // 트랜잭션 관리 추가
+    public ResponseEntity<?> update(@PathVariable Integer id,
+                                    @RequestPart("title") String title,
+                                    @RequestPart("content") String content,
+                                    @RequestPart(value = "files", required = false) List<MultipartFile> files) {
         // 게시글 존재 여부 확인
         Board existingBoard = boardService.getBoardById(id);
         if (existingBoard == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
 
         // 게시글 정보 업데이트
         existingBoard.setTitle(title);
         existingBoard.setContent(content);
 
+        System.out.println("this");
+        System.out.println(files);
         // 게시글 업데이트
         Board updatedBoard = boardService.boardModify(id, existingBoard);
 
         // 기존 파일 삭제 및 새 파일 저장 로직
-        boolean fileSaveError = false;
         if (files != null && !files.isEmpty()) {
             // 기존 파일 삭제
             fileStorageService.deleteImage(id);
+
             // 새 파일 저장
             if (fileStorageService.storeBoardFile(files, updatedBoard).isEmpty()) {
-                fileSaveError = true;
+                // 파일 저장에 실패한 경우
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 저장에 실패했습니다.");
             }
         }
 
-        if (fileSaveError) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok("게시글이 성공적으로 업데이트되었습니다.");
     }
+
 
 
     @DeleteMapping("board/{id}") // 삭제하기
