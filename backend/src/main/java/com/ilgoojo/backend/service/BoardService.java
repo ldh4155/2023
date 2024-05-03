@@ -3,16 +3,14 @@ package com.ilgoojo.backend.service;
 import com.ilgoojo.backend.dto.BoardDetailDto;
 import com.ilgoojo.backend.dto.BoardWriteDto;
 import com.ilgoojo.backend.entity.Board;
+import com.ilgoojo.backend.entity.BoardFile;
 import com.ilgoojo.backend.entity.Member;
 import com.ilgoojo.backend.repository.BoardRepository;
 import com.ilgoojo.backend.repository.MemberRepository;
 import com.ilgoojo.backend.util.DateUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -24,12 +22,14 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
     private final CommentService commentService;
+    private final FileStorageService fileStorageService;
 
     public BoardService(BoardRepository boardRepository, CommentService commentService,
-                        MemberRepository memberRepository) {
+                        MemberRepository memberRepository, FileStorageService fileStorageService) {
         this.boardRepository = boardRepository;
         this.commentService = commentService;
         this.memberRepository = memberRepository;
+        this.fileStorageService = fileStorageService;
     }
 
     @Transactional
@@ -86,6 +86,7 @@ public class BoardService {
     @Transactional
     public String boardDelete(Integer id) {
         boardRepository.deleteById(id);
+        fileStorageService.deleteImage(id);
         return "ok";
     }
 

@@ -85,18 +85,52 @@ public class BoardController {
     public ResponseEntity<BoardDetailDto> getBoardDetail(@PathVariable Integer id) {
         BoardDetailDto boardDetailDto = boardService.getBoardDetail(id);
         boardDetailDto.setImageUrls(fileStorageService.getImageUrls(id));
+        boardDetailDto.setOriginalFileName((fileStorageService.getOriginFileNames(id)));
 
         return new ResponseEntity<>(boardDetailDto, HttpStatus.OK);
 
     }
 
-    @PutMapping("/board/{id}") // 글 수정하기
-    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Board board) {
-        return new ResponseEntity<>(boardService.boardModify(id, board), HttpStatus.OK);
+    @PutMapping("/board/{id}") // 글 수정하기, 파일 포함
+    public ResponseEntity<?> updateWithFiles(@PathVariable Integer id,
+                                             @RequestPart("title") String title,
+                                             @RequestPart("content") String content,
+                                             @RequestPart(value = "files", required = false) List<MultipartFile> files) {
+        // 게시글 존재 여부 확인
+        Board existingBoard = boardService.getBoardById(id);
+        if (existingBoard == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        // 게시글 정보 업데이트
+        existingBoard.setTitle(title);
+        existingBoard.setContent(content);
+
+        // 게시글 업데이트
+        Board updatedBoard = boardService.boardModify(id, existingBoard);
+
+        // 기존 파일 삭제 및 새 파일 저장 로직
+        boolean fileSaveError = false;
+        if (files != null && !files.isEmpty()) {
+            // 기존 파일 삭제
+            fileStorageService.deleteImage(id);
+            // 새 파일 저장
+            if (fileStorageService.storeBoardFile(files, updatedBoard).isEmpty()) {
+                fileSaveError = true;
+            }
+        }
+
+        if (fileSaveError) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
     @DeleteMapping("board/{id}") // 삭제하기
     public ResponseEntity<?> deleteById(@PathVariable Integer id) {
         return new ResponseEntity<>(boardService.boardDelete(id), HttpStatus.OK);
     }
+
 }
