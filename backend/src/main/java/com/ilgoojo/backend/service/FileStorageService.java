@@ -8,7 +8,6 @@ import com.ilgoojo.backend.repository.BoardFileRepository;
 import com.ilgoojo.backend.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -120,22 +119,35 @@ public class FileStorageService {
         return fileNames;
     }
 
-    public String deleteImage(Integer boardId) {
-        List<String> storedFileName = boardFileRepository.findStoredFileNameByBoardId(boardId);
 
-        for(String fileName : storedFileName) {
+    public String deleteImage(Integer boardId) {
+        List<String> storedFileNames = boardFileRepository.findStoredFileNameByBoardId(boardId);
+        boolean isAllDeleted = true;
+
+        for(String fileName : storedFileNames) {
             try {
+                // 파일 시스템에서 파일 삭제
                 Path file = Paths.get(fileStorageLocation + File.separator + fileName);
                 Files.deleteIfExists(file);
 
-                return "삭제 성공";
-            }catch (Exception e) {
+                // 데이터베이스에서 파일 정보 삭제
+                BoardFile boardFile = boardFileRepository.findByStoredFileName(fileName);
+                if (boardFile != null) {
+                    boardFileRepository.delete(boardFile);
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
+                isAllDeleted = false;
             }
         }
-        return "실패";
+
+        return isAllDeleted ? "삭제 성공" : "실패";
     }
 
+
+    public List<String> getOriginFileNames(Integer boardId){
+        return boardFileRepository.findOriginalFileNameByBoardId(boardId);
+    }
 
     public List<String> getImageUrls(Integer boardId) {
         return boardFileRepository.findImageUrlsByBoardId(boardId);
