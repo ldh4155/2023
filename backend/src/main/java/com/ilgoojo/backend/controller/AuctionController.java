@@ -1,51 +1,56 @@
 package com.ilgoojo.backend.controller;
 
 import com.ilgoojo.backend.dto.AuctionDto;
+import com.ilgoojo.backend.dto.BidDto;
 import com.ilgoojo.backend.entity.Auction;
 import com.ilgoojo.backend.service.AuctionService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.ilgoojo.backend.service.FileStorageService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @CrossOrigin
-@RestController
-@RequestMapping("/auctions") // 모든 경매 관련 엔드포인트의 기본 URL
+@RestController // 모든 경매 관련 엔드포인트의 기본 URL
 public class AuctionController {
     private final AuctionService auctionService;
 
-    public AuctionController(AuctionService auctionService) {
+    public AuctionController(AuctionService auctionService,FileStorageService fileStorageService) {
         this.auctionService = auctionService;
     }
 
     // 경매 목록 조회
-    @GetMapping
-    public ResponseEntity<List<Auction>> getAllAuctions() {
-        List<Auction> auctions = auctionService.getAuctionList();
-        if (auctions.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(auctions, HttpStatus.OK);
+    @GetMapping("/auctions")
+    public List<Auction> getAllAuctions() {
+
+        return auctionService.getAuctionList();
     }
 
+
+
     // 특정 경매 조회
-    @GetMapping("/{id}")
-    public Auction getAuctionById(@PathVariable Long id) {
-        return auctionService.getAuctionById(id);
+    @GetMapping("auctions/{auctionId}")
+    public BidDto getAuctionById(@PathVariable Integer auctionId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return auctionService.getAuctionById(auctionId);
     }
 
     // 새로운 경매 등록
-    @PostMapping
-    public ResponseEntity<Auction> createAuction(@RequestBody Auction auction) {
-        Auction newAuction = auctionService.createAuction(auction);
-        return new ResponseEntity<>(newAuction, HttpStatus.CREATED);
+    @PostMapping(path = "/auctions", consumes = "multipart/form-data")
+    public Auction createAuction(@RequestParam("title") String title,
+                                           @RequestParam("startPrice") Integer startPrice,
+                                           @RequestParam("image") MultipartFile image) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AuctionDto auctionDto = new AuctionDto(title,startPrice);
+        return auctionService.createAuction(auctionDto,image);
     }
 
     // 경매 입찰
-    @PostMapping("/{id}/bid")
-    public ResponseEntity<Auction> bid(@PathVariable Long id, @RequestBody AuctionDto auctionDto) {
-        Auction auction = auctionService.bid(id, auctionDto.getBidder(), auctionDto.getAmount());
-        return new ResponseEntity<>(auction, HttpStatus.CREATED);
+    @PostMapping("auctions/{auctionId}/bid")
+    public Auction bid(@PathVariable Integer auctionId, @RequestBody Integer amount) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return auctionService.bid(auctionId, authentication.getName(),amount);
     }
 }

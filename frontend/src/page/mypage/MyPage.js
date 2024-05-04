@@ -16,7 +16,6 @@ const MyPage = () => {
       setAuthToken();
       try {
         const userResponse = await api.get(`mypageuser`);
-        console.log(userResponse.data.imageUrl)
         setUser(userResponse.data);
         const boardsResponse = await api.get(`mypageboard`);
         setBoards(boardsResponse.data);
@@ -105,6 +104,7 @@ const MyPage = () => {
           <img src={user.imageUrl} alt={user.name} style={{ cursor: 'pointer' }} />
         </label>
         <input id="imageUpload" type="file" style={{ display: 'none' }} onChange={handleImageUpload} />
+        <p>{user.profileImage}</p>
   
         <h2>{user.nickName}
           <button onClick={() => setEditField('nickName')}>수정</button>

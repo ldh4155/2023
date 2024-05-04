@@ -100,7 +100,7 @@ public class MemberService {
                 .id(findMember.getMemberId())
                 .name(findMember.getName())
                 .nickName(findMember.getNickName())
-                .imageUrl(findMember.getProfileImageId().getUrl())
+                .imageUrl(findMember.getProfileImageId().getProfileImage())
                 .birth(findMember.getBirth())
                 .numberOfTransactions(findMember.getNumberOfTransactions())
                 .email(findMember.getEmail())

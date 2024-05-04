@@ -33,7 +33,7 @@ function App() {
         <Route path='/users' element={<UserList/>}/>
         <Route path='/user/:id' element={<SomeonePage/>}/>
         <Route path='/auctions/' element={<AuctionList/>}/>
-        <Route path='/auction/:id' element={<Auction/>}/>
+        <Route path='/auctions/:auctionId' element={<Auction/>}/>
       </Routes>
       </BrowserRouter>
       <Footer />

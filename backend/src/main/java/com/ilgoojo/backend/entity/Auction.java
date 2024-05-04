@@ -8,13 +8,24 @@ import lombok.Setter;
 public class Auction{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long auctionId;
-    private String item;
+    private Integer auctionId;
     private String title;
-    private String startPrice;
-    private String auctionImage;
+    private Integer startPrice;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_image")
+    private ProfileImage auctionImageId;
     @OneToOne
     @JoinColumn(name = "member_id")
     private Member bidder;
-    private int amount;
+    private Integer amount;
+
+    public Auction(){}
+    public Auction(String title,Integer startPrice,ProfileImage profileImage, Member bidder, Integer amount){
+        this.title = title;
+        this.startPrice = startPrice;
+        this.auctionImageId = profileImage;
+        this.bidder = bidder;
+        this.amount = amount;
+    }
+
 }
