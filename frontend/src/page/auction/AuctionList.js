@@ -106,16 +106,16 @@ function AuctionList() {
         </form>
       )}
       <ul>
-        {auctions.map(auctions => (
-          <li key={auctions.auctionId}>
-            <Link to={`/auctions/${auctions.auctionId}`}>{auctions.title}</Link> {/* 각 경매 상세 페이지로 이동 */}
-            {auctions.imageUrl && (
-              <img src={auctions.imageUrl} alt="Auction" style={{ width: '100px', height: '100px' }} />
-            )}
-            <p>{"시작가 : " + auctions.startPrice}</p>
-            <p>{"현재 최고가 : " + (auctions.amount ? auctions.amount : "미입찰")}</p>
-          </li>
-        ))}
+      {auctions.map(auction => (
+  <li key={auction.auctionId}>
+    <Link to={`/auctions/${auction.auctionId}`}>{auction.title}</Link> {/* 각 경매 상세 페이지로 이동 */}
+    {auction.imageUrl && (
+      <img src={auction.imageUrl} alt="Auction" style={{ width: '100px', height: '100px' }} />
+    )}
+    <p>{"시작가 : " + auction.startPrice}</p>
+    <p>{"현재 최고가 : " + (auction.amount ? auction.amount : "미입찰")}</p>
+  </li>
+))}
       </ul>
     </div>
   );

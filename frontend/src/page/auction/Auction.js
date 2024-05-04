@@ -26,6 +26,9 @@ function Auction() {
   const submitBid = async (e) => {
     e.preventDefault();
     try {
+      if(bid<highestBid.amount){
+        alert("최고 입찰가보다 높은 금액을 입력해주십시오.");
+      }
       const userResponse = await api.get(`mypageuser`);
       setBidder(userResponse.data.memberId);
   
@@ -59,7 +62,8 @@ function Auction() {
         />
         <button type="submit">입찰</button>
       </form>
-      <h2>현재 최고 입찰자: {highestBid.bidder} 금액: {highestBid.amount}</h2>
+      <h2>현재 최고 입찰자: {highestBid.bidder}</h2>
+      <h2>금액: {highestBid.amount}</h2>
     </div>
   );
 }
