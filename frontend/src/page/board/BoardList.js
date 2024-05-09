@@ -8,6 +8,7 @@ import Update from "./Update";
 import { api, setAuthToken } from "../../api/api";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../../style/page.css";
+import AreaFiltering from "../../components/AreaFiltering";
 
 export default function BoardList() {
   const [boards, setBoards] = useState([]);
@@ -61,6 +62,7 @@ export default function BoardList() {
   };
   return (
     <div>
+      <AreaFiltering />
       <BoardHeader />
       {/* 중첩 라우팅  /board 가 기본적으로 붙음*/}
       <Routes>
