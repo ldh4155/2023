@@ -1,6 +1,7 @@
 package com.ilgoojo.backend.service;
 
 import com.ilgoojo.backend.dto.AuctionDto;
+import com.ilgoojo.backend.dto.AuctionListDto;
 import com.ilgoojo.backend.dto.BidDto;
 import com.ilgoojo.backend.entity.Auction;
 import com.ilgoojo.backend.entity.Member;
@@ -52,14 +53,15 @@ public class AuctionService {
         return auction;
     }
 
-    public List<Auction> getAuctionList(){
-        return auctionRepository.findAll();
+    public List<AuctionListDto> getAuctionList(){
+        return auctionRepository.findAuctionsAsDto();
     }
 
     public Auction createAuction(AuctionDto auctiondto, MultipartFile file) {
         Auction newAuction = new Auction();
         newAuction.setTitle(auctiondto.getTitle());
         newAuction.setStartPrice(auctiondto.getStartPrice());
+        newAuction.setActivation(true);
         auctionRepository.save(newAuction);
         if(file!= null) {
             ProfileImage auctionImage = new ProfileImage();

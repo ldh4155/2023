@@ -18,6 +18,7 @@ public class Auction{
     @JoinColumn(name = "member_id")
     private Member bidder;
     private Integer amount;
+    private boolean activation;
 
     public Auction(){}
     public Auction(String title,Integer startPrice,ProfileImage profileImage, Member bidder, Integer amount){
@@ -26,6 +27,6 @@ public class Auction{
         this.auctionImageId = profileImage;
         this.bidder = bidder;
         this.amount = amount;
+        this.activation = true;
     }
-
 }

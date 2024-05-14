@@ -25,7 +25,7 @@ const MyPage = () => {
       }
     };
     fetchUserAndBoards();
-  }, [user]);
+  }, []);
 
   const handleEdit = async () => {
     setAuthToken();

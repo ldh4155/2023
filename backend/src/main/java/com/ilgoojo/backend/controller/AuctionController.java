@@ -1,6 +1,7 @@
 package com.ilgoojo.backend.controller;
 
 import com.ilgoojo.backend.dto.AuctionDto;
+import com.ilgoojo.backend.dto.AuctionListDto;
 import com.ilgoojo.backend.dto.BidDto;
 import com.ilgoojo.backend.entity.Auction;
 import com.ilgoojo.backend.service.AuctionService;
@@ -23,7 +24,7 @@ public class AuctionController {
 
     // 경매 목록 조회
     @GetMapping("/auctions")
-    public List<Auction> getAllAuctions() {
+    public List<AuctionListDto> getAllAuctions() {
 
         return auctionService.getAuctionList();
     }

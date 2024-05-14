@@ -109,9 +109,9 @@ function AuctionList() {
       {auctions.map(auction => (
   <li key={auction.auctionId}>
     <Link to={`/auctions/${auction.auctionId}`}>{auction.title}</Link> {/* 각 경매 상세 페이지로 이동 */}
-    {auction.imageUrl && (
+    <p>{auction.imageUrl && (
       <img src={auction.imageUrl} alt="Auction" style={{ width: '100px', height: '100px' }} />
-    )}
+    )}</p>
     <p>{"시작가 : " + auction.startPrice}</p>
     <p>{"현재 최고가 : " + (auction.amount ? auction.amount : "미입찰")}</p>
   </li>
