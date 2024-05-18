@@ -3,10 +3,12 @@ package com.ilgoojo.backend.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @Setter
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Member {
 
     public Member() {
@@ -45,7 +47,7 @@ public class Member {
     @Column(name = "number_of_transactions", columnDefinition = "integer default 0", nullable = false)
     private Integer numberOfTransactions;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_image")
     private ProfileImage profileImageId;
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuctionService {
@@ -30,8 +31,10 @@ public class AuctionService {
     public BidDto getAuctionById(Integer auctionId) {
         Auction targetAuction = auctionRepository.findById(auctionId)
                 .orElseThrow(() -> new IllegalArgumentException("Auction not found with id: " + auctionId));
-
-        return new BidDto(targetAuction.getBidder().getMemberId(),targetAuction.getAmount());
+        if(targetAuction.getBidder()==null)
+            return new BidDto(targetAuction.getOwner().getMemberId(),targetAuction.getStartPrice());
+        else
+            return new BidDto(targetAuction.getBidder().getMemberId(),targetAuction.getAmount());
     }
 
     @Transactional
@@ -57,11 +60,14 @@ public class AuctionService {
         return auctionRepository.findAuctionsAsDto();
     }
 
-    public Auction createAuction(AuctionDto auctiondto, MultipartFile file) {
+    public Auction createAuction(AuctionDto auctiondto, MultipartFile file,String memberId) {
         Auction newAuction = new Auction();
         newAuction.setTitle(auctiondto.getTitle());
         newAuction.setStartPrice(auctiondto.getStartPrice());
         newAuction.setActivation(true);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid member Id:" + memberId));
+        newAuction.setOwner(member);
         auctionRepository.save(newAuction);
         if(file!= null) {
             ProfileImage auctionImage = new ProfileImage();
@@ -69,5 +75,17 @@ public class AuctionService {
             // 필요한 경우 추가적인 설정을 합니다.
         }
         return newAuction;
+    }
+
+    public boolean endAuction(Integer auctionId, String name){
+        Auction auction = auctionRepository.findById(auctionId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid auction Id:" + auctionId));
+        if(auction.getOwner().getMemberId().equals(name)){
+            auction.setActivation(false);
+            auctionRepository.save(auction);
+            return true; // 경매 비활성화 성공
+        }
+        else
+            return false;
     }
 }

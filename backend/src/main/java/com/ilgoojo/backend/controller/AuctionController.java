@@ -45,7 +45,7 @@ public class AuctionController {
                                            @RequestParam("image") MultipartFile image) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuctionDto auctionDto = new AuctionDto(title,startPrice);
-        return auctionService.createAuction(auctionDto,image);
+        return auctionService.createAuction(auctionDto,image,authentication.getName());
     }
 
     // 경매 입찰
@@ -53,5 +53,11 @@ public class AuctionController {
     public Auction bid(@PathVariable Integer auctionId, @RequestBody Integer amount) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return auctionService.bid(auctionId, authentication.getName(),amount);
+    }
+
+    @PostMapping("auctions/{auctionId}/end")
+    public boolean endAuction(@PathVariable Integer auctionId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return auctionService.endAuction(auctionId,authentication.getName());
     }
 }

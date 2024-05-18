@@ -12,6 +12,6 @@ public class ProfileImage {
     private Long prifileImageId;
 
     @Column(name = "profile_image")
-    private String profileImage;
+    private String profileImage="panda.jpg";
     private String url;
 }

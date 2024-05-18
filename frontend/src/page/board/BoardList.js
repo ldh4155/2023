@@ -20,8 +20,7 @@ export default function BoardList() {
   }, [currentPage]);
 
   const fetchBoards = (page, term) => {
-    setAuthToken();
-    console.log("토큰:",localStorage.getItem("Authorization"));    
+    setAuthToken(); 
     api
       .get(
         `board?page=${page}&size=10&keyword=${term || ""}`

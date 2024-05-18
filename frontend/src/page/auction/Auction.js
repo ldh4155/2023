@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { api, setAuthToken } from "../../api/api";
 
 function Auction() {
   const [bid, setBid] = useState(0);
   const [bidder, setBidder] = useState('');
   const [highestBid, setHighestBid] = useState({bidder: '', amount: 0});
-  const { auctionId } = useParams(); // useParams를 사용하여 auctionId를 얻습니다.
+  const { auctionId } = useParams();
   const token = localStorage.getItem('Authorization');
   
   useEffect(() => {
-    if(auctionId) fetchHighestBid(); // auctionId가 설정되었을 때만 fetchHighestBid를 호출합니다.
-  }, [auctionId]); // auctionId의 변화를 감지하여 useEffect를 다시 실행합니다.
+    if(auctionId) fetchHighestBid();
+  }, [auctionId]);
 
   const fetchHighestBid = async () => {
     try {
@@ -25,27 +25,44 @@ function Auction() {
 
   const submitBid = async (e) => {
     e.preventDefault();
+    if (bid < highestBid.amount) {
+      alert("최고 입찰가보다 높은 금액을 입력해주십시오.");
+      return;
+    }
     try {
-      if(bid<highestBid.amount){
-        alert("최고 입찰가보다 높은 금액을 입력해주십시오.");
-      }
       const userResponse = await api.get(`mypageuser`);
       setBidder(userResponse.data.memberId);
-  
-      // Content-Type을 application/json으로 설정
+
       const config = {
         headers: {
-          'Authorization': token, // 기존 토큰 설정
-          'Content-Type': 'application/json' // Content-Type 추가
+          'Authorization': token,
+          'Content-Type': 'application/json'
         }
       };
-  
-      await axios.post(`http://localhost:8080/auctions/${auctionId}/bid`, bid, config);
-      fetchHighestBid();  // 최고 입찰 정보를 업데이트합니다.
+
+      await axios.post(`http://localhost:8080/auctions/${auctionId}/bid`, bid , config);
+      fetchHighestBid();
       setBid('');
       setBidder('');
     } catch (error) {
       console.error("Error posting data: ", error);
+    }
+  };
+
+  // 경매 종료 기능
+  const endAuction = async () => {
+    try {
+
+      const response = await api.post(`http://localhost:8080/auctions/${auctionId}/end`,{});
+      if(response.data === true){
+        alert("경매가 종료되었습니다.");
+        window.location.href = '/auctions';
+      }
+      else{
+        alert("경매는 시작한 사용자만 종료할 수 있습니다.")
+      }
+    } catch (error) {
+      console.error("Error ending auction: ", error);
     }
   };
 
@@ -62,6 +79,7 @@ function Auction() {
         />
         <button type="submit">입찰</button>
       </form>
+      <button onClick={endAuction}>경매 종료</button>
       <h2>현재 최고 입찰자: {highestBid.bidder}</h2>
       <h2>금액: {highestBid.amount}</h2>
     </div>
