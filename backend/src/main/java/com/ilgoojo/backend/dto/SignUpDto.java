@@ -15,6 +15,9 @@ public class SignUpDto {
     private String nickName;
     private String phone;
     private String address;
+    private String detailAddr;
+    private String sido;
+    private String sigungu;
     private String email;
     private String birth;
 }

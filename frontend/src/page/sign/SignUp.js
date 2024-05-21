@@ -2,15 +2,22 @@ import React, { useEffect, useState } from "react";
 
 import axios from "axios";
 import { debounce } from 'lodash';
+import {PostCode} from "./PostCode";
+
 const SignUp = () => {
     
+    const [address,setAddress] = useState("");
+
     const [member, setMember] = useState({
         id:'',
         password:'',
         name:'',
         nickName:'',
         phone:'',
-        address:'',
+        address:address,
+        detailAddr:'',
+        sido:'',
+        sigungu:'',
         email:'',
         birth:''
 
@@ -19,15 +26,27 @@ const SignUp = () => {
     const [idMessage, setIdMessage] = useState("");
     const [pwdMessage, setpwdMessage] = useState("");
     const [isButtonDisable,setIsButtonDisable] = useState(true);
+    const [sido, setSido] = useState("");
+    const [sigungu, setSigungu] = useState("");
+    
 
     useEffect(() => {
         const isValid = member.id?.trim() !== '' && member.password?.trim() !== '' &&
                          member.name?.trim() !== '' && member.nickName?.trim() !== '' && member.phone?.trim() !== '' &&
-                          member.address?.trim() !== '' && member.email?.trim() !== '' && member.birth?.trim() !== '';
+                          member.address?.trim() !== '' && member.email?.trim() !== '' && member.birth?.trim() !== '' && 
+                          member.detailAddr?.trim() !== '';
         
         setIsButtonDisable(!isValid);
     }, [member]);
     
+    useEffect(() => {
+        setMember(prevMember => ({
+          ...prevMember,
+          address: address
+        }));
+        console.log(address);
+      }, [address]);
+
     //1초동안 입력 없는 경우 get 보내서 중복 체크
     const checkId = debounce(async (e) => {
         const id = e.target.value;
@@ -65,11 +84,16 @@ const SignUp = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setMember(prev => ({ ...prev, [name]: value }));
+    
     };
 
     const handleSignUp = async (e) => {
         e.preventDefault();
-
+        setMember(prevMember => ({
+            ...prevMember,
+            sido: sido,
+            sigungu: sigungu
+          }));
         try {
             console.log(member);
             const response = await axios.post('http://localhost:8080/signup', member);
@@ -98,7 +122,12 @@ const SignUp = () => {
           <input name="name" type="text" placeholder="이름" onChange={handleChange}/>
           <input name="nickName" type="text" placeholder="닉네임" onChange={handleChange}/>
           <input name="phone" type="text" placeholder="휴대폰 번호" onChange={handleChange}/>
-          <input name="address" type="text" placeholder="주소" onChange={handleChange}/>
+          <div>
+            <input name="address" type="text" placeholder="주소" value={address} onChange={handleChange}/>&nbsp;
+            <PostCode setSido={setSido} setSigungu={setSigungu} setAddress={setAddress}></PostCode><br/>
+            <input name="detailAddr" type="text" placeholder="상세주소" onChange={handleChange}/>
+          </div>
+          
           <input name="email" type="email" placeholder="이메일" onChange={handleChange}/>
           <input name="birth" type="date" placeholder="생년월일" onChange={handleChange}/>
           {isButtonDisable && <p style={{color: "red"}}>모두 입력해주세요</p>}
