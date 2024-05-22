@@ -88,4 +88,8 @@ public class AuctionService {
         else
             return false;
     }
+
+    public List<AuctionListDto> getAuctionByOwner(String ownerId){
+        return auctionRepository.findByOwner(ownerId);
+    }
 }

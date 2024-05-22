@@ -5,6 +5,7 @@ import { api, setAuthToken } from "../../api/api";
 const MyPage = () => {
   const [user, setUser] = useState(null);
   const [boards,setBoards] = useState([]);
+  const [auctions,setAuctions] = useState([]);
   const [editField, setEditField] = useState('');
   const [editValue, setEditValue] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -19,6 +20,8 @@ const MyPage = () => {
         setUser(userResponse.data);
         const boardsResponse = await api.get(`mypageboard`);
         setBoards(boardsResponse.data);
+        const auctionResponse = await api.get(`mypageauctions`);
+        setAuctions(auctionResponse.data);
         setIsLoading(false);
       } catch (error) {
         console.error('Failed to load user or boards', error);
@@ -171,6 +174,18 @@ const MyPage = () => {
             <p>조회수:{board.view}</p>
             <p>글 작성시각:{board.createTime}</p>
             <p>글 수정시각:{board.modifiedTime}</p>
+          </div>
+        ))
+        ) : (
+          <p>게시글 없음</p>
+        )}
+        <h2>나의 진행중인 경매</h2>
+        {auctions.length > 0 ? (
+          auctions.map(auction => (
+          <div key = {auction.auctionId}>
+            <p>-------------------------------</p>
+            <Link to={`/auctions/${auction.auctionId}`}>{auction.title}</Link>
+            <p>{"시작가 : " + auction.startPrice}</p>
           </div>
         ))
         ) : (
