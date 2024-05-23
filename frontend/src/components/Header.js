@@ -1,5 +1,6 @@
 import React, {  useEffect, useState } from 'react';
 import {Navbar, Nav, Container} from 'react-bootstrap';
+
 import { Form, Button } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
 import { api } from '../api/api';
@@ -11,7 +12,6 @@ const Header = ({isLoggedIn, setIsLoggedIn}) => {
   const navigate = useNavigate();
   const token = localStorage.getItem('access');
 
-
   useEffect(() => {
     if(token!=null) {
       setIsLoggedIn(true);
@@ -21,7 +21,6 @@ const Header = ({isLoggedIn, setIsLoggedIn}) => {
   const handleLogin = () => {
     navigate('/signin');
   }
-
 
   const handleLogout = async () => {
     const response = await api.post(`signout`, {}, { withCredentials: true });
@@ -45,6 +44,7 @@ const Header = ({isLoggedIn, setIsLoggedIn}) => {
               <Nav className="me-auto d-flex flex-column flex-lg-row">
                 <Link to="/page1" className="nav-link nav-link-margin">중고거래</Link>
                 <Link to="/board" className="nav-link nav-link-margin">게시판</Link>
+                <Link to="/auctions" className="nav-link nav-link-margin">경매</Link>
               </Nav>
             </Navbar.Collapse>
 

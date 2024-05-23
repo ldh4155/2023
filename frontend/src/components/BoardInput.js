@@ -25,6 +25,7 @@ function InputForm({ onSubmit, boardData, onChange, handleFileChange }) {
       </label>
       <br />
       <input type="file" name="files" onChange={handleFileChange} multiple />
+
       <br />
       <button type="submit">완료</button>
     </form>
