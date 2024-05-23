@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { api } from "../../api/api";
 import { debounce } from 'lodash';
-import {PostCode} from "./PostCode";
-
+import {PostCode} from "./PostCode"
 const SignUp = () => {
     
     const [address,setAddress] = useState("");
-
     const [member, setMember] = useState({
         id:'',
         password:'',
@@ -16,19 +14,18 @@ const SignUp = () => {
         phone:'',
         address:address,
         detailAddr:'',
-        sido:'',
-        sigungu:'',
         email:'',
-        birth:''
-
-    });
+        birth:'',
+        sido:"",
+        sigungu:""
+    }); 
     
     const [idMessage, setIdMessage] = useState("");
     const [pwdMessage, setpwdMessage] = useState("");
     const [isButtonDisable,setIsButtonDisable] = useState(true);
     const [sido, setSido] = useState("");
     const [sigungu, setSigungu] = useState("");
-    
+    const navigate = useNavigate();
 
     useEffect(() => {
         const isValid = member.id?.trim() !== '' && member.password?.trim() !== '' &&
@@ -38,15 +35,16 @@ const SignUp = () => {
         
         setIsButtonDisable(!isValid);
     }, [member]);
-    
+
     useEffect(() => {
         setMember(prevMember => ({
           ...prevMember,
-          address: address
+          address: address,
+          sido: sido,
+          sigungu:sigungu
         }));
-        console.log(address);
       }, [address]);
-
+    
     //1초동안 입력 없는 경우 get 보내서 중복 체크
     const checkId = debounce(async (e) => {
         const id = e.target.value;
@@ -59,7 +57,7 @@ const SignUp = () => {
         }
         //중복 체크
         try {
-            const response = await axios.get(`http://localhost:8080/signup?id=${id}`)
+            const response = await api.get(`signup?id=${id}`)
             if(!response.data)
                 setIdMessage("사용할 수 있는 아이디");
             else
@@ -84,23 +82,18 @@ const SignUp = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setMember(prev => ({ ...prev, [name]: value }));
-    
     };
 
     const handleSignUp = async (e) => {
         e.preventDefault();
-        setMember(prevMember => ({
-            ...prevMember,
-            sido: sido,
-            sigungu: sigungu
-          }));
+
         try {
             console.log(member);
-            const response = await axios.post('http://localhost:8080/signup', member);
+            const response = await api.post('signup', member);
             console.log(response.data)
             if (response.data) {
                 alert('가입에 성공하였습니다!');
-                window.location.href = '/';
+                navigate('/signin');
             } else {
                 alert('가입에 실패하였습니다. 다시 시도해주세요.');
             }
@@ -122,12 +115,12 @@ const SignUp = () => {
           <input name="name" type="text" placeholder="이름" onChange={handleChange}/>
           <input name="nickName" type="text" placeholder="닉네임" onChange={handleChange}/>
           <input name="phone" type="text" placeholder="휴대폰 번호" onChange={handleChange}/>
-          <div>
-            <input name="address" type="text" placeholder="주소" value={address} onChange={handleChange}/>&nbsp;
-            <PostCode setSido={setSido} setSigungu={setSigungu} setAddress={setAddress}></PostCode><br/>
-            <input name="detailAddr" type="text" placeholder="상세주소" onChange={handleChange}/>
+          <div> 
+            <input name="address" type="text" placeholder="주소" value={address} onChange={handleChange}/>&nbsp; 
+            <PostCode setSido={setSido} setSigungu={setSigungu} setAddress={setAddress}></PostCode>
+            <br/> 
+            <input name="detailAddr" type="text" placeholder="상세주소" onChange={handleChange}/> 
           </div>
-          
           <input name="email" type="email" placeholder="이메일" onChange={handleChange}/>
           <input name="birth" type="date" placeholder="생년월일" onChange={handleChange}/>
           {isButtonDisable && <p style={{color: "red"}}>모두 입력해주세요</p>}

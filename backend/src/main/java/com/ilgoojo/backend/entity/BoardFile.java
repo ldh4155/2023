@@ -1,5 +1,6 @@
 package com.ilgoojo.backend.entity;
 
+import com.ilgoojo.backend.entity.Board;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,6 +49,5 @@ public class BoardFile{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
-
 
 }

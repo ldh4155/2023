@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class SignUpDto {
+
     private String id;
     private String password;
     private String name;

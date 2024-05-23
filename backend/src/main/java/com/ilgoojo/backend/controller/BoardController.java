@@ -47,6 +47,7 @@ public class BoardController {
                                   @RequestPart("title") String title,
                                   @RequestPart("content") String content) {
         // SecurityContextHolder에서 토큰값 가져옴
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String writer = authentication.getName();
         BoardWriteDto boardWriteDto = BoardWriteDto.builder()
@@ -54,7 +55,6 @@ public class BoardController {
                 .content(content)
                 .writer(writer)
                 .build();
-
         Board board = boardService.boardWrite(boardWriteDto);
 
         boolean fileSaveError = false;
@@ -126,8 +126,6 @@ public class BoardController {
 
         return ResponseEntity.ok("게시글이 성공적으로 업데이트되었습니다.");
     }
-
-
 
     @DeleteMapping("board/{id}") // 삭제하기
     public ResponseEntity<?> deleteById(@PathVariable Integer id) {

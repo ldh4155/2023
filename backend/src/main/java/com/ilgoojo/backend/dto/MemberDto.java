@@ -16,3 +16,4 @@ public class MemberDto {
     private Integer numberOfTransactions;
     private String imageUrl;
 }
+
