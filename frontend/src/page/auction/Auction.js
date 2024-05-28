@@ -29,6 +29,11 @@ function Auction() {
       alert("최고 입찰가보다 높은 금액을 입력해주십시오.");
       return;
     }
+    const checkResponse = await api.get(`http://localhost:8080/auctions/${auctionId}/check`);
+    if(checkResponse.data === false){
+      alert("종료된 경매입니다.");
+      window.location.href = '/auctions';
+    }
     try {
       const userResponse = await api.get(`mypageuser`);
       setBidder(userResponse.data.memberId);
@@ -40,7 +45,11 @@ function Auction() {
         }
       };
 
-      await axios.post(`http://localhost:8080/auctions/${auctionId}/bid`, bid , config);
+      const bidResponse = await api.post(`http://localhost:8080/auctions/${auctionId}/bid`, bid , config);
+      if(bidResponse.data === false){
+        alert("종료된 경매입니다.");
+        window.location.href = '/auctions';
+      }
       fetchHighestBid();
       setBid('');
       setBidder('');
@@ -65,7 +74,6 @@ function Auction() {
       console.error("Error ending auction: ", error);
     }
   };
-
   return (
     <div className="App">
       <h1>경매 입찰 시스템</h1>

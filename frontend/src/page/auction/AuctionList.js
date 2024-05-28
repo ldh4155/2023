@@ -1,43 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { api, setAuthToken } from "../../api/api";
 
 function AuctionList() {
   const [auctions, setAuctions] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [auctionDto,setAuctionDto] = useState();
   const [title, setTitle] = useState('');
   const [startPrice, setStartPrice] = useState('');
-  const [AuctionImage, setAuctionImage] = useState(null); // 새 이미지 상태
-  const [errorMessage, setErrorMessage] = useState(''); // 오류 메시지 상태
+  const [auctionImage, setAuctionImage] = useState(null);
+  const [endDate, setEndDate] = useState(''); // 경매 종료 시각 상태 추가
+  const [errorMessage, setErrorMessage] = useState('');
   const token = localStorage.getItem('Authorization');
 
   useEffect(() => {
-    setAuthToken();
+    setAuthToken(token);
     fetchAuctions();
   }, []);
 
-  const isValidToken = (token) => {
+  const isValidToken = token => {
     if (!token) {
       setErrorMessage("토큰이 존재하지 않습니다.");
       return false;
     }
-    const parts = token.split('.');
-    if (parts.length !== 3) {
-      setErrorMessage("JWT 문자열은 정확히 2개의 점(.) 문자를 포함해야 합니다. 발견된 점의 개수: " + (parts.length - 1));
-      return false;
-    }
-    return true;
+    return token.split('.').length === 3;
   };
 
   const fetchAuctions = async () => {
     if (!isValidToken(token)) return;
 
     try {
-      const response = await api.get('http://localhost:8080/auctions');
+      const response = await api.get('/auctions');
       setAuctions(response.data);
-      setErrorMessage(''); // 오류 메시지 초기화
+      setErrorMessage('');
     } catch (error) {
       console.error("경매 목록을 불러오는데 오류가 발생했습니다: ", error);
       setErrorMessage("경매 목록을 불러오는데 오류가 발생했습니다.");
@@ -49,30 +43,29 @@ function AuctionList() {
   
     if (!isValidToken(token)) return;
   
-    // FormData 객체를 사용하여 파일과 데이터를 함께 서버에 전송
     const formData = new FormData();
     formData.append('title', title);
     formData.append('startPrice', startPrice);
-    if (AuctionImage) {
-      formData.append('image', AuctionImage);
+    formData.append('endDate', endDate); // 경매 종료 시각을 FormData에 추가
+    if (auctionImage) {
+      formData.append('image', auctionImage);
     }
   
     try {
-      const response = await api.post('http://localhost:8080/auctions', formData); // Content-Type 헤더 생략
-      setAuctions(prevAuctions => [...prevAuctions, response.data]); // response를 직접 추가하는 대신 response.data를 추가해야 합니다.
+      const response = await api.post('/auctions', formData);
+      setAuctions(prevAuctions => [...prevAuctions, response.data]);
       setShowForm(false);
       setTitle('');
       setStartPrice('');
-      setAuctionImage(null); // 이미지 상태 초기화
-      setErrorMessage(''); // 오류 메시지 초기화
+      setEndDate(''); // 상태 초기화
+      setAuctionImage(null);
+      setErrorMessage('');
     } catch (error) {
       console.error("경매 등록 중 오류가 발생했습니다: ", error);
       setErrorMessage("경매 등록 중 오류가 발생했습니다.");
     }
   };
-    
 
-  // 이미지 선택 핸들러
   const handleImageChange = (e) => {
     setAuctionImage(e.target.files[0]);
   };
@@ -98,6 +91,12 @@ function AuctionList() {
             required
           />
           <input
+            type="datetime-local" // 날짜와 시간을 선택할 수 있는 input 타입
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            required
+          />
+          <input
             type="file"
             onChange={handleImageChange}
             required
@@ -106,16 +105,16 @@ function AuctionList() {
         </form>
       )}
       <ul>
-      {auctions.map(auction => (
-  <li key={auction.auctionId}>
-    <Link to={`/auctions/${auction.auctionId}`}>{auction.title}</Link> {/* 각 경매 상세 페이지로 이동 */}
-    <p>{auction.imageUrl && (
-      <img src={auction.imageUrl} alt="Auction" style={{ width: '100px', height: '100px' }} />
-    )}</p>
-    <p>{"시작가 : " + auction.startPrice}</p>
-    <p>{"현재 최고가 : " + (auction.amount ? auction.amount : "미입찰")}</p>
-  </li>
-))}
+        {auctions.map(auction => (
+          <li key={auction.auctionId}>
+            <Link to={`/auctions/${auction.auctionId}`}>{auction.title}</Link>
+            <p>{auction.imageUrl && (
+              <img src={auction.imageUrl} alt="Auction" style={{ width: '100px', height: '100px' }} />
+            )}</p>
+            <p>{"시작가 : " + auction.startPrice}</p>
+            <p>{"현재 최고가 : " + (auction.amount ? auction.amount : "미입찰")}</p>
+          </li>
+        ))}
       </ul>
     </div>
   );
