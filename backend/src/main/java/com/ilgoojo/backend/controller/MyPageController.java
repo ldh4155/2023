@@ -60,4 +60,5 @@ public class MyPageController {
     public List<Member> getAllMembers() {
         return memberService.getAllMembers();
     }
+
 }

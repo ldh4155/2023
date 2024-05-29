@@ -11,3 +11,4 @@ public class BoardWriteDto {
     private String content;
     private String writer;
 }
+

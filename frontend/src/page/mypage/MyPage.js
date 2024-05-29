@@ -15,7 +15,6 @@ const MyPage = () => {
     const fetchUserAndBoards = async () => {
       try {
         const userResponse = await api.get(`mypageuser`);
-        console.log(userResponse.data.imageUrl)
         setUser(userResponse.data);
         const boardsResponse = await api.get(`mypageboard`);
         setBoards(boardsResponse.data);

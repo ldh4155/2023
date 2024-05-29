@@ -4,7 +4,6 @@ import BoardInput from "../../components/BoardInput";
 import { api } from "../../api/api";
 import BoardList from "./BoardList";
 
-
 export default function Write(props) {
   let token = localStorage.getItem("token");
   const [board, setBoard] = useState({
@@ -46,7 +45,8 @@ export default function Write(props) {
         alert("게시글 작성에 성공하였습니다.");
         props.fetchBoards();
         navigate("/board");
-        // window.location.replace("/board");
+      
+
       })
       .catch((error) => {
         alert("게시글 작성에 실패하였습니다.");
@@ -62,6 +62,7 @@ export default function Write(props) {
       ChangeValue={ChangeValue}
       handleFileChange={handleFileChange}
       newBoard={props.newBoard}
+
     />
   );
 }

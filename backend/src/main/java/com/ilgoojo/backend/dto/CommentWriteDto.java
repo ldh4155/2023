@@ -6,3 +6,4 @@ import lombok.Getter;
 public class CommentWriteDto {
     private String content;
 }
+

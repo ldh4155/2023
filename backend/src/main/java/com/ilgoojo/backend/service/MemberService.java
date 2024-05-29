@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -51,20 +52,6 @@ public class MemberService {
 
 
     }
-
-//    public boolean signIn(SignInDto signInDto) {
-//        Member findMember = memberRepository.findById(signInDto.getId())
-//                .orElse(null);
-//
-//        if(findMember == null)
-//            return false;
-//        else {
-//            if(!findMember.getPassword().equals(signInDto.getPassword()))
-//                return false;
-//            else
-//                return true;
-//        }
-//    }
 
     public Member updateUser(String id, Member newUserInfo) {
         return memberRepository.findById(id).map(user -> {
