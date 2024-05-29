@@ -12,3 +12,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:///C:\\Users\\user\\2023TeamProject\\images\\");
     }
 }
+

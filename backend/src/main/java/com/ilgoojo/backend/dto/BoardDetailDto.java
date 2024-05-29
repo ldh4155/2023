@@ -31,3 +31,4 @@ public class BoardDetailDto {
         this.imageUrls = imageUrls;
     }
 }
+
