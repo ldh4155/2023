@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import BoardList from "../page/board/BoardList";
 
-export default function Filter_Area() {
+export default function Filter_Area(onAreaChange) {
   const area = [
     {
-      title: "경기도",
+      title: "경기",
       contents: [
         "수원시",
         "성남시",
@@ -39,7 +40,7 @@ export default function Filter_Area() {
       ],
     },
     {
-      title: "강원도",
+      title: "강원특별자치도",
       contents: [
         "춘천시",
         "원주시",
@@ -62,7 +63,7 @@ export default function Filter_Area() {
       ],
     },
     {
-      title: "충청북도",
+      title: "충북",
       contents: [
         "청주시",
         "충주시",
@@ -77,7 +78,7 @@ export default function Filter_Area() {
       ],
     },
     {
-      title: "충청남도",
+      title: "충남",
       contents: [
         "천안시",
         "공주시",
@@ -94,11 +95,13 @@ export default function Filter_Area() {
         "홍성군",
         "예산군",
         "태안군",
-        "세종특별자치시",
       ],
     },
     {
-      title: "전라북도",
+      title: "세종특별자치시"
+    }
+    {
+      title: "전북",
       contents: [
         "전주시",
         "군산시",
@@ -117,7 +120,7 @@ export default function Filter_Area() {
       ],
     },
     {
-      title: "전라남도",
+      title: "전남",
       contents: [
         "목포시",
         "여수시",
@@ -144,7 +147,7 @@ export default function Filter_Area() {
       ],
     },
     {
-      title: "경상북도",
+      title: "경북",
       contents: [
         "포항시",
         "경주시",
@@ -171,7 +174,7 @@ export default function Filter_Area() {
       ],
     },
     {
-      title: "경상남도",
+      title: "경남",
       contents: [
         "창원시",
         "진주시",
@@ -198,7 +201,7 @@ export default function Filter_Area() {
       contents: ["제주시", "서귀포시"],
     },
     {
-      title: "서울특별시",
+      title: "서울",
       contents: [
         "종로구",
         "중구",
@@ -227,7 +230,7 @@ export default function Filter_Area() {
       ],
     },
     {
-      title: "부산광역시",
+      title: "부산",
       contents: [
         "중구",
         "서구",
@@ -248,7 +251,7 @@ export default function Filter_Area() {
       ],
     },
     {
-      title: "대구광역시",
+      title: "대구",
       contents: [
         "중구",
         "동구",
@@ -262,7 +265,7 @@ export default function Filter_Area() {
       ],
     },
     {
-      title: "인천광역시",
+      title: "인천",
       contents: [
         "중구",
         "동구",
@@ -277,15 +280,15 @@ export default function Filter_Area() {
       ],
     },
     {
-      title: "광주광역시",
+      title: "광주",
       contents: ["동구", "서구", "남구", "북구", "광산구"],
     },
     {
-      title: "대전광역시",
+      title: "대전",
       contents: ["중구", "서구", "유성구", "대덕구"],
     },
     {
-      title: "울산광역시",
+      title: "울산",
       contents: ["중구", "남구", "동구", "북구", "울주군"],
     },
   ];
@@ -303,7 +306,6 @@ export default function Filter_Area() {
       province: title,
       citys: [],
     });
-    console.log(selectedAreas);
   };
 
   const handleContentClick = (content) => {
@@ -321,7 +323,6 @@ export default function Filter_Area() {
         citys: [...citys, content],
       });
     }
-    console.log(selectedAreas);
   };
 
   // 선택된 지역의 contents를 찾는 함수
