@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-
 import BoardInput from "../../components/BoardInput";
 import { api } from "../../api/api";
 
@@ -12,6 +11,7 @@ export default function Update(props) {
     title: "",
     content: "",
     files: [],
+    category: "", // 카테고리 추가
   });
   const navigate = useNavigate();
 
@@ -23,6 +23,7 @@ export default function Update(props) {
           title: res.data.title,
           content: res.data.content,
           files: res.data.imageUrls,
+          category: res.data.category, // 카테고리 추가
         });
       })
       .catch((error) => {
@@ -44,6 +45,7 @@ export default function Update(props) {
     const formData = new FormData();
     formData.append("title", boardData.title);
     formData.append("content", boardData.content);
+    formData.append("category", boardData.category); // 카테고리 추가
     boardData.files.forEach((file) => formData.append("files", file));
     api
       .put(`board/${id}`, formData)
@@ -52,7 +54,6 @@ export default function Update(props) {
           console.log("여기");
           console.log(boardData);
           alert("게시글 수정이 완료 되었습니다.");
-
           navigate(`/board/${id}`);
         } else {
           console.log("여기");
@@ -64,8 +65,8 @@ export default function Update(props) {
         alert("게시글 수정 실패2.");
       });
   }
+
   function handleFileChange(event) {
-    // 새로 추가된 파일들을 현재 state에 추가
     const newFiles = Array.from(event.target.files);
     setBoardData({
       ...boardData,
@@ -83,6 +84,5 @@ export default function Update(props) {
         handleFileChange={handleFileChange}
       />
     </div>
-
   );
 }
