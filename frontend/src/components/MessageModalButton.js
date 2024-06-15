@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { openModal } from '../redux/modalAction';
+import { openModal } from '../redux/Action/modalAction';
 
 const MessageModalButton = () => {
   const dispatch = useDispatch();

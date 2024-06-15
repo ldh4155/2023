@@ -23,10 +23,7 @@ public class ReissueController {
 
     @PostMapping("/reissue")
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
-
-        System.out.println("재발급 컨트롤러 진입");
         Token newToken = jwtService.reissue(request,response);
-        System.out.println("재발급 서비스 종료. 재발급한 토큰 리턴");
         if(newToken == null)
             return new ResponseEntity<>("refresh token error",HttpStatus.BAD_REQUEST);
         else {
