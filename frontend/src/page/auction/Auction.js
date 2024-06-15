@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { api } from "../../api/api";
 
@@ -29,11 +28,20 @@ function Auction() {
       alert("최고 입찰가보다 높은 금액을 입력해주십시오.");
       return;
     }
+    const checkResponse = await api.get(`auctions/${auctionId}/check`);
+    if(checkResponse.data === false){
+      alert("종료된 경매입니다.");
+      window.location.href = '/auctions';
+    }
     try {
       const userResponse = await api.get(`mypageuser`);
       setBidder(userResponse.data.memberId);
 
-      await api.post(`auctions/${auctionId}/bid`, bid);
+      const bidResponse = await api.post(`auctions/${auctionId}/bid`, bid );
+      if(bidResponse.data === false){
+        alert("종료된 경매입니다.");
+        window.location.href = '/auctions';
+      }
       fetchHighestBid();
       setBid('');
       setBidder('');
@@ -58,7 +66,6 @@ function Auction() {
       console.error("Error ending auction: ", error);
     }
   };
-
   return (
     <div className="App">
       <h1>경매 입찰 시스템</h1>
