@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { closeModal } from '../redux/modalAction';
+import { closeModal } from '../redux/Action/modalAction';
 import Message from "../page/message/Message";
 import MessageForm from "../page/message/MessageForm";
 

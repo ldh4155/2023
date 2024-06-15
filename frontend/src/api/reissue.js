@@ -1,10 +1,9 @@
 import { api } from "./api";
-
+import store from '../redux/store';
+import { LogoutUser } from "../redux/Action/LoginAction";
 export const refreshAccessToken = async () => {
   try {
-    console.log("재발급 요청")
     const response = await api.post(`reissue`, {}, { withCredentials: true }); 
-    console.log("재발급 성공")
     const accessToken = response.headers["access"];
     console.log("access", accessToken);
     if (!accessToken) {
@@ -15,11 +14,7 @@ export const refreshAccessToken = async () => {
     console.log("재발급 실패")
     localStorage.removeItem('access');
     console.error(error.response ? error.response.status : error.message);
-    try {
-      await api.post(`signout`, {}, { withCredentials: true });
-    } catch (signoutError) {
-      console.error("로그아웃 실패", signoutError);
-    }
+    store.dispatch(LogoutUser());
 
     // Custom event 발생
     window.dispatchEvent(new CustomEvent("unauthorized"));

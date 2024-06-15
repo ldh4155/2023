@@ -10,6 +10,7 @@ export default function Write(props) {
     title: "",
     content: "",
     files: [],
+    category: "", // 카테고리 추가
   });
 
   const navigate = useNavigate();
@@ -36,17 +37,15 @@ export default function Write(props) {
     const formData = new FormData();
     formData.append("title", board.title);
     formData.append("content", board.content);
+    formData.append("category", board.category); // 카테고리 추가
 
     board.files.forEach((file) => formData.append("files", file));
-    api.post(`board`,formData)
-
+    api.post(`board`, formData)
       .then((data) => {
         console.log(data);
         alert("게시글 작성에 성공하였습니다.");
         props.fetchBoards();
         navigate("/board");
-      
-
       })
       .catch((error) => {
         alert("게시글 작성에 실패하였습니다.");
@@ -54,7 +53,6 @@ export default function Write(props) {
       });
   }
 
-  //input 분리
   return (
     <BoardInput
       SubmitBoard={SubmitBoard}
@@ -62,7 +60,6 @@ export default function Write(props) {
       ChangeValue={ChangeValue}
       handleFileChange={handleFileChange}
       newBoard={props.newBoard}
-
     />
   );
 }

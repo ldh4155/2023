@@ -24,8 +24,22 @@ function InputForm({ onSubmit, boardData, onChange, handleFileChange }) {
         />
       </label>
       <br />
+      <label>
+        카테고리 :
+        <select
+          name="category"
+          value={boardData.category}
+          onChange={onChange}
+        >
+          <option value="">카테고리 선택</option>
+          <option value="전자제품">전자제품</option>
+          <option value="식품">식품</option>
+          <option value="의류">의류</option>
+          <option value="기타">기타</option>
+        </select>
+      </label>
+      <br />
       <input type="file" name="files" onChange={handleFileChange} multiple />
-
       <br />
       <button type="submit">완료</button>
     </form>

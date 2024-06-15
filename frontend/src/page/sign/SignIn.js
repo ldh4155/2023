@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import {api} from "../../api/api"
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { Login } from '../../redux/Action/LoginAction'
 
-const SignIn = ({ isLoggedIn, setIsLoggedIn }) => {
+const SignIn = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -13,7 +16,7 @@ const SignIn = ({ isLoggedIn, setIsLoggedIn }) => {
     try {
       const response = await api.post(`login`, { id, password },{ withCredentials: true });
       alert("로그인 성공");
-      setIsLoggedIn(true);
+      dispatch(Login());
       localStorage.setItem("access", response.headers["access"]);
       console.log("성공:",response.headers)
       navigate('/');
