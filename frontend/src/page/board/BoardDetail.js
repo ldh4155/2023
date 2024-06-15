@@ -66,6 +66,7 @@ export default function BoardDetail(props) {
             </h1>
             <hr />
             <h3>내용 : {boardData.content}</h3>
+            <h4>카테고리 : {boardData.category}</h4>
             <ImageList imageUrls={boardData.imageUrls} />
             <h5>조회수 : {boardData.view}</h5>
             <h5>작성시간 : {boardData.time}</h5>

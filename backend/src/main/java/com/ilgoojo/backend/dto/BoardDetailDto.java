@@ -18,6 +18,7 @@ public class BoardDetailDto {
     private String nickName;
     private Integer view;
     private String time;
+    private String category;
     private List<CommentResponseDto> comments = new ArrayList<>();
     private List<String> imageUrls;
     private BoardFile.FileType fileType;

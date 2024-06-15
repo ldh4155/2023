@@ -1,11 +1,10 @@
 import axios from "axios";
 import { refreshAccessToken } from "./reissue";
+import { returnLogin } from "./returnLogin";
 
 export const api = axios.create({
   baseURL: `http://localhost:8080/`,
 });
-
-//let refreshTokenPromise = null; // 재발급 요청 상태를 추적하는 변수
 
 api.interceptors.request.use(
 config => {
@@ -43,6 +42,9 @@ api.interceptors.response.use(
         console.log("재발급 중 오류 발생:", refreshError);
         return Promise.reject(refreshError);
       }
+    }
+    if(error.response.status === 400 || error.response.status === 403) {
+      returnLogin();
     }
     return Promise.reject(error);
   }

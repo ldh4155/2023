@@ -14,12 +14,13 @@ public class Board extends BaseTime {
     public Board() {
     }
 
-    public Board(String title, String content, Member writer) {
+    public Board(String title, String content, Member writer, String address, String category) {
         this.title = title;
         this.content = content;
         this.view = 0;
         this.writer = writer;
-
+        this.address = address;
+        this.category = category; // 카테고리 필드 초기화
     }
 
     @Id
@@ -33,4 +34,8 @@ public class Board extends BaseTime {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member writer;
+
+    private String address;
+
+    private String category; // 카테고리 필드 추가
 }

@@ -3,18 +3,20 @@ import {Navbar, Nav, Container} from 'react-bootstrap';
 
 import { Form, Button } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
-import { api } from '../api/api';
 import MessageModalButton from './MessageModalButton';
 import Message from '../page/message/Message';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Login, LogoutUser } from '../redux/Action/LoginAction';
 
-const Header = ({isLoggedIn, setIsLoggedIn}) => {
+const Header = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('access');
-
+  const isLoggedIn = useSelector(state => state.loginState.isLogin);
+  const dispatch = useDispatch();
+  
   useEffect(() => {
     if(token!=null) {
-      setIsLoggedIn(true);
+      dispatch(Login());
     }
   }, []);
 
@@ -23,11 +25,7 @@ const Header = ({isLoggedIn, setIsLoggedIn}) => {
   }
 
   const handleLogout = async () => {
-    const response = await api.post(`signout`, {}, { withCredentials: true });
-    //토큰 제거
-    localStorage.removeItem('access');
-    setIsLoggedIn(false);
-    // 메인 페이지로 리디렉션
+    dispatch(LogoutUser());
     navigate('/');
   }
 
