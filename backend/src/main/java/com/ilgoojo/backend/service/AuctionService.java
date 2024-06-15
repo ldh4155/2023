@@ -11,8 +11,8 @@ import com.ilgoojo.backend.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,29 +58,37 @@ public class AuctionService {
     }
 
     public List<AuctionListDto> getAuctionList(){
+
+        checkAuctionsEnd();
         List<Auction> auctionList = auctionRepository.findByActivationTrue();
         List<AuctionListDto> auctionListDtoList = new ArrayList<>();
 
         for(Auction auction : auctionList) {
-            AuctionListDto auctionListDto = AuctionListDto.builder()
-                    .auctionId(auction.getAuctionId())
-                    .title(auction.getTitle())
-                    .startPrice(auction.getStartPrice())
-                    .amount(auction.getAmount())
-                    .imageUrl(auction.getAuctionImageId().getUrl())
-                    .build();
+            if(auction.getActivation()) {
+                AuctionListDto auctionListDto = AuctionListDto.builder()
+                        .auctionId(auction.getAuctionId())
+                        .title(auction.getTitle())
+                        .startPrice(auction.getStartPrice())
+                        .amount(auction.getAmount())
+                        .imageUrl(auction.getAuctionImageId().getUrl())
+                        .build();
 
-            System.out.println(auction.getAuctionImageId().getUrl());
-            auctionListDtoList.add(auctionListDto);
+                System.out.println(auction.getAuctionImageId().getUrl());
+                auctionListDtoList.add(auctionListDto);
+            }
         }
 
         return auctionListDtoList;
+
+
+
     }
 
     public Auction createAuction(AuctionDto auctiondto, MultipartFile file,String memberId) {
         Auction newAuction = new Auction();
         newAuction.setTitle(auctiondto.getTitle());
         newAuction.setStartPrice(auctiondto.getStartPrice());
+        newAuction.setEndDate(auctiondto.getEndDate());
         newAuction.setActivation(true);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid member Id:" + memberId));
@@ -104,5 +112,23 @@ public class AuctionService {
         }
         else
             return false;
+    }
+
+    public List<AuctionListDto> getAuctionByOwner(String ownerId){
+        return auctionRepository.findByOwner(ownerId);
+    }
+
+    public void checkAuctionsEnd() {
+        List<Auction> auctions = auctionRepository.findByActivationTrueAndEndDateBefore(LocalDateTime.now());
+        for (Auction auction : auctions) {
+            auction.setActivation(false);
+            auctionRepository.save(auction);
+            // 경매 종료 시 추가 로직 (예: 알림 발송 등)
+        }
+    }
+
+    public boolean checkAuctionEnd(Integer auctionId){
+        Optional<Auction> targetAuction = auctionRepository.findById(auctionId);
+        return targetAuction.get().getActivation();
     }
 }
