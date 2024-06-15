@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @CrossOrigin
@@ -41,22 +42,33 @@ public class AuctionController {
     @PostMapping(path = "/auctions", consumes = "multipart/form-data")
     public Auction createAuction(@RequestParam("title") String title,
                                            @RequestParam("startPrice") Integer startPrice,
-                                           @RequestParam("image") MultipartFile image) {
+                                           @RequestParam("image") MultipartFile image,
+                                 @RequestParam("endDate") LocalDateTime endDate) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        AuctionDto auctionDto = new AuctionDto(title,startPrice);
+        AuctionDto auctionDto = new AuctionDto(title,startPrice,endDate);
         return auctionService.createAuction(auctionDto,image,authentication.getName());
     }
 
     // 경매 입찰
     @PostMapping("auctions/{auctionId}/bid")
-    public Auction bid(@PathVariable Integer auctionId, @RequestBody Integer amount) {
+    public boolean bid(@PathVariable Integer auctionId, @RequestBody Integer amount) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return auctionService.bid(auctionId, authentication.getName(),amount);
+        auctionService.checkAuctionsEnd();
+        boolean checkFlag = auctionService.checkAuctionEnd(auctionId);
+        if(checkFlag){
+        auctionService.bid(auctionId, authentication.getName(),amount);
+        }
+        return checkFlag;
     }
 
     @PostMapping("auctions/{auctionId}/end")
     public boolean endAuction(@PathVariable Integer auctionId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return auctionService.endAuction(auctionId,authentication.getName());
+    }
+
+    @GetMapping("auctions/{auctionId}/check")
+    public boolean checkAuction(@PathVariable Integer auctionId){
+        return auctionService.checkAuctionEnd(auctionId);
     }
 }
