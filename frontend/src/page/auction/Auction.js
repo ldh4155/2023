@@ -29,15 +29,31 @@ function Auction() {
       alert("최고 입찰가보다 높은 금액을 입력해주십시오.");
       return;
     }
+    const balanceResponse = await api.get(`http://localhost:8080/auctions/balance`);
+    if(balanceResponse.data < bid){
+      alert("보유한 금액이 충분하지 않습니다.");
+      return;
+    }
     const checkResponse = await api.get(`http://localhost:8080/auctions/${auctionId}/check`);
     if(checkResponse.data === false){
       alert("종료된 경매입니다.");
       window.location.href = '/auctions';
     }
+    const userResponse = await api.get(`mypageuser`);
+    const ownerResponse = await api.get(`http://localhost:8080/auctions/${auctionId}/ownerId`);
+    if(userResponse.data.id === ownerResponse.data){
+      alert("경매 주최자는 참여할 수 없습니다.");
+      return;
+    }
+    const bidderResponse = await api.get(`http://localhost:8080/auctions/${auctionId}`);
+      setHighestBid(bidderResponse.data);
+    if(userResponse.data.id === highestBid.bidder){
+      alert("이미 입찰하신 경매입니다.");
+      return;
+    }
     try {
       const userResponse = await api.get(`mypageuser`);
       setBidder(userResponse.data.memberId);
-
       const config = {
         headers: {
           'Authorization': token,

@@ -60,6 +60,7 @@ function AuctionList() {
       setEndDate(''); // 상태 초기화
       setAuctionImage(null);
       setErrorMessage('');
+      window.location.href = '/auctions';
     } catch (error) {
       console.error("경매 등록 중 오류가 발생했습니다: ", error);
       setErrorMessage("경매 등록 중 오류가 발생했습니다.");

@@ -71,4 +71,15 @@ public class AuctionController {
     public boolean checkAuction(@PathVariable Integer auctionId){
         return auctionService.checkAuctionEnd(auctionId);
     }
+
+    @GetMapping("auctions/balance")
+    public Integer getBalance(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return auctionService.getBalance(authentication.getName());
+    }
+
+    @GetMapping("auctions/{auctionId}/ownerId")
+    public String getOwnerId(@PathVariable Integer auctionId){
+        return auctionService.getOwnerId(auctionId);
+    }
 }

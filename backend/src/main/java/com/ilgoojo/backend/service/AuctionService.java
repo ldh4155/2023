@@ -51,8 +51,17 @@ public class AuctionService {
         if(amount>auction.getAmount() && amount > auction.getStartPrice()) {
             auction.setBidder(member);
             auction.setAmount(amount);
-        }
 
+            Integer bBid = auction.getAmount();
+            Integer balance = member.getBalance();
+            member.setBalance(balance - amount);
+
+            Member bBidder = auction.getBidder();
+            if(bBidder!=null) {
+                Integer bBalance = bBidder.getBalance();
+                bBidder.setBalance(bBalance + bBid);
+            }
+        }
         auctionRepository.save(auction); // 변경된 내용을 저장
         return auction;
     }
@@ -106,7 +115,20 @@ public class AuctionService {
     }
 
     public boolean checkAuctionEnd(Integer auctionId){
-        Optional<Auction> targetAuction = auctionRepository.findById(auctionId);
-        return targetAuction.get().getActivation();
+        Auction targetAuction = auctionRepository.findById(auctionId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid auction Id:" + auctionId));
+        return targetAuction.getActivation();
+    }
+
+    public Integer getBalance(String memberId){
+        Member targetMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid member Id:" + memberId));
+        return targetMember.getBalance();
+    }
+
+    public String getOwnerId(Integer auctionId){
+        Auction targetAuction = auctionRepository.findById(auctionId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid auction Id:" + auctionId));
+        return targetAuction.getOwner().getMemberId();
     }
 }

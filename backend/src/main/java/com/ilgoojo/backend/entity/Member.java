@@ -26,6 +26,7 @@ public class Member {
         this.birth = birth;
         this.numberOfTransactions = 0;
         this.profileImageId = profileImageId;
+        this.balance = 0;
     }
 
     @Id
@@ -50,5 +51,7 @@ public class Member {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_image")
     private ProfileImage profileImageId;
+    @Column(name = "balance", columnDefinition = "integer default 0", nullable = false)
+    private Integer balance;
 }
 

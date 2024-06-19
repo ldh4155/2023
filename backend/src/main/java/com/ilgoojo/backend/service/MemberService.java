@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 
 @Service
@@ -115,6 +116,14 @@ public class MemberService {
 
     public void deleteMember(String id) {
         memberRepository.deleteById(id);
+    }
+
+    public Integer chargeBalance(Integer charge, String memberId){
+        Member targetMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid member Id:" + memberId));
+        Integer balance = targetMember.getBalance() + charge;
+        targetMember.setBalance(balance);
+        return targetMember.getBalance();
     }
 }
 
