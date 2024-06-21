@@ -5,6 +5,7 @@ import com.ilgoojo.backend.dto.AuctionListDto;
 import com.ilgoojo.backend.entity.Auction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,7 +24,7 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer> {
             "FROM Auction a " +
             "LEFT JOIN a.auctionImageId p " +
             "WHERE a.owner.id = :ownerId AND a.activation = true")
-    List<AuctionListDto> findByOwner(String ownerId);
+    List<AuctionListDto> findByOwner(@Param("ownerId") String ownerId);
 
     List<Auction> findByActivationTrueAndEndDateBefore(LocalDateTime now);
 

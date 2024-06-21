@@ -105,6 +105,14 @@ public class MemberService {
     public void deleteMember(String id) {
         memberRepository.deleteById(id);
     }
+
+    public Integer chargeBalance(Integer charge, String memberId){
+        Member targetMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid member Id:" + memberId));
+        Integer balance = targetMember.getBalance() + charge;
+        targetMember.setBalance(balance);
+        return targetMember.getBalance();
+    }
 }
 
 
