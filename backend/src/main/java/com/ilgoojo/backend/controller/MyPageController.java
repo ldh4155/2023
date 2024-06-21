@@ -71,4 +71,9 @@ public class MyPageController {
         return memberService.getAllMembers();
     }
 
+    @PostMapping("/mypageuser/balance")
+    public Integer chargeBalance(@RequestBody Integer charge){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return memberService.chargeBalance(charge, authentication.getName());
+    }
 }
