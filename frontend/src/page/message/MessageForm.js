@@ -11,19 +11,25 @@ const MessageForm = () => {
 
     const onSubmit = async (event) => {
         event.preventDefault();
+        
+        const checkNickName = await api.get(`message/check?nickName=${message.receiveMember}`);
 
-        try {
-           await api.post(`/message/write`, message)
-            .then((res) => { if(res.status === 201) {
-                alert("쪽지 보내기 성공")
-                setMessage({
-                  title : "",
-                  text : "",
-                  receiveMember : ""});
-            }})
-        } catch(error) {
-            alert("쪽지 보내기 실패")
-            console.error(error);
+        if(checkNickName.status === 204) {
+          alert("자기 자신에겐 쪽지를 보낼 수 없습니다.")
+        } else if(checkNickName.status === 201) {
+          try {
+            await api.post(`message/write`, message)
+             .then((res) => { if(res.status === 201) {
+                 alert("쪽지 보내기 성공")
+                 setMessage({
+                   title : "",
+                   text : "",
+                   receiveMember : ""});
+             }})
+         } catch(error) {
+             alert("쪽지 보내기 실패")
+             console.error(error);
+         }
         }
     };
 
