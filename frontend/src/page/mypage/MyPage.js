@@ -11,6 +11,7 @@ const MyPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
+  const [chargeAmount, setChargeAmount] = useState('');
 
   useEffect(() => {
     const fetchUserAndBoards = async () => {
@@ -92,6 +93,22 @@ const MyPage = () => {
     }
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+        const response = await api.post('/mypageuser/balance', chargeAmount,{
+            headers: {
+              'Content-Type': 'application/json;charset=UTF-8'
+            }
+          });
+        alert(`충전이 완료되었습니다. 충전 후 금액: ${response.data}`);
+    } catch (error) {
+        console.error('오류:', error);
+        alert('충전 중 오류가 발생했습니다.');
+    }
+};
+
   if(isLoading) {
     return (
       <div>Loading..</div>
@@ -157,6 +174,18 @@ const MyPage = () => {
           }} />
           </div>
         </div>
+        <h1>금액 충전</h1>
+        <form onSubmit={handleSubmit}>
+                <label htmlFor="chargeAmount">충전 금액:</label>
+                <input
+                    type="number"
+                    id="chargeAmount"
+                    value={chargeAmount}
+                    onChange={(e) => setChargeAmount(e.target.value)}
+                    required
+                />
+                <button type="submit">충전하기</button>
+            </form>
         <button onClick={handleDeleteUser}>회원탈퇴</button>
         <h2>최근 게시글</h2>
         {boards.length > 0 ? (

@@ -16,6 +16,7 @@ function AuctionList() {
     fetchAuctions();
   }, []);
 
+
   const isValidToken = token => {
     if (!token) {
       setErrorMessage("토큰이 존재하지 않습니다.");
@@ -31,7 +32,7 @@ function AuctionList() {
       const response = await api.get('/auctions');
       setAuctions(response.data);
       setErrorMessage('');
-
+      
     } catch (error) {
       console.error("경매 목록을 불러오는데 오류가 발생했습니다: ", error);
       setErrorMessage("경매 목록을 불러오는데 오류가 발생했습니다.");
@@ -60,6 +61,7 @@ function AuctionList() {
       setEndDate(''); // 상태 초기화
       setAuctionImage(null);
       setErrorMessage('');
+      window.location.href = '/auctions';
     } catch (error) {
       console.error("경매 등록 중 오류가 발생했습니다: ", error);
       setErrorMessage("경매 등록 중 오류가 발생했습니다.");
@@ -90,6 +92,7 @@ function AuctionList() {
             placeholder="시작 가격"
             required
           />
+          종료시간 설정:
           <input
             type="datetime-local" // 날짜와 시간을 선택할 수 있는 input 타입
             value={endDate}
