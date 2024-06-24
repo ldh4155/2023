@@ -11,7 +11,7 @@ const updateComment = () => {
         try {
             //
            const response =  await axios.post(
-            `http://localhost:8080/board/${boardId}/comment`
+            `board/${boardId}/comment`
             , {content: comment});
 
             setComment('');

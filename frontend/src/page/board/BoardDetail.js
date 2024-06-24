@@ -16,7 +16,7 @@ export default function BoardDetail(props) {
   const [modalBoard, setModalBoard] = useState({});
   const myId = decodeJwt();
 
-  useEffect(() => {
+  const fetchBoardData = () => {
     api
       .get(`board/${id}`)
       .then((res) => {
@@ -26,6 +26,10 @@ export default function BoardDetail(props) {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  useEffect(() => {
+    fetchBoardData();
   }, [id]);
 
   function DeleteBoard(id) {
@@ -71,7 +75,7 @@ export default function BoardDetail(props) {
             <h5>조회수 : {boardData.view}</h5>
             <h5>작성시간 : {boardData.time}</h5>
           </div>
-          <Comment boardId={id} comments={boardData.comments} />
+          <Comment boardId={id} comments={boardData.comments} onCommentUpdate={fetchBoardData} />
         </>
       ) : (
         <p>Loading...</p>
