@@ -30,6 +30,7 @@ public class JWTUtil {
     public String getCategory(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build()
                 .parseClaimsJws(token).getBody().get("category", String.class);
+
     }
 
     public Boolean isExpired(String token) {

@@ -13,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -50,6 +51,13 @@ public class SecurityConfig {
 
 
     @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() { // security를 적용하지 않을 리소스
+        return web -> web.ignoring()
+                // error endpoint를 열어줘야 함, favicon.ico 추가!
+                .requestMatchers("/error", "/favicon.ico");
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.cors((cors) -> cors.configurationSource(new CorsConfigurationSource() {
@@ -62,6 +70,7 @@ public class SecurityConfig {
                 configuration.setAllowCredentials(true);
                 configuration.setAllowedHeaders(Collections.singletonList("*"));
                 configuration.setMaxAge(3600L);
+
 
                 configuration.setExposedHeaders(Collections.singletonList("Access"));
 
@@ -77,17 +86,15 @@ public class SecurityConfig {
         http.httpBasic((auth) -> auth.disable());
         //어느 api는 인가 없이 들어올지
         http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/login", "/signup", "/","/images/**").permitAll()
-                .requestMatchers("/reissue").permitAll()
+                .requestMatchers("/login", "/signup", "/","/images/**","/reissue").permitAll()
                 .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
                 .anyRequest().authenticated());
 
-        http.addFilterBefore(new JWTFilter(jwtUtil), SignInFilter.class);
+        http.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         //로그인 필터 등록
         http.addFilterAt(new SignInFilter(authenticationManager(configuration), jwtUtil, refreshRepository), UsernamePasswordAuthenticationFilter.class);
 
         http.addFilterBefore(new CustomSignOutFilter(jwtUtil,refreshRepository), LogoutFilter.class);
-
         //세션 설정
         http.sessionManagement((session) -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));

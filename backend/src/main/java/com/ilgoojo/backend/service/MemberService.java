@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -51,20 +52,6 @@ public class MemberService {
 
 
     }
-
-//    public boolean signIn(SignInDto signInDto) {
-//        Member findMember = memberRepository.findById(signInDto.getId())
-//                .orElse(null);
-//
-//        if(findMember == null)
-//            return false;
-//        else {
-//            if(!findMember.getPassword().equals(signInDto.getPassword()))
-//                return false;
-//            else
-//                return true;
-//        }
-//    }
 
     public Member updateUser(String id, Member newUserInfo) {
         return memberRepository.findById(id).map(user -> {
@@ -118,6 +105,13 @@ public class MemberService {
     public void deleteMember(String id) {
         memberRepository.deleteById(id);
     }
-}
 
+    public Integer chargeBalance(Integer charge, String memberId){
+        Member targetMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid member Id:" + memberId));
+        Integer balance = targetMember.getBalance() + charge;
+        targetMember.setBalance(balance);
+        return targetMember.getBalance();
+    }
+}
 

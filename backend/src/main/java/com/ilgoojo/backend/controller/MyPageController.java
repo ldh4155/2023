@@ -1,10 +1,13 @@
 package com.ilgoojo.backend.controller;
 
+import com.ilgoojo.backend.dto.AuctionDto;
+import com.ilgoojo.backend.dto.AuctionListDto;
 import com.ilgoojo.backend.dto.MemberDto;
 import com.ilgoojo.backend.entity.Board;
 import com.ilgoojo.backend.entity.Member;
 import com.ilgoojo.backend.repository.BoardRepository;
 import com.ilgoojo.backend.repository.MemberRepository;
+import com.ilgoojo.backend.service.AuctionService;
 import com.ilgoojo.backend.service.BoardService;
 import com.ilgoojo.backend.service.FileStorageService;
 import com.ilgoojo.backend.service.MemberService;
@@ -26,6 +29,7 @@ public class MyPageController {
     private final MemberService memberService;
     private final BoardService boardService;
     private final FileStorageService fileStorageService;
+    private final AuctionService auctionService;
 
     @GetMapping("/mypageboard")
     public List<Board> getBoard() {
@@ -38,6 +42,12 @@ public class MyPageController {
     public MemberDto getMyPageUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return memberService.getMemberById(authentication.getName());
+    }
+
+    @GetMapping("/mypageauctions")
+    public List<AuctionListDto> getMyPageAuctions(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return auctionService.getAuctionByOwner(authentication.getName());
     }
 
     @PutMapping("/mypageuser")
@@ -59,5 +69,11 @@ public class MyPageController {
     @GetMapping("/members")
     public List<Member> getAllMembers() {
         return memberService.getAllMembers();
+    }
+
+    @PostMapping("/mypageuser/balance")
+    public Integer chargeBalance(@RequestBody Integer charge){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return memberService.chargeBalance(charge, authentication.getName());
     }
 }
