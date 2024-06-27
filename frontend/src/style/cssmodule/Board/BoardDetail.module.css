@@ -1,0 +1,63 @@
+/* BoardStyle.module.css */
+.container {
+    font-family: 'Noto Sans KR', sans-serif;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+    display: flex; /* 플렉스박스로 지정 */
+    align-items: center; /* 세로 방향으로 중앙 정렬 */
+    flex-wrap: wrap; /* 내용이 넘치면 다음 줄로 넘김 */
+    gap: 8px; /* 요소 사이의 간격 */
+}
+
+.button {
+    font-size: 14px;
+    color: #fff;
+    background-color: #ec8787;
+    border: none;
+    border-radius: 4px;
+    padding: 6.5px 10px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.button:hover {
+    background-color: #e10a0a;
+}
+
+.content {
+    font-size: 16px;
+    color: #666;
+    margin: 20px 0;
+}
+
+.imageList {
+    margin: 20px 0;
+}
+
+.stats {
+    font-size: 14px;
+    color: #999;
+    margin: 10px 0;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #eaeaea;
+    margin: 20px 0;
+}
+
+.loading {
+    text-align: center;
+    font-size: 25px;
+    color: #000000;
+}

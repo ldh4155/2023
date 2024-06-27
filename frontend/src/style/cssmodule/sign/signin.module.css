@@ -1,0 +1,81 @@
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+  background-color: #fff; /* 배경색을 흰색으로 변경 */
+  font-family: 'Nanum Gothic', sans-serif; /* 네이버 폰트 사용 */
+
+
+}
+
+.logoImage {
+  position: absolute;
+  top: 23vh; /* 화면 높이의 10% 위치에 로고를 배치 */
+  left: 50%; /* 왼쪽에서 50%의 위치에 배치 */
+  transform: translateX(-50%); /* 좌우 중앙 정렬을 위해 X축 기준으로 -50% 이동 */
+  width: 280px; /* 로고 이미지의 가로 크기 */
+  height: auto; /* 세로 크기를 자동으로 조절하여 비율 유지 */
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  padding: 7rem; /* 패딩을 2rem에서 3rem으로 변경하여 크기 확대 */
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  width: 500px; /* 가로 길이를 직접 지정 */
+  height: 400px;
+}
+
+.loginInput {
+  width: 300%;
+  max-width: 450px; /* 최대 너비를 300px에서 350px로 변경 */
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #d5d5d5;
+  border-radius: 4px;
+  font-size: 1rem;
+  color: #333;
+  margin-top: 1rem;
+
+}
+
+.loginButton {
+
+  width: 200%;
+  height: 200%;
+  max-width: 450px; /* 최대 너비를 300px에서 350px로 변경 */
+  padding: 1.1rem 1rem;
+  background-color: #e10a0a;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+.loginButton:hover {
+  background-color: #b00808;
+}
+
+.signupButton {
+  margin-top: 1rem;
+  color: #e10a0a;
+  background-color: transparent;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.signupButton:hover {
+  color: #e10a0a;
+}

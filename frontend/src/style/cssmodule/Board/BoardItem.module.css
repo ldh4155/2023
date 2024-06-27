@@ -1,0 +1,28 @@
+/* BoardListStyle.module.css */
+.listItem {
+    padding: 10px;
+    border-bottom: 1px solid #eaeaea;
+    transition: background-color 0.2s;
+}
+
+.listItem:hover {
+    background-color: #f9f9f9;
+}
+
+.link {
+    text-decoration: none;
+    color: #000000;
+}
+
+.title {
+    font-size: 18px;
+    margin: 0;
+    color: #333;
+}
+
+.hr {
+    border: none;
+    height: 1px;
+    background-color: #eaeaea;
+    margin-top: 10px;
+}

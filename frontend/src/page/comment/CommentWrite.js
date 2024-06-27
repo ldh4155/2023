@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { api } from "../../api/api";
+import styles from '../../style/cssmodule/component/Commentwrite.module.css';
 
 const CommentWrite = ({boardId, newComment}) => {
 
@@ -20,17 +21,20 @@ const CommentWrite = ({boardId, newComment}) => {
         }
     }
     return (
-        <div>
+        <div className={styles.commentForm}>
             <form onSubmit={handleSubmit}>
-                <textarea 
-                value={comment}
-                onChange={(event) => setComment(event.target.value)}
-                placeholder="댓글 입력"/>
-
-                <button type="submit">댓글 작성</button> 
+        <textarea
+            className={styles.commentTextarea}
+            value={comment}
+            onChange={(event) => setComment(event.target.value)}
+            placeholder="댓글 입력"
+        />
+                <button type="submit" className={styles.commentButton}>
+                    댓글 작성
+                </button>
             </form>
         </div>
-    )
+    );
 }
 
 export default CommentWrite;

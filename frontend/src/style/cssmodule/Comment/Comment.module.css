@@ -1,0 +1,96 @@
+.commentContainer {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 20px;
+}
+
+.commentHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.commentHeader p {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.commentList {
+    border-top: 1px solid #e0e0e0;
+}
+
+.commentItem {
+    padding: 15px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.commentItem:last-child {
+    border-bottom: none;
+}
+
+.commentHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.commentHeader span {
+    font-size: 14px;
+    color: #666;
+}
+
+.commentActions {
+    display: flex;
+    align-items: center;
+}
+
+.commentActions button {
+    font-size: 14px;
+    color: #666;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.commentContent {
+    font-size: 15px;
+    color: #333;
+}
+
+.editInput {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.editActions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.editActions button {
+    font-size: 14px;
+    color: #666;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.showMore {
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.createTime {
+    margin-left: 8px; /* 또는 원하는 값으로 조정 */
+}
