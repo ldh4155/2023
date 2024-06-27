@@ -32,6 +32,16 @@ public class MessageController {
 
     }
 
+    @GetMapping("/message/check")
+    public ResponseEntity<?> checkNickName(@RequestParam String nickName) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(!messageService.checkNickName(nickName, authentication.getName()))
+            return new ResponseEntity<>("자기 자신에겐 쪽지 보내기 불가능", HttpStatus.NO_CONTENT); //204
+        else
+            return new ResponseEntity<>("성공", HttpStatus.CREATED); //201
+    }
+
+
     @GetMapping("/message/sent")
     public ResponseEntity<?> getSendMessages() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -49,6 +49,17 @@ public class MessageService {
             return null;
     }
 
+    public boolean checkNickName(String nickName, String id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(()-> new NoSuchElementException("사용자 찾을 수 없음"));
+
+        System.out.println("nickName: " + nickName + " my NickName: " + member.getNickName());
+        if(nickName.equals(member.getNickName())) //자기 자신에게 쪽지를 보내려 하는 경우
+            return  false;
+        else
+            return true;
+    }
+
     //보낸 쪽지함
     public List<MessageDto> getSendMessages(String sendId) {
         List<Message> messages = messageRepository.findBySendMemberId(sendId);

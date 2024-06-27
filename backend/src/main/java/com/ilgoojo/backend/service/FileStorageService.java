@@ -1,9 +1,12 @@
 package com.ilgoojo.backend.service;
 
+
 import com.ilgoojo.backend.entity.Board;
 import com.ilgoojo.backend.entity.BoardFile;
 import com.ilgoojo.backend.entity.Member;
 import com.ilgoojo.backend.entity.ProfileImage;
+import com.ilgoojo.backend.entity.*;
+import com.ilgoojo.backend.repository.AuctionRepository;
 import com.ilgoojo.backend.repository.BoardFileRepository;
 import com.ilgoojo.backend.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,23 +33,26 @@ public class FileStorageService {
     private final Path fileStorageLocation;
     private final String baseUrl;
     private final BoardFileRepository boardFileRepository;
+    private final AuctionRepository auctionRepository;
 
     //@value() : application.prop 파일에서 해당하는 값 찾아 주입 -> properties파일에 해당하는 내용이 있어야함.
     @Autowired
     public FileStorageService(@Value("${file.upload-dir}") String uploadDir, //파일 업로드 할 디렉터리 위치
                               @Value("${image.base-url}") String baseUrl, //클라이언트가 이미지에 접근하기 위한 베이스 url
-                              BoardFileRepository boardFileRepository, MemberRepository memberRepository) {
+                              BoardFileRepository boardFileRepository, MemberRepository memberRepository, AuctionRepository auctionRepository) {
         this.fileStorageLocation = Paths.get(uploadDir).toAbsolutePath().normalize(); //상대경로면 -> 절대경로로 바꿈
         // . .. 을 해석해 명확한 경로 만들어줌
         this.baseUrl = baseUrl;
         this.boardFileRepository = boardFileRepository;
         this.memberRepository = memberRepository;
+        this.auctionRepository = auctionRepository;
     }
 
     public String storeFile(MultipartFile file, String id) {
         String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename(); //파일 이름 중복 방지
         try {
-            File uploadFile = new File(fileStorageLocation + fileName);
+            File uploadFile = new File(fileStorageLocation + File.separator + fileName);
+
             file.transferTo(uploadFile.toPath());
 
             Member member = memberRepository.findById(id)
@@ -67,6 +73,7 @@ public class FileStorageService {
             // ProfileImage 엔티티 객체 생성 및 관계 설정
             ProfileImage profileImage = new ProfileImage();
             profileImage.setProfileImage(fileName);
+            profileImage.setUrl(fileStorageLocation+"\\"+fileName);
             member.setProfileImage(profileImage);
 
             memberRepository.save(member);
@@ -119,7 +126,6 @@ public class FileStorageService {
         return fileNames;
     }
 
-
     public String deleteImage(Integer boardId) {
         List<String> storedFileNames = boardFileRepository.findStoredFileNameByBoardId(boardId);
         boolean isAllDeleted = true;
@@ -159,6 +165,41 @@ public class FileStorageService {
 
         public FileStorageException(String message, Throwable cause) {
             super(message, cause);
+        }
+    }
+
+    public String storeAuctionImage(MultipartFile file, Integer auctionId) {
+        String fileName = UUID.randomUUID().toString() + "__" + file.getOriginalFilename(); //파일 이름 중복 방지
+        try {
+            File uploadFile = new File(fileStorageLocation+"/"+fileName);
+            file.transferTo(uploadFile.toPath());
+
+            Auction auction = auctionRepository.findById(auctionId)
+                    .orElseThrow(() -> new NoSuchElementException("User not found with id " + auctionId));
+
+            // 기존의 ProfileImage가 존재한다면 삭제
+            ProfileImage existingProfileImage = auction.getAuctionImageId();
+            if (existingProfileImage != null) {
+                // 기존 파일 삭제
+                String existingFileName = existingProfileImage.getProfileImage();
+                Path existingFilePath = fileStorageLocation.resolve(existingFileName);
+                Files.deleteIfExists(existingFilePath);
+
+                // Auction와 ProfileImage의 관계 해제
+                auction.setAuctionImageId(null);
+            }
+
+            // ProfileImage 엔티티 객체 생성 및 관계 설정
+            ProfileImage auctionImage = new ProfileImage();
+            auctionImage.setProfileImage(fileName);
+            auctionImage.setUrl(baseUrl +fileName);
+            auction.setAuctionImageId(auctionImage);
+
+            auctionRepository.save(auction);
+
+            return fileName;
+        } catch (IOException ex) {
+            throw new FileStorageException("Could not store file " + file.getOriginalFilename(), ex);
         }
     }
 }
