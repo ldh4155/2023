@@ -19,7 +19,7 @@ import java.util.List;
 public class AuctionController {
     private final AuctionService auctionService;
 
-    public AuctionController(AuctionService auctionService,FileStorageService fileStorageService) {
+    public AuctionController(AuctionService auctionService, FileStorageService fileStorageService) {
         this.auctionService = auctionService;
     }
 
@@ -28,7 +28,6 @@ public class AuctionController {
     public List<AuctionListDto> getAllAuctions() {
         return auctionService.getAuctionList();
     }
-
 
 
     // 특정 경매 조회
@@ -41,12 +40,12 @@ public class AuctionController {
     // 새로운 경매 등록
     @PostMapping(path = "/auctions", consumes = "multipart/form-data")
     public Auction createAuction(@RequestParam("title") String title,
-                                           @RequestParam("startPrice") Integer startPrice,
-                                           @RequestParam("image") MultipartFile image,
+                                 @RequestParam("startPrice") Integer startPrice,
+                                 @RequestParam("image") MultipartFile image,
                                  @RequestParam("endDate") LocalDateTime endDate) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        AuctionDto auctionDto = new AuctionDto(title,startPrice,endDate);
-        return auctionService.createAuction(auctionDto,image,authentication.getName());
+        AuctionDto auctionDto = new AuctionDto(title, startPrice, endDate);
+        return auctionService.createAuction(auctionDto, image, authentication.getName());
     }
 
     // 경매 입찰
@@ -55,32 +54,31 @@ public class AuctionController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         auctionService.checkAuctionsEnd();
         boolean checkFlag = auctionService.checkAuctionEnd(auctionId);
-        if(checkFlag){
-        auctionService.bid(auctionId, authentication.getName(),amount);
+        if (checkFlag) {
+            auctionService.bid(auctionId, authentication.getName(), amount);
         }
         return checkFlag;
     }
 
     @PostMapping("auctions/{auctionId}/end")
-    public boolean endAuction(@PathVariable Integer auctionId){
+    public boolean endAuction(@PathVariable Integer auctionId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return auctionService.endAuction(auctionId,authentication.getName());
+        return auctionService.endAuction(auctionId, authentication.getName());
     }
 
     @GetMapping("auctions/{auctionId}/check")
-    public boolean checkAuction(@PathVariable Integer auctionId){
+    public boolean checkAuction(@PathVariable Integer auctionId) {
         return auctionService.checkAuctionEnd(auctionId);
     }
 
     @GetMapping("auctions/balance")
-    public Integer getBalance(){
+    public Integer getBalance() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return auctionService.getBalance(authentication.getName());
     }
 
     @GetMapping("auctions/{auctionId}/ownerId")
-    public String getOwnerId(@PathVariable Integer auctionId){
+    public String getOwnerId(@PathVariable Integer auctionId) {
         return auctionService.getOwnerId(auctionId);
     }
-
 }

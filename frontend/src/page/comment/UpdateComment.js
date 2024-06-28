@@ -1,8 +1,7 @@
 import { useState } from "react";
 
-
 const updateComment = () => {
-    
+
     const [newComment, setNewComment] = useState('');
 
     const updateHandle = async () => {
@@ -10,9 +9,9 @@ const updateComment = () => {
 
         try {
             //
-           const response =  await axios.post(
-            `board/${boardId}/comment`
-            , {content: comment});
+            const response =  await axios.post(
+                `board/${boardId}/comment`
+                , {content: comment});
 
             setComment('');
             newComment(response.data);

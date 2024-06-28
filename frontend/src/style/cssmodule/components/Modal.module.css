@@ -1,0 +1,45 @@
+/* Button.module.css */
+.buttonStyle {
+    background-image: linear-gradient(to right, #ffa8a8, #feb47b);
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    outline: none;
+}
+
+.buttonStyle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.customToast .modal-dialog {
+    position: fixed;
+    top: 30%; /* 모달을 아래로 20% 내려놓습니다 */
+    right: 0;
+    margin: 0;
+    width: 300px; /* 원하는 너비로 설정 */
+    height: 80vh; /* 원하는 높이로 설정 */
+    z-index: 1050; /* 다른 요소 위에 배치 */
+}
+
+.customDialog {
+    max-width: 50vb; /* Bootstrap의 기본 최대 너비 제한을 제거 */
+    margin-right: 30px;
+    top: -30%;
+
+}
+
+.ToastHeaderCustom {
+    background-image: linear-gradient(to right, #ffffff, #ffcccc);
+}
+
+.ToastBodyCustom {
+    background-color: #ffffff; /* 원하는 색상으로 변경 */
+}
+
+
+
