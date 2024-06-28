@@ -151,4 +151,5 @@ public class AuctionService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid auction Id:" + auctionId));
         return targetAuction.getOwner().getId();
     }
+
 }

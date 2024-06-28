@@ -114,5 +114,3 @@ public class MemberService {
         return targetMember.getBalance();
     }
 }
-
-

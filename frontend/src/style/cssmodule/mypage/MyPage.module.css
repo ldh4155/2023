@@ -1,0 +1,196 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+}
+
+
+.containerwrapper {
+    display: flex;
+    flex-direction: row; /* 가로로 배치 */
+    justify-content: space-between; /* 필요에 따라 요소 간의 간격 조정 */
+    margin: auto; /* 중앙 정렬 */
+    max-width: 2000px; /* 필요에 따라 부모 요소의 최대 너비 조정 */
+    height: 900px;
+    background-color: #f7f9fc;
+
+}
+
+.container1 {
+    position : sticky;
+    display: flex;
+    flex-direction: column; /* 내부 요소는 세로로 배치 */
+    justify-content: center; /* 수직 중앙 정렬 */
+    align-items: center; /* 수평 중앙 정렬 */
+    padding: 100px;
+    background-color: #ffffff;
+    border: 2px solid #ffefef;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1); /* 미묘한 그림자 효과 */
+    width: 500px; /* 개별 container의 최대 너비 */
+    height: 800px;
+    margin: 20px; /* container 간의 간격 조정 */
+    overflow-y: auto;
+
+}
+
+.buttonsContainer {
+    position: relative;
+    bottom: -60px; /* 하단에서 얼마나 떨어지게 할지 설정 */
+    left: 0;
+    width: 100%; /* container1과 같은 너비 */
+    text-align: center; /* 버튼들을 중앙 정렬 */
+    padding-bottom: 10px; /* padding으로 여백 추가 */
+}
+
+.container1 .body {
+    border: 2px solid #ffefef;
+    border-radius: 10px;
+    background-color: #ffefef; /* 예시: 배경색 변경 */
+}
+
+.container2 {
+    max-height: 80vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column; /* 내부 요소는 세로로 배치 */
+    align-items: center;
+    padding: 100px;
+    background-color: #ffffff;
+    border: 2px solid #ffefef;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); /* 미묘한 그림자 효과 */
+    width: 900px;  /* 개별 container의 최대 너비 */
+    margin: 10px; /* container 간의 간격 조정 */
+}
+
+.container3 {
+    max-height: 80vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column; /* 내부 요소는 세로로 배치 */
+    align-items: center;
+    padding: 100px;
+    background-color: #ffffff;
+    border: 2px solid #ffefef;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); /* 미묘한 그림자 효과 */
+    width: 900px;  /* 개별 container의 최대 너비 */
+    margin: 10px; /* container 간의 간격 조정 */
+
+}
+
+
+
+.header {
+    font-size: 20px;
+    color: #000000;
+    margin: 20px 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* 텍스트 그림자 추가 */
+}
+
+
+
+.recentPosts{
+    margin-top: 10px;
+    font-family: 'Google Sans', 'Noto Sans KR', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.button, .deleteButton {
+    background-color: #ffa8a8;
+    color: white;
+    border: none;
+    padding: 4px 20px;
+    margin: 20px 10px 20px 0;
+    border-radius: 10px;
+    cursor: pointer;
+
+
+    transition: box-shadow 0.3s ease; /* 그림자 변화 효과를 위한 전환 추가 */
+}
+
+.button:hover, .deleteButton:hover {
+    background-color: #ef6e6e;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* 버튼 호버 시 그림자 추가 */
+}
+
+.boardItem:hover, .postItem:hover {
+    background-color: #f0f0f0; /* 호버 시 배경색 변경 */
+}
+
+.boardLink:hover, .link:hover {
+    color: #0056b3; /* 호버 시 링크 색상 변경 */
+    text-decoration: underline; /* 호버 시 밑줄 추가 */
+}
+
+.mannerBarBackground {
+    width: 100%; /* 바의 전체 너비 */
+    background-color: #e0e0e0; /* 바의 배경색 */
+    border-radius: 5px; /* 바의 모서리 둥글기 */
+    overflow: hidden; /* 내용이 바의 크기를 넘어갈 때 숨김 처리 */
+}
+
+.mannerBar {
+    height: 10px; /* 바의 높이 */
+    border-radius: 5px 0 0 5px; /* 왼쪽 모서리 둥글기 */
+    transition: width 0.3s ease; /* 너비 변경시 부드러운 전환 효과 */
+}
+
+/* 매너 온도에 따른 색상 예시 */
+.lowTemperature { background-color: #ff3e3e; } /* 낮은 온도 */
+.mediumTemperature { background-color: #ffc107; } /* 중간 온도 */
+.highTemperature { background-color: #4caf50; } /* 높은 온도 */
+
+.auctionContainer {
+       border: 1px solid #ccc;
+       border-radius: 8px;
+       padding: 20px;
+       margin-bottom: 20px;
+       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.auctionList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 20px;
+}
+
+.auctionContainer {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.auctionTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.auctionDetails {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.auctionPrice {
+    font-size: 16px;
+    color: #666;
+}
+
+.divider {
+    height: 1px;
+    background-color: #ccc;
+    margin: 10px 0;
+}
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');

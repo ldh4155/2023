@@ -1,0 +1,143 @@
+.navbar {
+    background-color: #ffffff;
+    padding: 20px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbarBrand {
+    margin-left: -175px;
+    color: #e10a0a !important;
+    font-weight: bold;
+    font-size: 24px;
+    font-family: 'Nanum Gothic', sans-serif; /* 네이버 폰트 사용 */
+}
+
+.navbarBrand img {
+    width: 150px; /* 이미지의 너비 조절 */
+    height: auto; /* 이미지의 높이를 자동으로 조절하여 비율 유지 */
+}
+
+
+
+.navLinks {
+    display: flex;
+    align-items: center;
+}
+
+.navLink {
+    color: #000000 !important;
+    margin-right: 20px;
+    text-decoration: none;
+    font-size: 18px;
+    margin-top: 15px;
+
+}
+
+.navLink:hover {
+    background-color: rgb(227, 227, 227);
+    transition: background-color 0.3s ease;
+    outline: 2px solid rgb(227, 227, 227);
+    border-radius: 10px;
+}
+
+.navLink:last-child {
+    margin-right: -100px;
+}
+.searchContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 화면의 높이 전체를 차지하도록 설정 */
+}
+
+.searchForm {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 가운데 정렬 */
+    flex-grow: 1;
+    border-radius: 20px; /* 모서리를 더욱 둥글게 조정 */
+    background-color: #ffffff; /* 배경색을 흰색으로 변경 */
+    box-shadow: 0 1px 4px rgb(225, 10, 10); /* 그림자 효과 추가 */
+    padding: 5px; /* 폼 내부의 여백 */
+    margin-right: 500px;
+    margin-left: -130px; /* 검색창을 왼쪽으로 50px 이동 */
+    margin-top: 17px;
+    width: 100%; /* 검색창의 길이를 늘림 */
+}
+
+.searchInput {
+    outline: none; /* 선택 시 테두리 없앰 */
+    margin-right: 5px;
+    padding: 10px;
+    border: none; /* 테두리 제거 */
+    border-radius: 20px; /* 모서리 둥글게 */
+    font-size: 16px; /* 폰트 크기 조정 */
+    flex-grow: 1;
+    width: calc(100% - 0px); /* 버튼 너비를 고려한 인풋 너비 조정, 버튼 너비 조정에 따라 조정될 수 있음 */
+    outline: none; /* 선택 시 테두리 없앰 */
+}
+
+.searchButton {
+    background-color: #ffffff; /* 버튼 배경색 조정 */
+    color: #e10a0a; /* 버튼 글자색 조정 */
+    border: none; /* 테두리 제거 */
+    padding: 10px 20px; /* 버튼 내부의 여백을 늘림 */
+    border-radius: 20px; /* 모서리를 둥글게 */
+    cursor: pointer;
+    font-size: 16px; /* 폰트 크기 조정 */
+    outline: none;
+    width: auto; /* 버튼의 너비를 내용에 맞게 조정 */
+}
+
+.searchInput:focus, .searchButton:focus {
+    outline: none !important; /* 포커스 시 테두리 없앰 */
+    border: none !important; /* 포커스 시 테두리 제거 */
+}
+
+
+
+/* 검색 버튼에 마우스 호버 시 */
+.loginButton:hover {
+    background-color: #ffefef;
+}
+
+
+@media (max-width: 992px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navLinks {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .navLink {
+        margin-right: 0;
+        margin-bottom: 10px;
+        font-size: 16px; /* 모바일 화면에서의 글자 크기를 수정 */
+    }
+
+    .navLink:last-child {
+        margin-bottom: 0;
+    }
+
+    .searchForm {
+        flex-direction: column;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .searchInput {
+        margin-bottom: 5px;
+        width: 100%;
+    }
+
+    .searchButton {
+        width: 100%;
+    }
+}

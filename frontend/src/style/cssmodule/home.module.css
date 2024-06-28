@@ -1,0 +1,57 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 20px;
+}
+
+.titleContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.titleIcon {
+    width: 60px;
+    height: auto;
+    margin-right: 10px;
+}
+
+
+.title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: -8px;
+}
+
+.boardList {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 50px;
+}
+
+.boardItem {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 25px 0;
+}
+
+.boardTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.boardTitle a {
+    color: #333;
+    text-decoration: none;
+}
+
+.boardTitle a:hover {
+    color: #ef6e6e;
+}
+
+.boardViews {
+    color: #666;
+    font-size: 14px;
+}
