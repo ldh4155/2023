@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import CommentWrite from "./CommentWrite";
 import { api } from "../../api/api";
-import { decodeJwt } from "../../api/decodeJwt";
+import {decodeJwt} from "../../api/decodeJwt";
+import styles from "../../style/cssmodule/Comment/Comment.module.css";
 
 const Comment = ({ boardId, comments, onCommentUpdate}) => {
 
@@ -62,36 +63,49 @@ const Comment = ({ boardId, comments, onCommentUpdate}) => {
     };
 
     return (
-        <div>
+        <div className={styles.commentContainer}>
             <CommentWrite boardId={boardId} newComment={newComment} />
-            <div>
-                <p>댓글&nbsp;{commentList.length}</p>
+            <div className={styles.commentList}>
+                <p className={styles.commentHeader}>댓글&nbsp;{commentList.length}</p>
                 {commentList.slice(0, visible).map((comment) =>
                     editingId === comment.id ? (
-                        <div key={comment.id}>
-                            <input type="text" value={editComment.content}
-                                onChange={(e) => setEditComment({ id: editingId, content: e.target.value })} />
-                            <button onClick={updateComment}>저장</button>
+                        <div key={comment.id} className={styles.commentItem}>
+                            <input
+                                type="text"
+                                value={editComment.content}
+                                onChange={(e) => setEditComment({ id: editingId, content: e.target.value })}
+                                className={styles.editInput}
+                            />
+                            <div className={styles.editActions}>
+                                <button onClick={updateComment}>저장</button>
+                            </div>
                         </div>
                     ) : (
-                        <div key={comment.id}>
-                            <span>{comment.memberNickName}</span>&nbsp;&nbsp;&nbsp;
-                            <span>{comment.createTime}</span>&nbsp;
-                            {comment.memberId === myId && (
-                                <>
-                                    <button onClick={() => handleEditClick(comment.id)}>수정</button>&nbsp;
-                                    <button onClick={() => deleteComment(comment.id)}>삭제</button>
-                                </>
-                            )}
-                            <p>{comment.content}</p>
+                        <div key={comment.id} className={styles.commentItem}>
+                            <div className={styles.commentHeader}>
+                                <div>
+                                    <span>{comment.memberNickName}</span>
+                                    <span className={styles.createTime}>{comment.createTime}</span>
+                                </div>
+                                {comment.memberId === myId && (
+                                    <div className={styles.commentActions}>
+                                        <button onClick={() => handleEditClick(comment.id)}>수정</button>
+                                        <button onClick={() => deleteComment(comment.id)}>삭제</button>
+                                    </div>
+                                )}
+                            </div>
+                            <p className={styles.commentContent}>{comment.content}</p>
                         </div>
-                    ))}
+                    )
+                )}
                 {visible < commentList.length && (
-                    <p onClick={showMore}>더보기</p>
+                    <p className={styles.showMore} onClick={showMore}>
+                        더보기
+                    </p>
                 )}
             </div>
         </div>
     );
-};
+}
 
 export default Comment;

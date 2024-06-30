@@ -8,6 +8,7 @@ import { api } from "../../api/api";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../../style/page.css";
 import AreaFiltering from "../../components/AreaFiltering";
+import styles from "../../style/cssmodule/Board/List.module.css"
 
 export default function BoardList() {
   const [boards, setBoards] = useState([]);
@@ -34,15 +35,15 @@ export default function BoardList() {
 
   const fetchBoards = (page, term) => {
     api
-      .get(`board?page=${page}&size=10&keyword=${term || ""}`)
-      .then((response) => {
-        setBoards(response.data.content);
-        setCurrentPage(response.data.number);
-        setTotalPages(response.data.totalPages);
-      })
-      .catch((error) => {
-        console.error("Error fetching boards:", error);
-      });
+        .get(`board?page=${page}&size=10&keyword=${term || ""}`)
+        .then((response) => {
+          setBoards(response.data.content);
+          setCurrentPage(response.data.number);
+          setTotalPages(response.data.totalPages);
+        })
+        .catch((error) => {
+          console.error("Error fetching boards:", error);
+        });
   };
 
   const filterBoards = () => {
@@ -61,13 +62,13 @@ export default function BoardList() {
     }
 
     api
-      .get(`board/filter`, { params })
-      .then((response) => {
-        setBoards(response.data);
-      })
-      .catch((error) => {
-        console.error("Error filtering boards:", error);
-      });
+        .get(`board/filter`, { params })
+        .then((response) => {
+          setBoards(response.data);
+        })
+        .catch((error) => {
+          console.error("Error filtering boards:", error);
+        });
   };
 
   const previousPage = () => {
@@ -85,9 +86,9 @@ export default function BoardList() {
   const pageNumbers = [];
   for (let i = 0; i < totalPages; i++) {
     pageNumbers.push(
-      <button key={i} onClick={() => setCurrentPage(i)}>
-        {i + 1}
-      </button>
+        <button key={i} onClick={() => setCurrentPage(i)}>
+          {i + 1}
+        </button>
     );
   }
 
@@ -104,51 +105,66 @@ export default function BoardList() {
   };
 
   return (
-    <div>
-      <AreaFiltering onAreaChange={handleAreaChange} />
-      <BoardHeader />
       <div>
-        <label>
-          카테고리:
-          <select value={category} onChange={(e) => setCategory(e.target.value)}>
-            <option value="">모든 카테고리</option>
-            <option value="전자제품">전자제품</option>
-            <option value="식품">식품</option>
-            <option value="의류">의류</option>
-            <option value="기타">기타</option>
-          </select>
-        </label>
+        <BoardHeader/>
+        <div className={styles.categoryContainer}>
+
+
+          <label className={styles.categoryLabel}>
+            카테고리:
+            <select
+                className={styles.categorySelect}
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+            >
+              <option value="">모든 카테고리</option>
+              <option value="전자제품">전자제품</option>
+              <option value="식품">식품</option>
+              <option value="의류">의류</option>
+              <option value="기타">기타</option>
+            </select>
+          </label>
+        </div>
+        <AreaFiltering onAreaChange={handleAreaChange}/>
+        <Routes>
+          <Route
+              path="write"
+              element={<Write fetchBoards={() => fetchBoards(currentPage)}/>}
+          />
+          <Route
+              path=":id"
+              element={<BoardDetail fetchBoards={() => fetchBoards(currentPage)}/>}
+          />
+          <Route path="update/:id" element={<Update/>}/>
+        </Routes>
+        {boards.map((board) => (
+            <BoardItem
+                key={board.id}
+                board={board}
+                fetchBoards={() => fetchBoards(currentPage)}
+            />
+        ))}
+        <div className={styles.searchBar}>
+          <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className={styles.searchInput}
+          />
+          <button onClick={handleSearch} className={styles.searchButton}>
+            검색
+          </button>
+        </div>
+        <div className={styles.pagination}>
+          <button onClick={previousPage} disabled={currentPage === 0}>
+            이전
+          </button>
+          {pageNumbers}
+          <button onClick={nextPage} disabled={currentPage === totalPages - 1}>
+            다음
+          </button>
+        </div>
+
       </div>
-      <Routes>
-        <Route
-          path="write"
-          element={<Write fetchBoards={() => fetchBoards(currentPage)} />}
-        />
-        <Route
-          path=":id"
-          element={<BoardDetail fetchBoards={() => fetchBoards(currentPage)} />}
-        />
-        <Route path="update/:id" element={<Update />} />
-      </Routes>
-      {boards.map((board) => (
-        <BoardItem
-          key={board.id}
-          board={board}
-          fetchBoards={() => fetchBoards(currentPage)}
-        />
-      ))}
-      <div className="left-padding">
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button onClick={handleSearch}>검색</button>
-        <br />
-        <button onClick={previousPage}>이전</button>
-        {pageNumbers}
-        <button onClick={nextPage}>다음</button>
-      </div>
-    </div>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { api } from "../../api/api";
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -8,7 +9,7 @@ const UserList = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/members`);
+        const response = await api.get(`members`);
         setUsers(response.data);
       } catch (error) {
         console.error('Failed to load users', error);

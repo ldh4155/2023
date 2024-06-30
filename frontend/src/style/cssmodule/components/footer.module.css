@@ -1,0 +1,114 @@
+/* footer.module.css */
+.footer {
+    width: 100%;
+    height: 310px;
+    margin: 0;
+    padding: 0 20px;  /* 각각 위 오른쪽 아래 왼쪽 */
+    display: flex;
+    flex-direction: column; /* 요소들을 수평정렬 */
+    font-size: 12px;
+}
+
+.ul {
+    /* li의 깔끔한 정렬을 위해 기본마진, 패딩 제거 */
+    margin: 0;
+    padding: 0;
+}
+
+.noticeBox {
+    flex: 1;
+    display: flex;
+    justify-content: space-between; /* 양끝 정렬 */
+    padding: 0 20px;
+    align-items: center;
+    border-bottom: 1px solid #f1f3f6;
+}
+
+.noticeBox a {
+    font-weight: bold;
+    color: black;
+}
+
+.asideBox {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #f1f3f6;
+    padding: 0 20px;
+}
+
+.areaUser {
+    flex: 2;
+    line-height: 2em; /* 줄간격 */
+    margin: 0 20px 0 20px;
+}
+
+.areaUserRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 -8px;
+}
+
+.areaUserRow span {
+    flex: 1;
+}
+
+.areaUserRow ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding: 0;
+    margin-left: -8px; /* 왼쪽으로 옮기기 */
+}
+
+.aurTitle {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.areaUserRowLi {
+
+    margin-left: 16px;
+}
+
+.areaCol {
+    flex: 1;
+    display: flex;
+    padding: 0 20px;
+}
+
+.areaColContent {
+    line-height: 20px;
+}
+
+.acImg {
+    width: 60px;
+    height: auto;
+}
+
+.bottomBox {
+    flex: 3;
+    padding-top: 20px;
+    font-size: 14px;
+    padding: 0 20px;
+}
+
+.bottomBoxLi {
+    display: inline-block; /* 수평정렬 */
+    margin-left: 8px;
+}
+
+.bottomBoxLiLast {
+    /* 마지막 li요소 (Naver Corp.) 굵게 */
+    font-weight: bold;
+}
+
+.colorNaver {
+    color: #ffa8a8;
+}
+
+.textBold13 {
+    font-weight: bold;
+    font-size: 13px;
+}

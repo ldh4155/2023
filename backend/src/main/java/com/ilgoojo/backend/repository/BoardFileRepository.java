@@ -20,3 +20,5 @@ public interface BoardFileRepository extends JpaRepository<BoardFile, Long> {
 
     BoardFile findByStoredFileName(String storedFileName);
 }
+
+

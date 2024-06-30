@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
+import { api } from "../../api/api";
 
 const SomeonePage = () => {
   const [user, setUser] = useState({});
@@ -10,9 +11,9 @@ const SomeonePage = () => {
   useEffect(() => {
     const fetchUserAndBoards = async () => {
       try {
-        const userResponse = await axios.get(`http://localhost:8080/mypageuser/${id}`);
+        const userResponse = await api.get(`mypageuser/${id}`);
         setUser(userResponse.data);
-        const boardsResponse = await axios.get(`http://localhost:8080/mypageboard/${id}`);
+        const boardsResponse = await api.get(`mypageboard/${id}`);
         setBoards(boardsResponse.data);
       } catch (error) {
         console.error('Failed to load user or boards', error);
