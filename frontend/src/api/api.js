@@ -3,7 +3,7 @@ import { refreshAccessToken } from "./reissue";
 import { returnLogin } from "./returnLogin";
 
 export const api = axios.create({
-  baseURL: `https://ilgoojo-server.p-e.kr:8080/api/`,
+  baseURL: `http://ilgoojo-server.p-e.kr:8080/api/`,
 });
 
 api.interceptors.request.use(
