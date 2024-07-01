@@ -25,6 +25,7 @@ import java.util.NoSuchElementException;
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class MyPageController {
     private final MemberService memberService;
     private final BoardService boardService;
