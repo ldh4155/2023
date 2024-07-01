@@ -1,4 +1,5 @@
 import { useDaumPostcodePopup } from 'react-daum-postcode';
+import styles from '../../style/cssmodule/sign/signup.module.css';
 
 export const PostCode = ({setSido, setSigungu, setAddress}) => {
     const scriptUrl = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
@@ -29,7 +30,7 @@ export const PostCode = ({setSido, setSigungu, setAddress}) => {
     };
 
     return (
-        <button type='button' onClick={handleClick}>
+        <button type='button' onClick={handleClick} className={styles.searchButton}>
             주소 검색
         </button>
     );
