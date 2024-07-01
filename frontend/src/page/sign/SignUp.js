@@ -133,7 +133,10 @@ const SignUp = () => {
                            onChange={handleChange}/>
                     <input className={styles.inputField} name="phone" type="text" placeholder="휴대폰 번호"
                            onChange={handleChange}/>
-                    <input className={styles.inputField} name="address" type="text" placeholder="주소"
+                    <input className={styles.inputField} name="address" type="text" placeholder="주소" readOnly
+                           value={address} onChange={handleChange}/>
+                    <PostCode setSido={setSido} setSigungu={setSigungu} setAddress={setAddress}/>
+                    <input className={styles.inputField} name="detailAddr" type="text" placeholder="상세주소"
                            onChange={handleChange}/>
                     <input className={styles.inputField} name="email" type="email" placeholder="이메일"
                            onChange={handleChange}/>
