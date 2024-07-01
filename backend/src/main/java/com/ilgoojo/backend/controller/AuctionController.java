@@ -16,6 +16,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController // 모든 경매 관련 엔드포인트의 기본 URL
+@RequestMapping("/api")
 public class AuctionController {
     private final AuctionService auctionService;
 

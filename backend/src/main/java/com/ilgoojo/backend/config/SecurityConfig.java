@@ -86,8 +86,8 @@ public class SecurityConfig {
         http.httpBasic((auth) -> auth.disable());
         //어느 api는 인가 없이 들어올지
         http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/login", "/signup", "/","/images/**","/reissue").permitAll()
-                .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
+                .requestMatchers("/api/login", "/api/signup", "/api/","/api/images/**","/api/reissue").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/board/**").permitAll()
                 .anyRequest().authenticated());
 
         http.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
