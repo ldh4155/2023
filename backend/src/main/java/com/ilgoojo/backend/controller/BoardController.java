@@ -24,6 +24,7 @@ import java.util.NoSuchElementException;
 
 @CrossOrigin
 @RestController
+@RequestMapping("/api")
 public class BoardController {
 
     private final BoardService boardService;

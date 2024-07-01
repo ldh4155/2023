@@ -33,7 +33,7 @@ public class CustomSignOutFilter extends GenericFilterBean {
     private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         // 로그아웃 경로인지 확인
         String requestUri = request.getRequestURI();
-        if (!requestUri.matches("/signout")) {
+        if (!requestUri.matches("/api/signout")) {
             filterChain.doFilter(request, response);
             return;
         }
