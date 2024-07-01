@@ -63,8 +63,7 @@ public class SignInFilter extends UsernamePasswordAuthenticationFilter {
         String username = authentication.getName();
 
         //토큰 생성
-//        String access = jwtUtil.createJwt("access",username,600000L);
-        String access = jwtUtil.createJwt("access",username,6000L);
+        String access = jwtUtil.createJwt("access",username,600000L);
         String refresh = jwtUtil.createJwt("refresh",username,86400000L);
 
         //refresh 토큰 저장
