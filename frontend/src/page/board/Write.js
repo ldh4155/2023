@@ -38,6 +38,7 @@ export default function Write(props) {
     const formData = new FormData();
     formData.append("title", board.title);
     formData.append("content", board.content);
+    formData.append("category", board.category);
 
     board.files.forEach((file) => formData.append("files", file));
     api.post(`board`,formData)
