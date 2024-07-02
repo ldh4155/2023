@@ -7,11 +7,11 @@ import BoardList from "./BoardList";
 
 
 export default function Write(props) {
-  let token = localStorage.getItem("token");
   const [board, setBoard] = useState({
     title: "",
     content: "",
     files: [],
+    category: "",
   });
 
   const navigate = useNavigate();
