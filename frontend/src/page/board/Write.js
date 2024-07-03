@@ -40,7 +40,6 @@ export default function Write(props) {
 
     board.files.forEach((file) => formData.append("files", file));
 
-    setAuthToken(token);
     api
       .post(`board`, formData)
       .then((data) => {
@@ -51,8 +50,11 @@ export default function Write(props) {
         // window.location.replace("/board");
       })
       .catch((error) => {
-        alert("게시글 작성에 실패하였습니다.");
-        console.error("Error:", error);
+        if (error.code == "ERR_BAD_REQUEST") {
+          alert("사진, 동영상만 가능합니다.");
+        } else {
+          alert("게시글 작성에 실패하였습니다.");
+        }
       });
   }
 
