@@ -8,9 +8,11 @@ import com.ilgoojo.backend.repository.BoardFileRepository;
 import com.ilgoojo.backend.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import java.io.File;
@@ -113,6 +115,7 @@ public class FileStorageService {
                 } catch (IllegalArgumentException e) {
                     e.printStackTrace();
                     // 지원하지 않는 파일 타입에 대한 처리
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사진, 동영상만 가능합니다.");
                 }
             }
         }
