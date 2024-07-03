@@ -122,7 +122,6 @@ public class FileStorageService {
         return fileNames;
     }
 
-
     public String deleteImage(Integer boardId) {
         List<String> storedFileNames = boardFileRepository.findStoredFileNameByBoardId(boardId);
         boolean isAllDeleted = true;
