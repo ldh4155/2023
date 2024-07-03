@@ -51,7 +51,7 @@ export default function Write(props) {
       })
       .catch((error) => {
         if (error.code == "ERR_BAD_REQUEST") {
-          alert("사진, 동영상만 가능합니다.");
+          alert("사진(jpg, png, gif), 동영상(mp4, avi, mov)만 가능합니다.");
         } else {
           alert("게시글 작성에 실패하였습니다.");
         }
