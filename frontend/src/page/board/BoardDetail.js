@@ -6,7 +6,6 @@ import { api } from "../../api/api";
 import Modal from "../../components/Modal";
 import ModalBoard from "./ModalBoard";
 import BoardList from "./BoardList";
-import jwt_decode from "jwt-decode";
 
 export default function BoardDetail(props) {
   const token = localStorage.getItem("token");
@@ -15,9 +14,6 @@ export default function BoardDetail(props) {
   const navigate = useNavigate();
   const [boardData, setBoardData] = useState(null);
   const [modalBoard, setModalBoard] = useState({});
-
-  const decoded = jwt_decode(token);
-  const currentUserId = decoded.id;
 
   useEffect(() => {
     api
@@ -54,19 +50,19 @@ export default function BoardDetail(props) {
 
   return (
     <div>
-      {boardData ? 
+      {boardData ? (
         <>
           <div>
             <h1>
               제목 : {boardData.title}{" "}
               <button onClick={() => UpdateBoard(boardData.id)}>수정</button>{" "}
               <button onClick={() => DeleteBoard(boardData.id)}>삭제</button>
-              }
               <Modal boardData={boardData} />
             </h1>
             <hr />
             <h3>내용 : {boardData.content}</h3>
             <ImageList imageUrls={boardData.imageUrls} />
+            <h5>작성자 : {boardData.nickName}</h5>
             <h5>조회수 : {boardData.view}</h5>
             <h5>작성시간 : {boardData.time}</h5>
           </div>
