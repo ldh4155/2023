@@ -97,11 +97,11 @@ const SignUp = () => {
                 alert('가입에 성공하였습니다!');
                 navigate('/signin');
             } else {
-                alert('가입에 실패하였습니다. 다시 시도해주세요.');
+                alert('가입에 실패하였습니다. 잘못 입력한 부분이 있는지 확인해주세요.');
             }
         } catch (error) {
             console.error('Failed to sign up', error);
-            alert('가입에 실패하였습니다. 다시 시도해주세요.');
+            alert('가입에 실패하였습니다. 잘못 입력한 부분이 있는지 확인해주세요.');
         }
     }
 
@@ -131,7 +131,7 @@ const SignUp = () => {
                            onChange={handleChange}/>
                     <input className={styles.inputField} name="nickName" type="text" placeholder="닉네임"
                            onChange={handleChange}/>
-                    <input className={styles.inputField} name="phone" type="text" placeholder="휴대폰 번호"
+                    <input className={styles.inputField} name="phone" type="text" placeholder="휴대폰 번호 - 를 빼고 입력하세요"
                            onChange={handleChange}/>
                     <input className={styles.inputField} name="address" type="text" placeholder="주소" readOnly
                            value={address} onChange={handleChange}/>
