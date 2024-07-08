@@ -48,11 +48,13 @@ export default function Write(props) {
         alert("게시글 작성에 성공하였습니다.");
         props.fetchBoards();
         navigate("/board");
-        // window.location.replace("/board");
       })
       .catch((error) => {
-        alert("게시글 작성에 실패하였습니다.");
-        console.error("Error:", error);
+        if (error.code == "ERR_BAD_REQUEST") {
+          alert("사진(jpg, png, gif), 동영상(mp4, avi, mov)만 가능합니다.");
+        } else {
+          alert("게시글 작성에 실패하였습니다.");
+        }
       });
   }
 
