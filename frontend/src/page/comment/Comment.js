@@ -46,7 +46,7 @@ const Comment = ({ boardId, comments, onCommentUpdate}) => {
                     comment.id === response.data.id ? response.data : comment));
 
                 setEditingId(null);
-                setEditComment({id : null, comment : null});
+                setEditComment({id : null, comment : ""});
                 alert("수정 성공")
                 onCommentUpdate(); // 댓글 수정 후 콜백 호출
             }catch (error) {
