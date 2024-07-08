@@ -37,7 +37,7 @@ const Comment = ({ boardId, comments, onCommentUpdate}) => {
     };
 
     const updateComment = async () => {
-        if(editComment.content.trim === "") {
+        if(editComment.content.trim() === "") {
             alert("내용을 입력하세요")
         } else {
             try {
@@ -64,6 +64,7 @@ const Comment = ({ boardId, comments, onCommentUpdate}) => {
 
     const newComment = (newComment) => {
         setCommentList([...commentList, newComment]);
+        onCommentUpdate(); // 댓글 작성 후 콜백 호출
     };
 
     return (
