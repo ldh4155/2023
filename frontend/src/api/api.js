@@ -43,7 +43,7 @@ api.interceptors.response.use(
         return Promise.reject(refreshError);
       }
     }
-    if(error.response.status === 400 || error.response.status === 403) {
+    if(error.response.status === 403) {
       returnLogin();
     }
     return Promise.reject(error);

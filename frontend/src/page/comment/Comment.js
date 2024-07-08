@@ -37,20 +37,24 @@ const Comment = ({ boardId, comments, onCommentUpdate}) => {
     };
 
     const updateComment = async () => {
-        try {
-            const response = await api.put(`board/${boardId}/comment`, editComment);
-            setCommentList(commentList.map(comment =>
-                comment.id === response.data.id ? response.data : comment));
+        if(editComment.content.trim === "") {
+            alert("내용을 입력하세요")
+        } else {
+            try {
+                const response = await api.put(`board/${boardId}/comment`,editComment)
+                setCommentList(commentList.map(comment =>
+                    comment.id === response.data.id ? response.data : comment));
 
-            setEditingId(null);
-            setEditComment({ id: null, content: "" });
-            alert("수정 성공");
-            onCommentUpdate(); // 댓글 수정 후 콜백 호출
-        } catch (error) {
-            console.error(error);
-            alert("수정 실패");
+                setEditingId(null);
+                setEditComment({id : null, comment : ""});
+                alert("수정 성공")
+                onCommentUpdate(); // 댓글 수정 후 콜백 호출
+            }catch (error) {
+                console.error(error)
+                alert("수정 실패")
+            }
         }
-    };
+    }
 
     const handleEditClick = (id) => {
         const commentToEdit = commentList.find(comment => comment.id === id);
