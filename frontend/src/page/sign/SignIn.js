@@ -23,7 +23,7 @@ const SignIn = () => {
         } catch (error) {
             console.log("실패:",localStorage.getItem("access"))
             console.error(error);
-            alert("로그인 실패");
+            alert("아이디나 비밀번호를 확인해주세요");
         }
     }
 
@@ -64,6 +64,10 @@ const SignIn = () => {
               회원가입
             </button>
           </p>
+        </div>
+        <div>
+          <button onClick={() => navigate('/findid')} 아이디 찾기></button>
+          <button onClick={() => navigate('/findpwd')} 비밀번호 찾기></button>
         </div>
       </div>
   );

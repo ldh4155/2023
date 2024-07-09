@@ -10,9 +10,10 @@ const MyPage = () => {
   const [editField, setEditField] = useState('');
   const [editValue, setEditValue] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [showPassword, setShowPassword] = useState(false);
+  const [editPwd, setEditPwd] = useState('');
   const [showDetail, setShowDetail] = useState(false);
   const [chargeAmount, setChargeAmount] = useState('');
+  const [showMessage, setShowMessage] = useState('')
 
   useEffect(() => {
     const fetchUserAndBoards = async () => {
@@ -94,6 +95,32 @@ const MyPage = () => {
     }
   };
 
+  const checkPassword = (e) => {
+    const inputpwd = e.target.value;
+
+    if(editPwd === inputpwd){
+      setShowMessage("일치합니다");
+    }else {
+      setShowMessage("비밀번호와 일치하지 않습니다");
+    }
+
+  }; 
+
+  const changePwd = async () => {
+    try {
+      const response = await api.post(`changepwd`, {editPwd});
+      console.log(editPwd);      
+      if(response.status === 200){
+        alert("비밀번호 변경 성공")
+      } else {
+        alert("비밀번호 변경 실패")
+      }
+        
+    } catch(error) {
+      alert("비밀번호 변경 실패")
+    }
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -148,10 +175,10 @@ const MyPage = () => {
                     <button className={styles.button} onClick={() => setEditField('birth')}>수정</button>
                   </p>
                   <p>
-                    현재 비밀번호 : {showPassword ? user.password : '********'}
-                    <button className={styles.button} onClick={() => setShowPassword(!showPassword)}>
-                      {showPassword ? '숨기기' : '확인'}</button>
-                    <button className={styles.button} onClick={() => setEditField('password')}>비밀번호 변경</button>
+                    <input type="password" value={editPwd} placeholder="바꿀 비밀번호" onChange={(e) => setEditPwd(e.target.value)}/>
+                    <input type="password" placeholder="비밀번호 확인" onChange={checkPassword}/>
+                    <p>{showMessage}</p>
+                    <button onClick={changePwd}>비밀번호 변경</button>
                   </p>
                 </>
             )}
