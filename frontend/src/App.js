@@ -17,6 +17,8 @@ import React, { useState,useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import MessageModal from './components/MessageModal';
+import FindId from './page/sign/FindId';
+import FindPwd from './page/sign/FindPwd';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -48,6 +50,8 @@ function App() {
         <Route path="/Update/:id" element={<Update/>} />
         <Route path="/signin" element={<SignIn isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>} />
         <Route path="/signup" element={<SignUp/>} />
+        <Route path="/findid" element={<FindId/>} />
+        <Route path="/findpwd" element={<FindPwd/>} />
         <Route path='/users' element={<UserList/>}/>
         <Route path='/user/:id' element={<SomeonePage/>}/>
         <Route path='/auctions/' element={<AuctionList/>}/>
