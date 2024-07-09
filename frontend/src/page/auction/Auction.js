@@ -60,7 +60,7 @@ function Auction() {
         
         setBidder(userResponse.data.memberId);
   
-        const bidResponse = await api.post(`auctions/${auctionId}/bid`, bid );
+        const bidResponse = await api.post(`auctions/${auctionId}/bid`, {bid} );
         if(bidResponse.data === false){
           alert("종료된 경매입니다.");
           navigate("/auctions")
