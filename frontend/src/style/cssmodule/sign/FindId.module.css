@@ -1,0 +1,57 @@
+.find-id-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+    background-color: #ffffff;
+    font-family: 'Nanum Gothic', sans-serif; /* 네이버 폰트 사용 */
+}
+
+.find-id-form {
+    background-color: #fff;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 500px; /* 가로 길이를 직접 지정 */
+    height: 400px;
+}
+
+.find-id-form h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.find-id-form input {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.find-id-form button {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #e10a0a;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.find-id-form button:hover {
+    background-color: #b00808;
+}
+
+.find-id-result {
+    margin-top: 1.5rem;
+    text-align: center;
+    color: #333;
+}
