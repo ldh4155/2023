@@ -1,5 +1,5 @@
 .container {
-    background-color: #eeeeee;
+    background-color: #ffffff;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -183,6 +183,32 @@
     cursor: pointer;
 }
 
+.auctionList {
+    list-style-type: none;
+    padding: 0;
+}
+
+.auctionItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.auctionImage {
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+}
+
+.auctionTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.auctionDetails {
+    margin-bottom: 5px;
+}
 
 
 

@@ -175,10 +175,11 @@ const MyPage = () => {
                     <button className={styles.button} onClick={() => setEditField('birth')}>수정</button>
                   </p>
                   <p>
-                    <input type="password" value={editPwd} placeholder="바꿀 비밀번호" onChange={(e) => setEditPwd(e.target.value)}/>
+                    <input type="password" value={editPwd} placeholder="바꿀 비밀번호"
+                           onChange={(e) => setEditPwd(e.target.value)}/>
                     <input type="password" placeholder="비밀번호 확인" onChange={checkPassword}/>
                     <p>{showMessage}</p>
-                    <button onClick={changePwd}>비밀번호 변경</button>
+                    <button className={styles.button}>비밀번호 변경</button>
                   </p>
                 </>
             )}
@@ -195,19 +196,24 @@ const MyPage = () => {
                 />
               </div>
             </div>
-            <div>
-              <h1>금액 충전</h1>
-                <form onSubmit={handleSubmit}>
-                  <label htmlFor="chargeAmount">충전 금액:</label>
-                  <input
+            <div className={styles.container1}>
+              <h1 className={styles.title}>금액 충전</h1>
+              <form onSubmit={handleSubmit} className={styles.form}>
+                <label htmlFor="chargeAmount" className={styles.label}>
+                  충전 금액:
+                </label>
+                <input
                     type="number"
                     id="chargeAmount"
                     value={chargeAmount}
                     onChange={(e) => setChargeAmount(e.target.value)}
                     required
-                  />
-                < button type="submit">충전하기</button>
-                </form>
+                    className={styles.input}
+                />
+                <button type="submit" className={styles.button}>
+                  충전하기
+                </button>
+              </form>
             </div>
             {editField && (
                 <div>
@@ -246,7 +252,7 @@ const MyPage = () => {
             )}
           </div>
             <div className={styles.container3}>
-              <h2>나의 진행중인 경매</h2>
+              <h2 className={styles.recentPosts}>나의 진행중인 경매</h2>
               <div className={styles.auctionList}>
                 {auctions.length > 0 ? (
                     auctions.map(auction => (
