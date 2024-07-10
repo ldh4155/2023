@@ -1,5 +1,9 @@
 export const decodeJwt = () => {
     const token = localStorage.getItem('access')
+    if(!token) {
+        return null;
+    }
+    
     const base64Url = token.split('.')[1]; // payload 부분 추출
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const jsonPayload = decodeURIComponent(atob(base64).split('').map((c) => {

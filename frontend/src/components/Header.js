@@ -45,7 +45,6 @@ const Header = () => {
 
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className={styles.navLinks}>
-              <Link to="/page1" className={styles.navLink}>중고거래</Link>
               <Link to="/board" className={styles.navLink}>게시판</Link>
               <Link to="/auctions" className={styles.navLink}>경매</Link>
 
