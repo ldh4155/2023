@@ -1,5 +1,6 @@
 package com.ilgoojo.backend.service;
 
+import com.ilgoojo.backend.dto.AmountDto;
 import com.ilgoojo.backend.dto.AuctionDto;
 import com.ilgoojo.backend.dto.AuctionListDto;
 import com.ilgoojo.backend.dto.BidDto;
@@ -39,7 +40,7 @@ public class AuctionService {
     }
 
     @Transactional
-    public Auction bid(Integer auctionId, String memberId, Integer amount) {
+    public Auction bid(Integer auctionId, String memberId, AmountDto amountDto) {
         Auction auction = auctionRepository.findById(auctionId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid auction Id:" + auctionId));
         Member member = memberRepository.findById(memberId)
@@ -48,13 +49,13 @@ public class AuctionService {
             auction.setAmount(0);
         if(auction.getStartPrice() == null)
             auction.setStartPrice(0);
-        if(amount>auction.getAmount() && amount > auction.getStartPrice()) {
+        if(amountDto.getAmount()>auction.getAmount() && amountDto.getAmount() > auction.getStartPrice()) {
             auction.setBidder(member);
-            auction.setAmount(amount);
+            auction.setAmount(amountDto.getAmount());
 
             Integer bBid = auction.getAmount();
             Integer balance = member.getBalance();
-            member.setBalance(balance - amount);
+            member.setBalance(balance - amountDto.getAmount());
 
             Member bBidder = auction.getBidder();
             if(bBidder!=null) {

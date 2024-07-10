@@ -1,5 +1,6 @@
 package com.ilgoojo.backend.controller;
 
+import com.ilgoojo.backend.dto.AmountDto;
 import com.ilgoojo.backend.dto.AuctionDto;
 import com.ilgoojo.backend.dto.AuctionListDto;
 import com.ilgoojo.backend.dto.BidDto;
@@ -51,12 +52,12 @@ public class AuctionController {
 
     // 경매 입찰
     @PostMapping("auctions/{auctionId}/bid")
-    public boolean bid(@PathVariable Integer auctionId, @RequestBody Integer amount) {
+    public boolean bid(@PathVariable Integer auctionId, @RequestBody AmountDto amountDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         auctionService.checkAuctionsEnd();
         boolean checkFlag = auctionService.checkAuctionEnd(auctionId);
         if (checkFlag) {
-            auctionService.bid(auctionId, authentication.getName(), amount);
+            auctionService.bid(auctionId, authentication.getName(), amountDto);
         }
         return checkFlag;
     }
