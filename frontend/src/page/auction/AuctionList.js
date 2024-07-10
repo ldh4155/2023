@@ -136,19 +136,30 @@ function AuctionList() {
                     <button className={styles.submitButton} type="submit">등록</button>
                 </form>
             )}
-            <ul>
+            <ul className={styles.auctionList}>
                 {auctions.map(auction => (
-                    <li key={auction.auctionId}>
-                        <Link to={`/auctions/${auction.auctionId}`}>{auction.title}</Link> {/* 각 경매 상세 페이지로 이동 */}
-                        <p>{auction.imageUrl && (
-                            <img src={auction.imageUrl} alt="Auction" style={{width: '100px', height: '100px'}}/>
-                        )}</p>
-                        <p>{"시작가 : " + auction.startPrice}</p>
-                        <p>{"현재 최고가 : " + (auction.amount ? auction.amount : "미입찰")}</p>
+                    <li key={auction.auctionId} className={styles.auctionItem}>
+                        <Link to={`/auctions/${auction.auctionId}`}>
+                            <div className={styles.auctionImage}>
+                                {auction.imageUrl && (
+                                    <img src={auction.imageUrl} alt="Auction"/>
+                                )}
+                            </div>
+                            <div>
+                                <div className={styles.auctionTitle}>{auction.title}</div>
+                                <div className={styles.auctionDetails}>
+                                    {"시작가 : " + auction.startPrice}
+                                </div>
+                                <div className={styles.auctionDetails}>
+                                    {"현재 최고가 : " + (auction.amount ? auction.amount : "미입찰")}
+                                </div>
+                            </div>
+                        </Link>
                     </li>
                 ))}
             </ul>
         </div>
     );
 }
+
 export default AuctionList;

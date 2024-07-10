@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { api } from "../../api/api";
+import styles from "../../style/cssmodule/sign/FindPwd.module.css";
+
 
 const FindPwd = () => {
 
@@ -23,14 +25,32 @@ const FindPwd = () => {
         
     }
     return (
-        <div>
-            <p>임시 비밀번호를 가입하신 이메일로 보내드립니다.</p>
-            <form onSubmit={handleFindPwd}>
-                <input type="text" value={name} placeholder="가입한 이름" onChange={(e) => setName(e.target.value)}/>
-                <input type="text" value={id} placeholder="아이디" onChange={(e) => setId(e.target.value)}/> 
-                <button type="submit">임시 비밀번호 발급</button>
-            </form>
+        <div className={styles.container}>
+            <div className={styles.form}>
+                <h2 className={styles.title}>임시 비밀번호 발급</h2>
+                <form onSubmit={handleFindPwd}>
+                    <input
+                        type="text"
+                        value={name}
+                        placeholder="가입한 이름"
+                        onChange={(e) => setName(e.target.value)}
+                        className={styles.input}
+                    />
+                    <input
+                        type="text"
+                        value={id}
+                        placeholder="아이디"
+                        onChange={(e) => setId(e.target.value)}
+                        className={styles.input}
+                    />
+                    <button type="submit" className={styles.button}>
+                        임시 비밀번호 발급
+                    </button>
+                </form>
+            </div>
         </div>
     );
+
+
 }
 export default FindPwd;
