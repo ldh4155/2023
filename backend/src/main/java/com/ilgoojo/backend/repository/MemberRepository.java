@@ -4,5 +4,11 @@ import com.ilgoojo.backend.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberRepository extends JpaRepository<Member, String> {
-    public boolean existsById(String id);
+    boolean existsById(String id);
+    Member findByNickName(String nickName);
+
+    Member findByNameAndEmail(String name, String email);
+
+    Member findByIdAndName(String id, String name);
+    
 }

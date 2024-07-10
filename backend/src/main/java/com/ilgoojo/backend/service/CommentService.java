@@ -55,6 +55,7 @@ public class CommentService {
         for(Comment comment : comments) {
             CommentResponseDto commentResponseDto = CommentResponseDto.builder()
                     .id(comment.getId())
+                    .memberId(comment.getMember().getId())
                     .memberNickName(comment.getMember().getNickName())
                     .content(comment.getContent())
                     .createTime(DateUtil.FormatDate(comment.getCreateTime()))
@@ -62,7 +63,6 @@ public class CommentService {
 
             commentResponseDtoList.add(commentResponseDto);
         }
-
         return commentResponseDtoList;
     }
 
@@ -89,3 +89,4 @@ public class CommentService {
     }
 
 }
+

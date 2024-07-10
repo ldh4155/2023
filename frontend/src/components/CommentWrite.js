@@ -1,5 +1,5 @@
-import axios from "axios";
 import React, { useState } from 'react';
+import { api } from "../api/api";
 
 const CommentWrite = ({boardId, newComment}) => {
 
@@ -8,16 +8,21 @@ const CommentWrite = ({boardId, newComment}) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        try {
-            //댓글 보내기
-           const response =  await axios.post(
-            `http://localhost:8080/board/${boardId}/comment`
-            , {content: comment});
-
-            setComment('');
-            newComment(response.data);
-        } catch(error) {
-            alert("댓글 작성에 실패");
+        if (comment.trim() === '') {
+            alert("내용을 입력해주세요")
+        } else {
+            try {
+                //댓글 보내기
+                const response = await api.post(`board/${boardId}/comment`, {
+                  content: comment,
+                });
+          
+                setComment('');
+                newComment(response.data);
+              } catch (error) {
+                alert("댓글 작성에 실패");
+              }
+            };
         }
     }
     return (
@@ -32,6 +37,6 @@ const CommentWrite = ({boardId, newComment}) => {
             </form>
         </div>
     )
-}
+
 
 export default CommentWrite;

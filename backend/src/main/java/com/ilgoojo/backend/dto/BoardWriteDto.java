@@ -9,4 +9,7 @@ public class BoardWriteDto {
 
     private String title;
     private String content;
+    private String writer;
+    private String address;
+    private String category;
 }

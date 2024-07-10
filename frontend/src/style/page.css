@@ -11,3 +11,16 @@
     position: relative;
     bottom: -130px; /* 컨테이너 하단에 위치 */
   }
+  .modalContainer {
+    position: fixed; /* 모달을 화면에 고정 */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 모달을 정확히 중앙에 위치 */
+    width: 20vw; /* 화면의 너비의 20% */
+    height: 20vh; /* 화면의 높이의 20% */
+    background-color: white; /* 배경색 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    padding: 20px; /* 내부 여백 */
+    z-index: 1000; /* 다른 요소들 위에 표시되도록 z-index 설정 */
+    cursor: move;
+  }

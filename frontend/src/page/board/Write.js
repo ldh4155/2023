@@ -1,16 +1,19 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import BoardInput from "../../components/BoardInput";
+import { api } from "../../api/api";
+import BoardList from "./BoardList";
+
+
 
 export default function Write(props) {
-  let token = localStorage.getItem('token');
   const [board, setBoard] = useState({
     title: "",
     content: "",
-    images: [], // 게시글에 이미지 정보를 포함
+    files: [],
+    category: "",
   });
-  
+
   const navigate = useNavigate();
 
   function ChangeValue(event) {
@@ -24,7 +27,7 @@ export default function Write(props) {
   function handleFileChange(event) {
     setBoard({
       ...board,
-      images: Array.from(event.target.files),
+      files: Array.from(event.target.files),
     });
     console.log(board);
   }
@@ -35,22 +38,23 @@ export default function Write(props) {
     const formData = new FormData();
     formData.append("title", board.title);
     formData.append("content", board.content);
+    formData.append("category", board.category);
 
-    board.images.forEach((image) => formData.append("images", image));
+    board.files.forEach((file) => formData.append("files", file));
+    api.post(`board`,formData)
 
-    fetch("http://localhost:8080/board", {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
       .then((data) => {
         console.log(data);
         alert("게시글 작성에 성공하였습니다.");
+        props.fetchBoards();
         navigate("/board");
       })
       .catch((error) => {
-        alert("게시글 작성에 실패하였습니다.");
-        console.error("Error:", error);
+        if (error.code == "ERR_BAD_REQUEST") {
+          alert("사진(jpg, png, gif), 동영상(mp4, avi, mov)만 가능합니다.");
+        } else {
+          alert("게시글 작성에 실패하였습니다.");
+        }
       });
   }
 
@@ -61,6 +65,8 @@ export default function Write(props) {
       boardData={board}
       ChangeValue={ChangeValue}
       handleFileChange={handleFileChange}
+      newBoard={props.newBoard}
+
     />
   );
 }
