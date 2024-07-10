@@ -88,20 +88,23 @@ const SignUp = () => {
 
     const handleSignUp = async (e) => {
         e.preventDefault();
-
-        try {
-            console.log(member);
-            const response = await api.post('signup', member);
-            console.log(response.data)
-            if (response.data) {
-                alert('가입에 성공하였습니다!');
-                navigate('/signin');
-            } else {
+        if(idMessage === "사용할 수 있는 아이디" && pwdMessage === "비밀번호가 일치합니다") {
+            try {
+                console.log(member);
+                const response = await api.post('signup', member);
+                console.log(response.data)
+                if (response.data) {
+                    alert('가입에 성공하였습니다!');
+                    navigate('/signin');
+                } else {
+                    alert('가입에 실패하였습니다. 잘못 입력한 부분이 있는지 확인해주세요.');
+                }
+            } catch (error) {
+                console.error('Failed to sign up', error);
                 alert('가입에 실패하였습니다. 잘못 입력한 부분이 있는지 확인해주세요.');
             }
-        } catch (error) {
-            console.error('Failed to sign up', error);
-            alert('가입에 실패하였습니다. 잘못 입력한 부분이 있는지 확인해주세요.');
+        } else {
+            alert("아이디나 비밀번호를 다시 확인하세요");
         }
     }
 
@@ -140,7 +143,7 @@ const SignUp = () => {
                            onChange={handleChange}/>
                     <input className={styles.inputField} name="email" type="email" placeholder="이메일"
                            onChange={handleChange}/>
-                    <input className={styles.inputField} name="birth" type="date" placeholder="생년월일"
+                    생년월일:<input className={styles.inputField} name="birth" type="date" placeholder="생년월일"
                            onChange={handleChange}/>
                     {isButtonDisable && <p className={styles.errorMsg}>모두 입력해주세요</p>}
                     <input type="submit" className={styles.submitButton} value="회원가입" disabled={isButtonDisable}
