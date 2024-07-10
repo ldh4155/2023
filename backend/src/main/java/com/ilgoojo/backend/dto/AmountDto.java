@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class AmountDto {
-    private Integer amount;
+    private Integer bid;
 }

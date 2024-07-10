@@ -49,13 +49,13 @@ public class AuctionService {
             auction.setAmount(0);
         if(auction.getStartPrice() == null)
             auction.setStartPrice(0);
-        if(amountDto.getAmount()>auction.getAmount() && amountDto.getAmount() > auction.getStartPrice()) {
+        if(amountDto.getBid()>auction.getAmount() && amountDto.getBid() > auction.getStartPrice()) {
             auction.setBidder(member);
-            auction.setAmount(amountDto.getAmount());
+            auction.setAmount(amountDto.getBid());
 
             Integer bBid = auction.getAmount();
             Integer balance = member.getBalance();
-            member.setBalance(balance - amountDto.getAmount());
+            member.setBalance(balance - amountDto.getBid());
 
             Member bBidder = auction.getBidder();
             if(bBidder!=null) {
