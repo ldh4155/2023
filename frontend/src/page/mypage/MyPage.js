@@ -10,9 +10,10 @@ const MyPage = () => {
   const [editField, setEditField] = useState('');
   const [editValue, setEditValue] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [showPassword, setShowPassword] = useState(false);
+  const [editPwd, setEditPwd] = useState('');
   const [showDetail, setShowDetail] = useState(false);
   const [chargeAmount, setChargeAmount] = useState('');
+  const [showMessage, setShowMessage] = useState('')
 
   useEffect(() => {
     const fetchUserAndBoards = async () => {
@@ -94,6 +95,32 @@ const MyPage = () => {
     }
   };
 
+  const checkPassword = (e) => {
+    const inputpwd = e.target.value;
+
+    if(editPwd === inputpwd){
+      setShowMessage("일치합니다");
+    }else {
+      setShowMessage("비밀번호와 일치하지 않습니다");
+    }
+
+  }; 
+
+  const changePwd = async () => {
+    try {
+      const response = await api.post(`changepwd`, {editPwd});
+      console.log(editPwd);      
+      if(response.status === 200){
+        alert("비밀번호 변경 성공")
+      } else {
+        alert("비밀번호 변경 실패")
+      }
+        
+    } catch(error) {
+      alert("비밀번호 변경 실패")
+    }
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -119,7 +146,7 @@ const MyPage = () => {
         <div className={styles.containerwrapper}>
           <div className={styles.container1}>
             <label htmlFor="imageUpload">
-              <img src={user.imageUrl} alt={user.name} style={{cursor: 'pointer'}}/>
+              <img src={user.imageUrl} alt={user.name} style={{cursor: 'pointer'}} width={200} height={100}/>
             </label>
             <input id="imageUpload" type="file" style={{display: 'none'}} onChange={handleImageUpload}/>
 
@@ -148,10 +175,11 @@ const MyPage = () => {
                     <button className={styles.button} onClick={() => setEditField('birth')}>수정</button>
                   </p>
                   <p>
-                    현재 비밀번호 : {showPassword ? user.password : '********'}
-                    <button className={styles.button} onClick={() => setShowPassword(!showPassword)}>
-                      {showPassword ? '숨기기' : '확인'}</button>
-                    <button className={styles.button} onClick={() => setEditField('password')}>비밀번호 변경</button>
+                    <input type="password" value={editPwd} placeholder="바꿀 비밀번호"
+                           onChange={(e) => setEditPwd(e.target.value)}/>
+                    <input type="password" placeholder="비밀번호 확인" onChange={checkPassword}/>
+                    <p>{showMessage}</p>
+                    <button className={styles.button}>비밀번호 변경</button>
                   </p>
                 </>
             )}
@@ -167,6 +195,25 @@ const MyPage = () => {
                     }}
                 />
               </div>
+            </div>
+            <div className={styles.container1}>
+              <h1 className={styles.title}>금액 충전</h1>
+              <form onSubmit={handleSubmit} className={styles.form}>
+                <label htmlFor="chargeAmount" className={styles.label}>
+                  충전 금액:
+                </label>
+                <input
+                    type="number"
+                    id="chargeAmount"
+                    value={chargeAmount}
+                    onChange={(e) => setChargeAmount(e.target.value)}
+                    required
+                    className={styles.input}
+                />
+                <button type="submit" className={styles.button}>
+                  충전하기
+                </button>
+              </form>
             </div>
             {editField && (
                 <div>
@@ -205,7 +252,7 @@ const MyPage = () => {
             )}
           </div>
             <div className={styles.container3}>
-              <h2>나의 진행중인 경매</h2>
+              <h2 className={styles.recentPosts}>나의 진행중인 경매</h2>
               <div className={styles.auctionList}>
                 {auctions.length > 0 ? (
                     auctions.map(auction => (
@@ -230,5 +277,4 @@ const MyPage = () => {
 
   }
 }
-
 export default MyPage;
