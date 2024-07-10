@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import BoardList from "../page/board/BoardList";
+import styles from "../style/cssmodule/components/AreaFiltering.module.css";
 
-export default function Filter_Area(onAreaChange) {
+export default function Filter_Area({ onAreaChange }) {
   const area = [
     {
       title: "경기",
@@ -49,7 +50,7 @@ export default function Filter_Area(onAreaChange) {
         "태백시",
         "속초시",
         "삼척시",
-        "흥천군",
+        "홍천군",
         "횡성군",
         "영월군",
         "평창군",
@@ -98,8 +99,9 @@ export default function Filter_Area(onAreaChange) {
       ],
     },
     {
-      title: "세종특별자치시"
-    }
+      title: "세종특별자치시",
+      contents: ["세종특별자치시"],
+    },
     {
       title: "전북",
       contents: [
@@ -297,11 +299,14 @@ export default function Filter_Area(onAreaChange) {
     province: "",
     citys: [],
   });
-  // 향후 게시글, 경매 필터링시 selectedAreas 사용.
+  const [isFilter, setIsFilter] = useState(false);
+
+  const toggleFilter = () => {
+    setIsFilter(!isFilter);
+  };
 
   const handleAreaClick = (title) => {
     setSelectedTitle(title);
-    // 지역을 클릭했을 때, 해당 지역의 도시 목록을 초기화
     setSelectedAreas({
       province: title,
       citys: [],
@@ -310,22 +315,27 @@ export default function Filter_Area(onAreaChange) {
 
   const handleContentClick = (content) => {
     const { province, citys } = selectedAreas;
+    let updatedCitys;
+
     if (citys.includes(content)) {
-      // 이미 선택된 도시라면, 선택 해제 처리
-      setSelectedAreas({
-        province,
-        citys: citys.filter((city) => city !== content),
-      });
+      updatedCitys = citys.filter((city) => city !== content);
     } else {
-      // 새로운 도시를 선택한 경우, 목록에 추가
-      setSelectedAreas({
-        province,
-        citys: [...citys, content],
-      });
+      if (citys.length >= 5) {
+        alert("최대 5개의 도시만 선택할 수 있습니다.");
+        return;
+      }
+      updatedCitys = [...citys, content];
     }
+
+    const updatedAreas = {
+      province,
+      citys: updatedCitys,
+    };
+
+    setSelectedAreas(updatedAreas);
+    onAreaChange(updatedAreas);
   };
 
-  // 선택된 지역의 contents를 찾는 함수
   const findSelectedAreaContents = () => {
     const areaData = area.find((item) => item.title === selectedTitle);
     return areaData ? areaData.contents : [];
@@ -333,37 +343,39 @@ export default function Filter_Area(onAreaChange) {
 
   return (
     <div>
-      <div>
-        {area.map((item, index) => (
-          <button
-            key={index}
-            onClick={() => handleAreaClick(item.title)}
-            style={{
-              backgroundColor:
-                selectedTitle === item.title ? "lightgreen" : "lightgray",
-            }}
-          >
-            {item.title}
-          </button>
-        ))}
-      </div>
-      <hr />
-      <div>
-        {selectedTitle &&
-          findSelectedAreaContents().map((content, index) => (
-            <button
-              key={index}
-              onClick={() => handleContentClick(content)}
-              style={{
-                backgroundColor: selectedAreas.citys.includes(content)
-                  ? "lightgreen"
-                  : "lightgray",
-              }}
-            >
-              {content}
-            </button>
-          ))}
-      </div>
+      <button onClick={toggleFilter}>지역 선택</button>
+      {isFilter === true ? (
+        <>
+          <div>
+            {area.map((item, index) => (
+              <button
+                key={index}
+                className={`${styles.filterButton} ${
+                  selectedTitle === item.title ? styles.selected : ""
+                }`}
+                onClick={() => handleAreaClick(item.title)}
+              >
+                {item.title}
+              </button>
+            ))}
+          </div>
+          <hr />
+          <div>
+            {selectedTitle &&
+              findSelectedAreaContents().map((content, index) => (
+                <button
+                  key={index}
+                  className={`${styles.filterButton} ${
+                    selectedAreas.citys.includes(content) ? styles.selected : ""
+                  }`}
+                  onClick={() => handleContentClick(content)}
+                >
+                  {content}
+                </button>
+              ))}
+          </div>
+        </>
+      ) : null}
     </div>
   );
 }
