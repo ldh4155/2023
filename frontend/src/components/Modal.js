@@ -1,5 +1,7 @@
 import { useState } from "react";
 import ModalBoard from "../page/board/ModalBoard";
+import Draggable from "react-draggable";
+import BoardList from "../page/board/BoardList";
 
 function Modal({ boardData }) {
   const [isModal, setIsModal] = useState(false);
@@ -15,7 +17,13 @@ function Modal({ boardData }) {
   return (
     <div>
       <button onClick={toggleModal}>모달</button>
-      {isModal === true ? <ModalBoard boardData={modalBoard} /> : null}
+      {isModal === true ? (
+        <Draggable>
+          <div>
+            <ModalBoard boardData={modalBoard} />
+          </div>
+        </Draggable>
+      ) : null}
     </div>
   );
 }
