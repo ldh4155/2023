@@ -13,7 +13,7 @@
 }
 
 .modal {
-    background-color: #ffffff;
+    background-color: #f6d9d9;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -26,12 +26,14 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 24px; /* 글자 크기 증가 */
+    font-size: 20px;
+    font-weight: bold;
+    color: #e10a0a;
     background-color: transparent;
     border: none;
     cursor: pointer;
-    color: #e10a0a; /* 색상을 밝은 회색으로 변경 */
 }
+
 
 .title {
     font-size: 24px;
