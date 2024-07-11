@@ -1,5 +1,5 @@
 /* Button.module.css */
-/* .buttonStyle {
+.buttonStyle {
     background-image: linear-gradient(to right, #ffa8a8, #feb47b);
     color: white;
     border: none;
@@ -39,7 +39,7 @@
 
 .ToastBodyCustom {
     background-color: #ffffff; /* 원하는 색상으로 변경 */
-} */
+}
 
 
 
