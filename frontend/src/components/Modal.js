@@ -4,42 +4,37 @@ import styles from "../style/cssmodule/components/Modal.module.css";
 import { Modal } from "react-bootstrap";
 import Draggable from "react-draggable";
 
-function ToastNotification({ boardData }) {
+function IsModal({ boardData }) {
   const [showModal, setShowModal] = useState(false);
   const [modalBoard, setModalBoard] = useState(boardData);
+  const [buttonText, setButtonText] = useState("모달로 보기");
 
   function toggleModal() {
     setShowModal(!showModal);
+    setButtonText("모달로 보기");
     if (!showModal) {
       setModalBoard(boardData);
+
+      setButtonText("모달 닫기");
     }
   }
 
   return (
     <div>
       <button onClick={toggleModal} className={styles.buttonStyle}>
-        모달로 보기
+        {buttonText}
       </button>
       {showModal === true ? (
-        <Modal
-          show={showModal}
-          onHide={() => setShowModal(false)}
-          backdrop="static"
-          keyboard={false}
-          className={styles.customDialog}
-        >
-          <Modal.Header closeButton className={styles.ToastHeaderCustom}>
-            <Modal.Title>게시글</Modal.Title>
-          </Modal.Header>
-          <Modal.Body className={styles.ToastBodyCustom}>
-            <Draggable>
-              <ModalBoard boardData={modalBoard} />
-            </Draggable>
-          </Modal.Body>
-        </Modal>
+        <Draggable>
+          <div>
+            <Modal.Body className={styles.ToastBodyCustom}>
+              <ModalBoard boardData={modalBoard} togglModal={toggleModal} />
+            </Modal.Body>
+          </div>
+        </Draggable>
       ) : null}
     </div>
   );
 }
 
-export default ToastNotification;
+export default IsModal;

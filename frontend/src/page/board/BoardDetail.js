@@ -3,9 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import ImageList from "../../components/ImageList";
 import Comment from "../../components/Comment";
 import { api } from "../../api/api";
-import Modal from "../../components/Modal";
+import IsModal from "../../components/Modal";
 import ModalBoard from "./ModalBoard";
-import BoardList from "./BoardList";
 
 export default function BoardDetail(props) {
   const token = localStorage.getItem("token");
@@ -57,7 +56,7 @@ export default function BoardDetail(props) {
               제목 : {boardData.title}{" "}
               <button onClick={() => UpdateBoard(boardData.id)}>수정</button>{" "}
               <button onClick={() => DeleteBoard(boardData.id)}>삭제</button>
-              <Modal boardData={boardData} />
+              <IsModal boardData={boardData} />
             </h1>
             <hr />
             <h3>내용 : {boardData.content}</h3>
