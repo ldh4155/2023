@@ -21,22 +21,22 @@ function ToastNotification({ boardData }) {
         모달로 보기
       </button>
       {showModal === true ? (
-        <Draggable>
-          <Modal
-            show={showModal}
-            onHide={() => setShowModal(false)}
-            backdrop="static"
-            keyboard={false}
-            className={styles.customDialog}
-          >
-            <Modal.Header closeButton className={styles.ToastHeaderCustom}>
-              <Modal.Title>게시글</Modal.Title>
-            </Modal.Header>
-            <Modal.Body className={styles.ToastBodyCustom}>
+        <Modal
+          show={showModal}
+          onHide={() => setShowModal(false)}
+          backdrop="static"
+          keyboard={false}
+          className={styles.customDialog}
+        >
+          <Modal.Header closeButton className={styles.ToastHeaderCustom}>
+            <Modal.Title>게시글</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className={styles.ToastBodyCustom}>
+            <Draggable>
               <ModalBoard boardData={modalBoard} />
-            </Modal.Body>
-          </Modal>
-        </Draggable>
+            </Draggable>
+          </Modal.Body>
+        </Modal>
       ) : null}
     </div>
   );
