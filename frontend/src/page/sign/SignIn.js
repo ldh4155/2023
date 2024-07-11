@@ -66,8 +66,8 @@ const SignIn = () => {
           </p>
         </div>
         <div>
-          <button onClick={() => navigate('/findid')} >아이디 찾기</button>
-          <button onClick={() => navigate('/findpwd')} >비밀번호 찾기</button>
+          <button className={styles.FindIdButton} onClick={() => navigate('/findid')} >아이디 찾기</button>
+          <button className={styles.FindPwdButton} onClick={() => navigate('/findpwd')} >비밀번호 찾기</button>
         </div>
       </div>
   );
