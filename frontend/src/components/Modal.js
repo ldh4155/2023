@@ -17,7 +17,7 @@ function ToastNotification({ boardData }) {
     return (
         <div>
             <button onClick={toggleModal} className={styles.buttonStyle}>
-                모달로 보기
+                작은 창으로 보기
             </button>
             <Modal
                 show={showModal}
