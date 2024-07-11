@@ -7,15 +7,15 @@ import Draggable from "react-draggable";
 function IsModal({ boardData }) {
   const [showModal, setShowModal] = useState(false);
   const [modalBoard, setModalBoard] = useState(boardData);
-  const [buttonText, setButtonText] = useState("모달로 보기");
+  const [buttonText, setButtonText] = useState("작은 창으로 보기");
 
   function toggleModal() {
     setShowModal(!showModal);
-    setButtonText("모달로 보기");
+    setButtonText("작은 창으로 보기");
     if (!showModal) {
       setModalBoard(boardData);
 
-      setButtonText("모달 닫기");
+      setButtonText("창 닫기");
     }
   }
 
