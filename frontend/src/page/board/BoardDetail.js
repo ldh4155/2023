@@ -67,10 +67,9 @@ export default function BoardDetail(props) {
                                     <button className={styles.button} onClick={() => UpdateBoard(boardData.id)}>수정</button>
                                     {" "}
                                     <button className={styles.button} onClick={() => DeleteBoard(boardData.id)}>삭제</button>
-                                    <IsModal boardData={boardData} />
                                 </>
                             )}
-                            <Modal boardData={boardData}/>
+                            <IsModal boardData={boardData} />
                         </h1>
                         <hr/>
                         <h3 className={styles.content}>내용 : {boardData.content}</h3>
