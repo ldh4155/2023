@@ -2,27 +2,28 @@ import React, { useState } from 'react';
 import {api} from "../../api/api"
 import {Link, useNavigate} from "react-router-dom";
 import styles from '../../style/cssmodule/sign/signin.module.css';
-
-
-const SignIn = ({ isLoggedIn, setIsLoggedIn }) => {
+import { useDispatch } from 'react-redux';
+import { Login } from '../../redux/Action/LoginAction';
+const SignIn = () => {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        console.log({id,password});
+        
         try {
             const response = await api.post(`login`, { id, password },{ withCredentials: true });
             alert("로그인 성공");
-            setIsLoggedIn(true);
+            dispatch(Login());
             localStorage.setItem("access", response.headers["access"]);
             console.log("성공:",response.headers)
             navigate('/');
         } catch (error) {
             console.log("실패:",localStorage.getItem("access"))
             console.error(error);
-            alert("로그인 실패");
+            alert("아이디나 비밀번호를 확인해주세요");
         }
     }
 
@@ -64,8 +65,12 @@ const SignIn = ({ isLoggedIn, setIsLoggedIn }) => {
             </button>
           </p>
         </div>
+        <div>
+          <button className={styles.FindIdButton} onClick={() => navigate('/findid')} >아이디 찾기</button>
+            |
+          <button className={styles.FindPwdButton} onClick={() => navigate('/findpwd')} >비밀번호 찾기</button>
+        </div>
       </div>
   );
 };
-
 export default SignIn;

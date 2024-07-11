@@ -4,6 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 import { api } from "../../api/api";
 import { debounce } from 'lodash';
 import {PostCode} from "./PostCode"
+
 const SignUp = () => {
 
     const [address,setAddress] = useState("");
@@ -87,20 +88,23 @@ const SignUp = () => {
 
     const handleSignUp = async (e) => {
         e.preventDefault();
-
-        try {
-            console.log(member);
-            const response = await api.post('signup', member);
-            console.log(response.data)
-            if (response.data) {
-                alert('가입에 성공하였습니다!');
-                navigate('/signin');
-            } else {
-                alert('가입에 실패하였습니다. 다시 시도해주세요.');
+        if(idMessage === "사용할 수 있는 아이디" && pwdMessage === "비밀번호가 일치합니다") {
+            try {
+                console.log(member);
+                const response = await api.post('signup', member);
+                console.log(response.data)
+                if (response.data) {
+                    alert('가입에 성공하였습니다!');
+                    navigate('/signin');
+                } else {
+                    alert('가입에 실패하였습니다. 잘못 입력한 부분이 있는지 확인해주세요.');
+                }
+            } catch (error) {
+                console.error('Failed to sign up', error);
+                alert('가입에 실패하였습니다. 잘못 입력한 부분이 있는지 확인해주세요.');
             }
-        } catch (error) {
-            console.error('Failed to sign up', error);
-            alert('가입에 실패하였습니다. 다시 시도해주세요.');
+        } else {
+            alert("아이디나 비밀번호를 다시 확인하세요");
         }
     }
 
@@ -130,13 +134,16 @@ const SignUp = () => {
                            onChange={handleChange}/>
                     <input className={styles.inputField} name="nickName" type="text" placeholder="닉네임"
                            onChange={handleChange}/>
-                    <input className={styles.inputField} name="phone" type="text" placeholder="휴대폰 번호"
+                    <input className={styles.inputField} name="phone" type="text" placeholder="휴대폰 번호 - 를 빼고 입력하세요"
                            onChange={handleChange}/>
-                    <input className={styles.inputField} name="address" type="text" placeholder="주소"
+                    <input className={styles.inputField} name="address" type="text" placeholder="주소" readOnly
+                           value={address} onChange={handleChange}/>
+                    <PostCode setSido={setSido} setSigungu={setSigungu} setAddress={setAddress}/>
+                    <input className={styles.inputField} name="detailAddr" type="text" placeholder="상세주소"
                            onChange={handleChange}/>
                     <input className={styles.inputField} name="email" type="email" placeholder="이메일"
                            onChange={handleChange}/>
-                    <input className={styles.inputField} name="birth" type="date" placeholder="생년월일"
+                    생년월일:<input className={styles.inputField} name="birth" type="date" placeholder="생년월일"
                            onChange={handleChange}/>
                     {isButtonDisable && <p className={styles.errorMsg}>모두 입력해주세요</p>}
                     <input type="submit" className={styles.submitButton} value="회원가입" disabled={isButtonDisable}
