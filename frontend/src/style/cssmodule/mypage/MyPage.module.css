@@ -195,14 +195,11 @@ body {
     background-color: #ffa8a8;
     padding: 2rem;
     border-radius: 8px;
-    max-height: 500px;
-    overflow: auto;
 }
 
 .title {
-    color: #fff;
+    color: #000000;
     margin-bottom: 1.5rem;
-    font-size: 20px
 }
 
 .form {
@@ -212,7 +209,7 @@ body {
 }
 
 .label {
-    color: #fff;
+    color: #000000;
     font-weight: bold;
     margin-bottom: 0.5rem;
 }
@@ -225,14 +222,7 @@ body {
     margin-bottom: 1rem;
 }
 
-.button {
-    background-color: #fff;
-    color: #ffa8a8;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+
 
 .button:hover {
     background-color: #f0f0f0;
