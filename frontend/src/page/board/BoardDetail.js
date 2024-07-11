@@ -4,6 +4,7 @@ import ImageList from "../../components/ImageList";
 import Comment from "../comment/Comment";
 import { api } from "../../api/api";
 import {decodeJwt} from "../../api/decodeJwt";
+import IsModal from '../../components/Modal';
 import Modal from "../../components/Modal";
 import ModalBoard from "./ModalBoard";
 import BoardList from "./BoardList";
@@ -66,6 +67,7 @@ export default function BoardDetail(props) {
                                     <button className={styles.button} onClick={() => UpdateBoard(boardData.id)}>수정</button>
                                     {" "}
                                     <button className={styles.button} onClick={() => DeleteBoard(boardData.id)}>삭제</button>
+                                    <IsModal boardData={boardData} />
                                 </>
                             )}
                             <Modal boardData={boardData}/>
