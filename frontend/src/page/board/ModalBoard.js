@@ -1,5 +1,5 @@
 import ImageList from "../../components/ImageList";
-import styles from '../../style/cssmodule/Board/modalBoard.module.css';
+import styles from '../../style/cssmodule/Board/ModalBasic.moddule.css';
 
 
 
