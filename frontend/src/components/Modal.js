@@ -21,13 +21,13 @@ function IsModal({ boardData }) {
 
   return (
     <div>
-      <button onClick={toggleModal} className={styles.buttonStyle}>
+      <button onClick={toggleModal} >
         {buttonText}
       </button>
       {showModal === true ? (
         <Draggable>
           <div>
-            <Modal.Body className={styles.ToastBodyCustom}>
+            <Modal.Body >
               <ModalBoard boardData={modalBoard} togglModal={toggleModal} />
             </Modal.Body>
           </div>
