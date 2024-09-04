@@ -142,14 +142,14 @@ function AuctionList() {
                         <Link to={`/auctions/${auction.auctionId}`}>
                             <div className={styles.auctionImage}>
                                 {auction.imageUrl && (
-                                    <img src={auction.imageUrl} alt="Auction"/>
+                                    <img src={auction.imageUrl} alt="Auction" className={styles.auctionImage}/>
                                 )}
                             </div>
                             <div>
                                 <div className={styles.auctionTitle}>{auction.title}</div>
                                 <div className={styles.auctionDetails}>
                                     {"시작가 : " + auction.startPrice}
-                                </div>
+                                </div> 
                                 <div className={styles.auctionDetails}>
                                     {"현재 최고가 : " + (auction.amount ? auction.amount : "미입찰")}
                                 </div>
