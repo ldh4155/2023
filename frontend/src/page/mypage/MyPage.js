@@ -109,7 +109,6 @@ const MyPage = () => {
   const changePwd = async () => {
     try {
       const response = await api.post(`changepwd`, {editPwd});
-      console.log(editPwd);      
       if(response.status === 200){
         alert("비밀번호 변경 성공")
       } else {
@@ -179,7 +178,7 @@ const MyPage = () => {
                            onChange={(e) => setEditPwd(e.target.value)}/>
                     <input type="password" placeholder="비밀번호 확인" onChange={checkPassword}/>
                     <p>{showMessage}</p>
-                    <button className={styles.button}>비밀번호 변경</button>
+                    <button className={styles.button} onClick={() => changePwd()}>비밀번호 변경</button>
                   </p>
                 </>
             )}
