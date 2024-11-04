@@ -15,7 +15,9 @@ MySQL
 
 ## 배포 서버
 서버: AWS EC2
+
 DB: AWS RDS(MySQL)
+
 WS/WAS: Nginx / Tomcat
 
 ## 주요 기능 사진
