@@ -1,11 +1,16 @@
 # Spring과 React를 이용한 중고 거래 플랫폼 제작
 
-## 기술스택
-spring boot
+## 개발 환경
+Java 17
 
-ReactJs
+Spring boot 3.1.7
+
+React 18.2.0
 
 MySQL
+
+## 아키텍처
+![제목 없는 다이어그램 drawio](https://github.com/user-attachments/assets/724a79fd-8569-4255-b56f-fe7b66aa2976)
 
 ## 주요 기능 사진
 
